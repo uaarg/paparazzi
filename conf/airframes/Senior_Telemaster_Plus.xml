@@ -72,8 +72,8 @@
   </section>
 
   <section name="AUTO1" prefix="AUTO1_">
-    <define name="MAX_ROLL" value="0.7"/>
-    <define name="MAX_PITCH" value="0.7"/>
+    <define name="MAX_ROLL" value="0.5"/>
+    <define name="MAX_PITCH" value="0.5"/>
   </section>
 
   <section name="BAT">
