@@ -9,7 +9,7 @@
 
   <servos>	<!-- defines the physical servos connected to the TWOG -->
     <servo name="THROTTLE" no="0" min="1000" neutral="1000" max="2000"/>
-    <servo name="AILERON_LEFT" no="2" min="2200" neutral="1625" max="1300"/> 
+    <servo name="AILERON_LEFT" no="2" min="1300" neutral="1625" max="2200"/> 
 	<!-- GOOD!!! min is aileron-down, max is aileron-up, good positions: min=2200, neutral=1625, max=1300  -->
     <servo name="AILERON_RIGHT" no="6" min="1300" neutral="1535" max="1780"/>	
 	<!-- GOOD!!! min is aileron-up, max is aileron-down, good positions: min=1300, neutral=1535, max=1780  -->
@@ -54,7 +54,7 @@
 
   <command_laws>	<!-- links the abstract commands to physical servos -->
     <!-- Ailerons -->
-    <set servo="AILERON_LEFT" value="@ROLL"/>
+    <set servo="AILERON_LEFT" value="-@ROLL"/>
     <set servo="AILERON_RIGHT" value="@ROLL"/>
 
     <!-- Thrust -->
@@ -89,8 +89,8 @@
     <define name="CARROT" value="5." unit="s"/>
     <define name="CONTROL_RATE" value="60" unit="Hz"/>
     <define name="XBEE_INIT" value="&quot;ATPL2\rATRN5\rATTT80\r&quot;"/>
-<!--    <define name="NO_XBEE_API_INIT" value="TRUE"/> -->
-<define name="ALT_KALMAN_ENABLED" value="FALSE"/>
+    <!--    <define name="NO_XBEE_API_INIT" value="TRUE"/> -->
+    <define name="ALT_KALMAN_ENABLED" value="FALSE"/>
 
     <define name="DEFAULT_CIRCLE_RADIUS" value="80."/>
 
