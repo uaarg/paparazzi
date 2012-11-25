@@ -4,6 +4,7 @@
   <header>
      #include "subsystems/navigation/nav_line.h"
      #include "datalink.h"
+     #include "airframe.h"
      #include "subsystems/navigation/OSAMNav.h"
 </header>
   <waypoints>
@@ -155,6 +156,7 @@
   <exceptions>
     <exception cond="datalink_time > 8" deroute="Standby"/>
     <exception cond="datalink_time > 120" deroute="KILL"/>
+    <exception cond="kill_switch > 1700" deroute="KILL"/> <!-- the value needs to be determined and tested. I just chose something - Cam-->
   </exceptions>
   <blocks>
     <block name="Wait GPS">

@@ -25,6 +25,7 @@
     <axis name="PITCH" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
     <axis name="BRAKE" failsafe_value="0"/> <!-- range is -9600 to 9600 -->	<!-- both elerons up as butterfly brake ? -->
     <axis name="YAW" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
+    <axis name="KILL_SWITCH" failsafe_value="-9600"/> <!--not sure that the range is, probably the same as above - Cam -->
   </commands>
 
   <rc_commands>	<!-- defines what abstract commands the RC signals control -->
@@ -32,6 +33,7 @@
     <set command="ROLL" value="@ROLL"/>
     <set command="PITCH" value="-@PITCH"/>
     <set command="YAW" value="@YAW"/>
+    <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
   </rc_commands>
 
 
