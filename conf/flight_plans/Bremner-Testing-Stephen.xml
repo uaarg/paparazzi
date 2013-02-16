@@ -137,7 +137,9 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
   <!-- The header section allows one to include advanced navigation routines and header files that allow access to variables that may be useful for exceptions or advanced flightplan routines dependent on various internal autopilot variables -->
   <header>
 #include "subsystems/navigation/nav_line.h"
-#include "datalink.h"
+#include "subsystems/datalink/datalink.h"
+#include "commands.h"
+#include "airframe.h"
   </header>
   <!-- The waypoints section must contain 1 or more waypoints. For tuning, setup STDBY in a location in front of the pilot at least DEFAULT_CIRCLE_RADIUS metres away from the flight line if restricted to no overflights. Setup 1 and 2 in front of and to the left and right of the pilot, respectively. These are only used for testing ovals and eights after tuning. Again, waypoints should be at least a radius away from the flight line (probably 1.5xRadius) to prevent overflights. HOME can be set somewhere in the vicinity of STDBY or the pilot. CLIMB is for takeoff (mostly for sim, should manually takeoff for tuning)-->
   <waypoints>
@@ -157,6 +159,7 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
   <exceptions>
     <exception cond="60 > datalink_time > 15" deroute="Standby1"/>
     <exception cond="datalink_time > 60" deroute = "Suicide"/>
+    <exception cond="commands[COMMAND_KILL_SWITCH] > 4000" deroute="Suicide"/>
     <!-- <exception cond="And((estimator_z > ground_alt + 240),launch)" deroute="Standby2"/> -->
     <!-- <exception cond="And(!InsideSoftKillOut(estimator_x, estimator_y),launch)" deroute="Standby3"/> -->
   </exceptions>
@@ -182,6 +185,10 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
       <set value="0" var="estimator_flight_time"/>
       <go from="HOME" throttle="1.0" vmode="throttle" wp="CLIMB" pitch="15"/>
     </block>
+    <block name="Suicide Recovery">
+      <set value="0" var="kill_throttle"/>
+    </block>
+      
     <block key="<Control>a" name="Standby" strip_button="Standby" strip_icon="home.png" group="home">
       <circle radius="nav_radius" wp="STDBY"/>
     </block>
@@ -352,7 +359,7 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
     <block name="Suicide">
       <set value="1" var="kill_throttle"/>
       <attitude climb="-3" height="0" roll="2000" throttle="0" vmode="throttle"/>
-      <exception cond="2 > datalink_time" deroute="Standby"/>
+      <exception cond="And(2 > datalink_time, 4000 > commands[COMMAND_KILL_SWITCH])" deroute="Suicide Recovery"/>
     </block>
 
   </blocks>
