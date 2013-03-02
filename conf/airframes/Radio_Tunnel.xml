@@ -37,9 +37,9 @@
     <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
   </rc_commands>
 
-  <auto_rc_commands>
-    <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
-  </auto_rc_commands>
+  <ap_only_commands>
+    <copy command="KILL_SWITCH"/>
+  </ap_only_commands>
 
   <section name="SERVO_MIXER_GAINS">
     <define name="AILERON_RATE_UP" value="0.50f"/>
@@ -180,34 +180,10 @@
 
   </modules>
 
-  <firmware name="fixedwing">
-    <target name="ap" board="twog_1.0">
-      <!-- <define name="STRONG_WIND"/> -->	<!-- commented out since Stephen's tunning flight plan file says to do so -->
-      <define name="WIND_INFO"/>
-      <define name="WIND_INFO_RET"/>
-      <define name="LOITER_TRIM"/>
-      <define name="ALT_KALMAN"/>
-			<!--      <define name="NB_CHANNELS" value="5" />  -->
-    </target>
-    <target name="sim" board="pc"/>
-
-    <subsystem name="radio_control" type="ppm"/>
-    <subsystem name="gps" type="ublox" />
-
-    <!-- Communication -->
-    <subsystem name="telemetry" type="transparent">
-      <configure name="MODEM_BAUD" value="B57600"/>
-    </subsystem>
-
-    <!-- Actuators -->
-    <subsystem name="control"/>
-    <!-- Sensors -->
-    <!-- <subsystem name="navigation"/>  -->	<!-- used when there are no advanced flight routines -->
-    <subsystem name="navigation" type="extra"/> <!-- needed for advanced flight routines such as poly-survey, etc... -->
-    <!-- CHIMU -->
-    <subsystem name="spi_slave_hs"/>
-
-  </firmware>
+   <firmware name="setup">
+     <target name="tunnel" board="twog_1.0" />
+     <target name="usb_tunnel_1" board="twog_1.0" />
+   </firmware>
 
 
 </airframe>
