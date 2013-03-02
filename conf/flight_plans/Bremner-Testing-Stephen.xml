@@ -157,7 +157,7 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
   </includes>
   <!-- The exceptions section allows for global error and failsafe handling -->
   <exceptions>
-    <exception cond="60 > datalink_time > 15" deroute="Standby1"/>
+    <exception cond="And(60 > datalink_time, datalink_time > 15)" deroute="Standby"/>
     <exception cond="datalink_time > 60" deroute = "Suicide"/>
     <exception cond="commands[COMMAND_KILL_SWITCH] > 4000" deroute="Suicide"/>
     <!-- <exception cond="And((estimator_z > ground_alt + 240),launch)" deroute="Standby2"/> -->
