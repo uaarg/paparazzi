@@ -1,23 +1,17 @@
-<!DOCTYPE airframe SYSTEM "./airframe.dtd">
+<!DOCTYPE airframe SYSTEM "../airframe.dtd">
 
 <!--
-	TWOG + CHIMU (Using SPI) + XTend (Using transparent mode)
-  Testing git functionality.
+	TWOG + CHIMU (Using SPI) + XBee (Using transparent mode)
 -->
 
 
-<airframe name="UA7">
+<airframe name="UA-10">
 
   <servos>	<!-- defines the physical servos connected to the TWOG -->
-    <servo name="THROTTLE" no="2" min="00" neutral="800" max="2000"/>
-    <servo name="AILERON_LEFT" no="7" min="1300" neutral="1625" max="2200"/>
-	<!-- GOOD!!! min is aileron-down, max is aileron-up, good positions: min=2200, neutral=1625, max=1300  -->
-    <servo name="AILERON_RIGHT" no="3" min="1300" neutral="1535" max="1780"/>	
-	<!-- GOOD!!! min is aileron-up, max is aileron-down, good positions: min=1300, neutral=1535, max=1780  -->
-    <servo name="ELEVATOR" no="6" min="2000" neutral="1500" max="1000"/>	
-	<!-- min is elevator-up, max is elevator-down, good positions: min=2200, neutral=1600, max=1000 -->
-    <servo name="RUDDER" no="0" min="1050" neutral="1610" max="2250"/>		
-	<!-- GOOD!!! min is rudder-right, max is rudder left, good values: min=1000, neutral=1500, max=2200-->
+    <servo name="THROTTLE" no="4" min="950" neutral="950" max="2000"/>
+    <servo name="RUDDER" no="3" min="1000" neutral="1500" max="2000"/>
+    <servo name="ELEVATOR" no="7" min="1000" neutral="1500" max="2000"/>	
+    <servo name="AILERONS" no="6" min="1000" neutral="1500" max="2000"/>
   </servos>
 
   <commands>	<!-- Defines abstract commands needed to control aircraft -->
@@ -60,8 +54,7 @@
 
   <command_laws>	<!-- links the abstract commands to physical servos -->
     <!-- Ailerons -->
-    <set servo="AILERON_LEFT" value="-@ROLL"/>
-    <set servo="AILERON_RIGHT" value="@ROLL"/>
+    <set servo="AILERONS" value="@ROLL"/>
 
     <!-- Thrust -->
     <set servo="THROTTLE" value="@THROTTLE"/>
@@ -86,9 +79,9 @@
   <section name="BAT">
     <define name="MilliAmpereOfAdc(adc)" value="((adc) - 505) * 124.0f"/>
 
-    <define name="LOW_BAT_LEVEL" value="11" unit="V"/>
-    <define name="CRITIC_BAT_LEVEL" value="10" unit="V"/>
-    <define name="CATASTROPHIC_BAT_LEVEL" value="9" unit="V"/>
+    <define name="LOW_BAT_LEVEL" value="7.4" unit="V"/>
+    <define name="CRITIC_BAT_LEVEL" value="6" unit="V"/>
+    <define name="CATASTROPHIC_BAT_LEVEL" value="5.5" unit="V"/>
   </section>
 
   <section name="MISC">
