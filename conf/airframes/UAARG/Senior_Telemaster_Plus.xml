@@ -32,7 +32,7 @@
   <rc_commands>	<!-- defines what abstract commands the RC signals control -->
     <set command="THROTTLE" value="@THROTTLE"/>
     <set command="ROLL" value="@ROLL"/>
-    <set command="PITCH" value="-@PITCH"/>
+    <set command="PITCH" value="@PITCH"/>
     <set command="YAW" value="@YAW"/>
     <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
   </rc_commands>
@@ -67,7 +67,7 @@
     <set servo="THROTTLE" value="@THROTTLE"/>
 
     <!-- Pitch  -->
-    <set servo="ELEVATOR" value="-@PITCH"/>
+    <set servo="ELEVATOR" value="@PITCH"/>
 
     <set servo="RUDDER" value="@YAW"/>
   </command_laws>
