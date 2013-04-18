@@ -11,28 +11,24 @@
   <servos>	<!-- defines the physical servos connected to the TWOG -->
     <servo name="THROTTLE" no="2" min="00" neutral="800" max="2000"/>
     <servo name="AILERON_LEFT" no="7" min="1300" neutral="1625" max="2200"/>
-	<!-- GOOD!!! min is aileron-down, max is aileron-up, good positions: min=2200, neutral=1625, max=1300  -->
     <servo name="AILERON_RIGHT" no="3" min="1300" neutral="1535" max="1780"/>	
-	<!-- GOOD!!! min is aileron-up, max is aileron-down, good positions: min=1300, neutral=1535, max=1780  -->
     <servo name="ELEVATOR" no="6" min="2000" neutral="1500" max="1000"/>	
-	<!-- min is elevator-up, max is elevator-down, good positions: min=2200, neutral=1600, max=1000 -->
-    <servo name="RUDDER" no="0" min="1050" neutral="1610" max="2250"/>		
-	<!-- GOOD!!! min is rudder-right, max is rudder left, good values: min=1000, neutral=1500, max=2200-->
+    <servo name="RUDDER" no="0" min="1050" neutral="1500" max="2250"/>		
   </servos>
 
   <commands>	<!-- Defines abstract commands needed to control aircraft -->
     <axis name="THROTTLE" failsafe_value="0"/> <!-- range is 0 to 9600 -->
     <axis name="ROLL" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
     <axis name="PITCH" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
-    <axis name="BRAKE" failsafe_value="0"/> <!-- range is -9600 to 9600 -->	<!-- both elerons up as butterfly brake ? -->
+    <axis name="BRAKE" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
     <axis name="YAW" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
     <axis name="KILL_SWITCH" failsafe_value="-9600"/> <!--not sure that the range is, probably the same as above - Cam -->
   </commands>
 
   <rc_commands>	<!-- defines what abstract commands the RC signals control -->
     <set command="THROTTLE" value="@THROTTLE"/>
-    <set command="ROLL" value="@ROLL"/>
-    <set command="PITCH" value="@PITCH"/>
+    <set command="ROLL" value="-@ROLL"/>
+    <set command="PITCH" value="-@PITCH"/>
     <set command="YAW" value="@YAW"/>
     <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
   </rc_commands>
@@ -60,14 +56,14 @@
 
   <command_laws>	<!-- links the abstract commands to physical servos -->
     <!-- Ailerons -->
-    <set servo="AILERON_LEFT" value="-@ROLL"/>
-    <set servo="AILERON_RIGHT" value="@ROLL"/>
+    <set servo="AILERON_LEFT" value="@ROLL"/>
+    <set servo="AILERON_RIGHT" value="-@ROLL"/>
 
     <!-- Thrust -->
     <set servo="THROTTLE" value="@THROTTLE"/>
 
     <!-- Pitch  -->
-    <set servo="ELEVATOR" value="@PITCH"/>
+    <set servo="ELEVATOR" value="-@PITCH"/>
 
     <set servo="RUDDER" value="@YAW"/>
   </command_laws>
@@ -78,8 +74,8 @@
   </section>
 
   <section name="AUTO1" prefix="AUTO1_">
-    <define name="MAX_ROLL" value="0.5"/>
-    <define name="MAX_PITCH" value="0.5"/>
+    <define name="MAX_ROLL" value="50" unit="deg"/>
+    <define name="MAX_PITCH" value="40" unit="deg"/>
     
   </section>
 
@@ -96,7 +92,7 @@
     <define name="CARROT" value="5." unit="s"/>
     <define name="CONTROL_RATE" value="60" unit="Hz"/>
     <define name="XBEE_INIT" value="&quot;ATPL2\rATRN5\rATTT80\r&quot;"/>
-    <!--    <define name="NO_XBEE_API_INIT" value="TRUE"/> -->
+    <define name="NO_XBEE_API_INIT" value="TRUE"/>
     <define name="ALT_KALMAN_ENABLED" value="FALSE"/>
 
     <define name="DEFAULT_CIRCLE_RADIUS" value="80."/>
@@ -109,7 +105,7 @@
   <section name="VERTICAL CONTROL" prefix="V_CTL_">
     <define name="POWER_CTL_BAT_NOMINAL" value="11.1" unit="volt"/>
     <!-- outer loop proportional gain -->
-    <define name="ALTITUDE_PGAIN" value="-0.03"/>
+    <define name="ALTITUDE_PGAIN" value="0.03"/>
     <!-- outer loop saturation -->
     <define name="ALTITUDE_MAX_CLIMB" value="2."/>
 
@@ -120,7 +116,7 @@
     <define name="AUTO_THROTTLE_LOITER_TRIM" value="1500"/>
     <define name="AUTO_THROTTLE_DASH_TRIM" value="-4000"/>
     <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.15" unit="%/(m/s)"/>
-    <define name="AUTO_THROTTLE_PGAIN" value="-0.01"/>
+    <define name="AUTO_THROTTLE_PGAIN" value="0.01"/>
     <define name="AUTO_THROTTLE_IGAIN" value="0.1"/>
     <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.05"/>
 
@@ -128,7 +124,7 @@
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
-    <define name="COURSE_PGAIN" value="-1.20000004768"/>
+    <define name="COURSE_PGAIN" value="1.20000004768"/>
     <define name="COURSE_DGAIN" value="0.3"/>
     <define name="COURSE_PRE_BANK_CORRECTION" value="0.2"/>
 
@@ -136,13 +132,13 @@
     <define name="PITCH_MAX_SETPOINT" value="0.5" unit="radians"/>
     <define name="PITCH_MIN_SETPOINT" value="-0.5" unit="radians"/>
 
-    <define name="PITCH_PGAIN" value="-12000."/>
+    <define name="PITCH_PGAIN" value="12000."/>
     <define name="PITCH_DGAIN" value="0"/>
 
     <define name="ELEVATOR_OF_ROLL" value="1000."/>
 
-    <define name="ROLL_ATTITUDE_GAIN" value="-11500"/>
-    <define name="ROLL_RATE_GAIN" value="-600."/>
+    <define name="ROLL_ATTITUDE_GAIN" value="11500"/>
+    <define name="ROLL_RATE_GAIN" value="600."/>
   </section>
 
   <section name="AGGRESSIVE" prefix="AGR_">
