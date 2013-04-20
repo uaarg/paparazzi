@@ -184,8 +184,13 @@
       <define name="LOITER_TRIM"/>
       <define name="ALT_KALMAN"/>
 			<!--      <define name="NB_CHANNELS" value="5" />  -->
+      <!-- CHIMU -->
+      <subsystem name="spi_slave_hs"/>
     </target>
-    <target name="sim" board="pc"/>
+    <target name="sim" board="pc">
+      <subsystem name="ahrs" type="float_dcm"/>
+      <subsystem name="imu" type="aspirin_i2c"/>
+    </target>
 
     <subsystem name="radio_control" type="ppm"/>
     <subsystem name="gps" type="ublox" />
@@ -200,8 +205,7 @@
     <!-- Sensors -->
     <!-- <subsystem name="navigation"/>  -->	<!-- used when there are no advanced flight routines -->
     <subsystem name="navigation" type="extra"/> <!-- needed for advanced flight routines such as poly-survey, etc... -->
-    <!-- CHIMU -->
-    <subsystem name="spi_slave_hs"/>
+
 
   </firmware>
 
