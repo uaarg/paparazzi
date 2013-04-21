@@ -2,11 +2,48 @@
 
 <!--
 	TWOG + CHIMU (Using SPI) + XTend (Using transparent mode)
-  Testing git functionality.
 -->
 
 
 <airframe name="UA7">
+
+  <firmware name="fixedwing">
+
+    <target name="ap" board="twog_1.0">
+      <!-- <define name="STRONG_WIND"/> -->	<!-- commented out since Stephen's tunning flight plan file says to do so -->
+      <define name="WIND_INFO"/>
+      <define name="WIND_INFO_RET"/>
+      <define name="LOITER_TRIM"/>
+      <define name="ALT_KALMAN"/>
+      <subsystem name="spi_slave_hs"/>       <!-- Needed for CHIMU -->
+    </target>
+
+    <target name="sim" board="pc">
+      <subsystem name="ahrs" type="float_dcm"/>
+      <subsystem name="imu" type="aspirin_i2c"/>
+    </target>
+
+    <subsystem name="radio_control" type="ppm"/>
+
+    <subsystem name="gps" type="ublox" />
+
+    <subsystem name="telemetry" type="transparent">
+      <configure name="MODEM_BAUD" value="B57600"/>
+    </subsystem>
+
+    <!-- Actuators -->
+    <subsystem name="control"/>
+
+    <!-- Sensors -->
+    <!-- <subsystem name="navigation"/>  -->	<!-- used when there are no advanced flight routines -->
+    <subsystem name="navigation" type="extra"/> <!-- needed for advanced flight routines such as poly-survey, etc... -->
+
+    <!-- LED's -->
+    <configure name="SYS_TIME_LED" value="1"/>
+    <configure name="RADIO_CONTROL_LED" value="2"/>
+    <configure name="GPS_LED" value="3"/>
+
+  </firmware>
 
   <servos>	<!-- defines the physical servos connected to the TWOG -->
     <servo name="THROTTLE" no="2" min="00" neutral="800" max="2000"/>
@@ -15,6 +52,14 @@
     <servo name="ELEVATOR" no="6" min="2000" neutral="1500" max="1000"/>	
     <servo name="RUDDER" no="0" min="1050" neutral="1500" max="2250"/>		
   </servos>
+
+  <command_laws>	<!-- links the abstract commands to physical servos -->
+    <set servo="AILERON_LEFT" value="@ROLL"/>
+    <set servo="AILERON_RIGHT" value="-@ROLL"/>
+    <set servo="THROTTLE" value="@THROTTLE"/>
+    <set servo="ELEVATOR" value="-@PITCH"/>
+    <set servo="RUDDER" value="@YAW"/>
+  </command_laws>
 
   <commands>	<!-- Defines abstract commands needed to control aircraft -->
     <axis name="THROTTLE" failsafe_value="0"/> <!-- range is 0 to 9600 -->
@@ -25,7 +70,7 @@
     <axis name="KILL_SWITCH" failsafe_value="-9600"/> <!--not sure that the range is, probably the same as above - Cam -->
   </commands>
 
-  <rc_commands>	<!-- defines what abstract commands the RC signals control -->
+  <rc_commands>	<!-- defines what abstract commands the RC signals control (while in manual mode) -->
     <set command="THROTTLE" value="@THROTTLE"/>
     <set command="ROLL" value="-@ROLL"/>
     <set command="PITCH" value="-@PITCH"/>
@@ -33,40 +78,10 @@
     <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
   </rc_commands>
 
-  <auto_rc_commands>
+  <auto_rc_commands> <!-- defines what abstract commands the RC signals control while in auto mode -->
     <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
   </auto_rc_commands>
 
-  <section name="SERVO_MIXER_GAINS">
-    <define name="AILERON_RATE_UP" value="0.50f"/>
-    <define name="AILERON_RATE_DOWN" value="0.25f"/>
-
-    <define name="AILERON_RATE_UP_BRAKE" value="0.5f"/>
-    <define name="AILERON_RATE_DOWN_BRAKE" value="0.9f"/>
-
-    <define name="PITCH_GAIN" value="0.9f"/>
-
-    <define name="YAW_THRUST" value="0.0f"/>
-    <define name="BRAKE_AILEVON" value="-0.68f"/>
-    <define name="BRAKE_PITCH" value="0.0f"/>
-    <define name="MAX_BRAKE_RATE" value="150"/>
-
-    <define name="LIMIT(X,XL,XH)" value="(    ((X)>(XH))   ?    (XH)    :    ( ((X)>(XL)) ? (X) : (XL) )    )"/>
-  </section>
-
-  <command_laws>	<!-- links the abstract commands to physical servos -->
-    <!-- Ailerons -->
-    <set servo="AILERON_LEFT" value="@ROLL"/>
-    <set servo="AILERON_RIGHT" value="-@ROLL"/>
-
-    <!-- Thrust -->
-    <set servo="THROTTLE" value="@THROTTLE"/>
-
-    <!-- Pitch  -->
-    <set servo="ELEVATOR" value="-@PITCH"/>
-
-    <set servo="RUDDER" value="@YAW"/>
-  </command_laws>
 
   <section name="INS" prefix="INS_">
     <define name="ROLL_NEUTRAL_DEFAULT" value="0" unit="deg"/>
@@ -76,27 +91,23 @@
   <section name="AUTO1" prefix="AUTO1_">
     <define name="MAX_ROLL" value="50" unit="deg"/>
     <define name="MAX_PITCH" value="40" unit="deg"/>
-    
   </section>
 
   <section name="BAT">
     <define name="MilliAmpereOfAdc(adc)" value="((adc) - 505) * 124.0f"/>
-
     <define name="LOW_BAT_LEVEL" value="11" unit="V"/>
     <define name="CRITIC_BAT_LEVEL" value="10" unit="V"/>
     <define name="CATASTROPHIC_BAT_LEVEL" value="9" unit="V"/>
   </section>
 
   <section name="MISC">
-    <define name="NOMINAL_AIRSPEED" value="17." unit="m/s"/>
+    <define name="NOMINAL_AIRSPEED" value="20." unit="m/s"/>
     <define name="CARROT" value="5." unit="s"/>
     <define name="CONTROL_RATE" value="60" unit="Hz"/>
     <define name="XBEE_INIT" value="&quot;ATPL2\rATRN5\rATTT80\r&quot;"/>
     <define name="NO_XBEE_API_INIT" value="TRUE"/>
     <define name="ALT_KALMAN_ENABLED" value="FALSE"/>
-
     <define name="DEFAULT_CIRCLE_RADIUS" value="80."/>
-
     <define name="GLIDE_AIRSPEED" value="10"/>
     <define name="GLIDE_VSPEED" value="3."/>
     <define name="GLIDE_PITCH" value="45" unit="deg"/>
@@ -110,9 +121,9 @@
     <define name="ALTITUDE_MAX_CLIMB" value="2."/>
 
     <!-- auto throttle inner loop -->
-    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.32"/>
-    <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.25"/>
-    <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.65"/>
+    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.7"/>
+    <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.5"/>
+    <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="1."/>
     <define name="AUTO_THROTTLE_LOITER_TRIM" value="1500"/>
     <define name="AUTO_THROTTLE_DASH_TRIM" value="-4000"/>
     <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.15" unit="%/(m/s)"/>
@@ -154,60 +165,19 @@
 
   <section name="FAILSAFE" prefix="FAILSAFE_">
     <define name="DEFAULT_THROTTLE" value="0.35" unit="%"/>
-    <define name="DEFAULT_ROLL" value="0.17" unit="rad"/>
-    <define name="DEFAULT_PITCH" value="0.08" unit="rad"/>
+    <define name="DEFAULT_ROLL" value="10" unit="deg"/>
+    <define name="DEFAULT_PITCH" value="5" unit="deg"/>
 
     <define name="HOME_RADIUS" value="DEFAULT_CIRCLE_RADIUS" unit="m"/>
     <define name="KILL_MODE_DISTANCE" value="(MAX_DIST_FROM_HOME*1.5)"/>
     <define name="DELAY_WITHOUT_GPS" value="3" unit="s"/>
   </section>
 
-  <section name="DIGITAL_CAMERA" prefix="DC_">
-    <define name="AUTOSHOOT_QUARTERSEC_PERIOD" value="6" unit="quarter_second"/>
-    <define name="AUTOSHOOT_METER_GRID" value="50" unit="meter"/>
-  </section>
-
 
   <modules>
-    <!-- CHIMU -->
     <load name="ins_chimu_spi.xml" >
-    <!-- <define name="CHIMU_BIG_ENDIAN" /> -->
-  </load>
-
+    <!-- <define name="CHIMU_BIG_ENDIAN" /> Use this with the older CHIMU-->
+    </load>
   </modules>
-
-  <firmware name="fixedwing">
-    <target name="ap" board="twog_1.0">
-      <!-- <define name="STRONG_WIND"/> -->	<!-- commented out since Stephen's tunning flight plan file says to do so -->
-      <define name="WIND_INFO"/>
-      <define name="WIND_INFO_RET"/>
-      <define name="LOITER_TRIM"/>
-      <define name="ALT_KALMAN"/>
-			<!--      <define name="NB_CHANNELS" value="5" />  -->
-      <!-- CHIMU -->
-      <subsystem name="spi_slave_hs"/>
-    </target>
-    <target name="sim" board="pc">
-      <subsystem name="ahrs" type="float_dcm"/>
-      <subsystem name="imu" type="aspirin_i2c"/>
-    </target>
-
-    <subsystem name="radio_control" type="ppm"/>
-    <subsystem name="gps" type="ublox" />
-
-    <!-- Communication -->
-    <subsystem name="telemetry" type="transparent">
-      <configure name="MODEM_BAUD" value="B57600"/>
-    </subsystem>
-
-    <!-- Actuators -->
-    <subsystem name="control"/>
-    <!-- Sensors -->
-    <!-- <subsystem name="navigation"/>  -->	<!-- used when there are no advanced flight routines -->
-    <subsystem name="navigation" type="extra"/> <!-- needed for advanced flight routines such as poly-survey, etc... -->
-
-
-  </firmware>
-
 
 </airframe>
