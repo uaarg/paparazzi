@@ -148,6 +148,9 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
     <waypoint name="1" x="100.1" y="70.9"/>
     <waypoint name="2" x="-100.3" y="80.1"/>
     <waypoint name="CLIMB" x="-125.0" y="45.0"/>
+    <waypoint name="SEARCH1" x="-200.0" y="100.0"/>
+    <waypoint name="SEARCH2" x="200" y="300.0"/>
+
   </waypoints>
   <!-- The sectors section allows the definiton of regions of space from waypoints, useful for restricting flight area with exceptions -->
   <sectors/>
@@ -355,6 +358,9 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
     <block name="Line 1-2" strip_button="Line (wp 1-2)" strip_icon="line.png" group="base_pattern">
       <call fun="nav_line_init()"/>
       <call fun="nav_line(WP_1, WP_2, nav_radius)"/>
+    </block>
+    <block group="base_pattern" name="Search Area" strip_button="Search" strip_icon="survey.png">
+      <survey_rectangle grid="100" wp1="SEARCH1" wp2="SEARCH2"/>
     </block>
     <block name="Suicide">
       <set value="1" var="kill_throttle"/>
