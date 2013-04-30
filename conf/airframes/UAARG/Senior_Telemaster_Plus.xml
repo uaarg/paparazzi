@@ -45,16 +45,16 @@
 
   </firmware>
 
-  <servos>	<!-- defines the physical servos connected to the TWOG -->
+  <servos>	<!-- defines the physical servos connected to the TWOG. ideally: min=1000 neutral=1500 max=2000-->
     <servo name="THROTTLE" no="2" min="700" neutral="700" max="2600"/>
-    <servo name="AILERON_LEFT" no="7" min="2200" neutral="1625" max="1300"/>
-    <servo name="AILERON_RIGHT" no="3" min="1780" neutral="1535" max="1300"/>	
-    <servo name="ELEVATOR" no="6" min="1000" neutral="1600" max="2000"/>	
+    <servo name="AILERON_LEFT" no="7" min="2000" neutral="1700" max="1400"/>
+    <servo name="AILERON_RIGHT" no="3" min="1780" neutral="1554" max="1300"/>	
+    <servo name="ELEVATOR" no="6" min="500" neutral="1500" max="2000"/>	
     <servo name="RUDDER" no="0" min="1050" neutral="1500" max="2250"/>		
   </servos>
 
   <command_laws>	<!-- links the abstract commands to physical servos -->
-    <set servo="AILERON_LEFT" value="-@ROLL"/>
+    <set servo="AILERON_LEFT" value="@ROLL"/>
     <set servo="AILERON_RIGHT" value="@ROLL"/>
     <set servo="THROTTLE" value="@THROTTLE"/>
     <set servo="ELEVATOR" value="@PITCH"/>
@@ -80,17 +80,18 @@
 
   <auto_rc_commands> <!-- defines what abstract commands the RC signals control while in auto mode -->
     <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
+    <set command="YAW" value="@YAW"/>
   </auto_rc_commands>
 
 
   <section name="INS" prefix="INS_">
-    <define name="ROLL_NEUTRAL_DEFAULT" value="0." unit="deg"/>
-    <define name="PITCH_NEUTRAL_DEFAULT" value="15." unit="deg"/>
+    <define name="ROLL_NEUTRAL_DEFAULT" value="0.5" unit="deg"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="4." unit="deg"/>
   </section>
 
   <section name="AUTO1" prefix="AUTO1_">
-    <define name="MAX_ROLL" value="30" unit="deg"/>
-    <define name="MAX_PITCH" value="20" unit="deg"/>
+    <define name="MAX_ROLL" value="50" unit="deg"/>
+    <define name="MAX_PITCH" value="35" unit="deg"/>
   </section>
 
   <section name="BAT">
@@ -139,18 +140,18 @@
     <define name="COURSE_DGAIN" value="0.3"/>
     <define name="COURSE_PRE_BANK_CORRECTION" value="0.2"/>
 
-    <define name="ROLL_MAX_SETPOINT" value="30" unit="degrees"/>
-    <define name="ROLL_MIN_SETPOINT" value="-30" unit="degrees"/>
+    <define name="ROLL_MAX_SETPOINT" value="40" unit="degrees"/>
+    <define name="ROLL_MIN_SETPOINT" value="-40" unit="degrees"/>
     <define name="PITCH_MAX_SETPOINT" value="10" unit="degrees"/>
     <define name="PITCH_MIN_SETPOINT" value="-10" unit="degrees"/>
 
     <define name="PITCH_PGAIN" value="12000."/>
     <define name="PITCH_DGAIN" value="0"/>
 
-    <define name="ELEVATOR_OF_ROLL" value="1000."/>
+    <define name="ELEVATOR_OF_ROLL" value="2000."/>
 
-    <define name="ROLL_ATTITUDE_GAIN" value="11500"/>
-    <define name="ROLL_RATE_GAIN" value="600."/>
+    <define name="ROLL_ATTITUDE_GAIN" value="30000."/>
+    <define name="ROLL_RATE_GAIN" value="1500."/>
   </section>
 
   <section name="AGGRESSIVE" prefix="AGR_">
