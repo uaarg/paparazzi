@@ -49,8 +49,8 @@
     <servo name="THROTTLE" no="2" min="700" neutral="700" max="2600"/>
     <servo name="AILERON_LEFT" no="7" min="2000" neutral="1700" max="1400"/>
     <servo name="AILERON_RIGHT" no="3" min="1780" neutral="1554" max="1300"/>	
-    <servo name="ELEVATOR" no="6" min="500" neutral="1500" max="2000"/>	
-    <servo name="RUDDER" no="0" min="1050" neutral="1500" max="2250"/>		
+    <servo name="ELEVATOR" no="6" min="2000" neutral="1500" max="500"/>	
+    <servo name="RUDDER" no="0" min="600" neutral="1500" max="2400"/>		
   </servos>
 
   <command_laws>	<!-- links the abstract commands to physical servos -->
