@@ -47,9 +47,9 @@
 
   <servos>	<!-- defines the physical servos connected to the TWOG. ideally: min=1000 neutral=1500 max=2000-->
     <servo name="THROTTLE" no="2" min="700" neutral="700" max="2600"/>
-    <servo name="AILERON_LEFT" no="7" min="2000" neutral="1700" max="1400"/>
-    <servo name="AILERON_RIGHT" no="3" min="1780" neutral="1554" max="1300"/>	
-    <servo name="ELEVATOR" no="6" min="2000" neutral="1500" max="500"/>	
+    <servo name="AILERON_LEFT" no="3" min="1800" neutral="1550" max="1225"/> <!--min is up, max is down--> <!-- ya'll motherlickers better not change this. we stayed up allllllll night to configure these motherlicking ailerons. -->
+    <servo name="AILERON_RIGHT" no="7" min="1725" neutral="1550" max="1350"/> <!-- min is down, max is up-->	
+    <servo name="ELEVATOR" no="6" min="2000" neutral="1500" max="1000"/>	
     <servo name="RUDDER" no="0" min="600" neutral="1500" max="2400"/>		
   </servos>
 
@@ -136,7 +136,7 @@
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
-    <define name="COURSE_PGAIN" value="1.20000004768"/>
+    <define name="COURSE_PGAIN" value="0.6"/>
     <define name="COURSE_DGAIN" value="0.3"/>
     <define name="COURSE_PRE_BANK_CORRECTION" value="0.2"/>
 
@@ -145,8 +145,8 @@
     <define name="PITCH_MAX_SETPOINT" value="10" unit="degrees"/>
     <define name="PITCH_MIN_SETPOINT" value="-10" unit="degrees"/>
 
-    <define name="PITCH_PGAIN" value="12000."/>
-    <define name="PITCH_DGAIN" value="0"/>
+    <define name="PITCH_PGAIN" value="12000."/> <!-- adjusts pitch from current pitch to desired pitch-->
+    <define name="PITCH_DGAIN" value="0"/> <!-- takes the derivative of the pitch and predicts how to adjust accordingly-->
 
     <define name="ELEVATOR_OF_ROLL" value="2000."/>
 
