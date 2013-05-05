@@ -180,7 +180,7 @@
         <arg flag="-c" constant="'*:telemetry:AHRS_EULER_COV:p_theta_bq'"/>
         <arg flag="-c" constant="'*:telemetry:AHRS_EULER_COV:p_bq_bq'"/>
         <arg flag="-c" constant="'*:telemetry:AHRS_EULER_COV:p_psi_psi'"/>
-        <arg flag="-c" cons.tant="'*:telemetry:AHRS_EULER_COV:p_psi_br'"/>
+        <arg flag="-c" constant="'*:telemetry:AHRS_EULER_COV:p_psi_br'"/>
         <arg flag="-c" constant="'*:telemetry:AHRS_EULER_COV:p_br_br'"/>
       </program>
     </session>
