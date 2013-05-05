@@ -35,14 +35,14 @@
       <corner name="_6bre"/>
       <corner name="_7bre"/>
     </sector>
-    <sector color="" name="SoftkillOut_North">
+    <sector name="SoftkillOut_North">
       <corner name="_1bre"/>
       <corner name="_2bre"/>
       <corner name="_3bre"/>
       <corner name="_4bre"/>
       <corner name="_7bre"/>
     </sector>
-    <sector color="" name="SoftkillOut_South">
+    <sector name="SoftkillOut_South">
       <corner name="_4bre"/>
       <corner name="_5bre"/>
       <corner name="_6bre"/>
