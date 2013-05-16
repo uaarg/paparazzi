@@ -142,13 +142,13 @@
 
     <define name="ROLL_MAX_SETPOINT" value="40" unit="degrees"/>
     <define name="ROLL_MIN_SETPOINT" value="-40" unit="degrees"/>
-    <define name="PITCH_MAX_SETPOINT" value="10" unit="degrees"/>
-    <define name="PITCH_MIN_SETPOINT" value="-10" unit="degrees"/>
+    <define name="PITCH_MAX_SETPOINT" value="15" unit="degrees"/>
+    <define name="PITCH_MIN_SETPOINT" value="-15" unit="degrees"/>
 
     <define name="PITCH_PGAIN" value="12000."/> <!-- adjusts pitch from current pitch to desired pitch-->
-    <define name="PITCH_DGAIN" value="0"/> <!-- takes the derivative of the pitch and predicts how to adjust accordingly-->
+    <define name="PITCH_DGAIN" value="500"/> <!-- takes the derivative of the pitch and predicts how to adjust accordingly-->
 
-    <define name="ELEVATOR_OF_ROLL" value="2000."/>
+    <define name="ELEVATOR_OF_ROLL" value="4000."/>
 
     <define name="ROLL_ATTITUDE_GAIN" value="30000."/>
     <define name="ROLL_RATE_GAIN" value="1500."/>
