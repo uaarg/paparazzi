@@ -47,10 +47,10 @@
 
   <servos>	<!-- defines the physical servos connected to the TWOG. ideally: min=1000 neutral=1500 max=2000-->
     <servo name="THROTTLE" no="2" min="700" neutral="700" max="2600"/>
-    <servo name="AILERON_LEFT" no="3" min="1800" neutral="1550" max="1225"/> <!--min is up, max is down--> <!-- ya'll motherlickers better not change this. we stayed up allllllll night to configure these motherlicking ailerons. -->
-    <servo name="AILERON_RIGHT" no="7" min="1725" neutral="1550" max="1350"/> <!-- min is down, max is up-->	
-    <servo name="ELEVATOR" no="6" min="2000" neutral="1500" max="1000"/>	
-    <servo name="RUDDER" no="0" min="600" neutral="1500" max="2400"/>		
+    <servo name="AILERON_LEFT" no="3" min="1800" neutral="1553" max="1225"/> <!--min is up, max is down--> <!-- ya'll motherlickers better not change this. we stayed up allllllll night to configure these motherlicking ailerons. -->
+    <servo name="AILERON_RIGHT" no="7" min="1725" neutral="1553" max="1350"/> <!-- min is down, max is up-->	
+    <servo name="ELEVATOR" no="6" min="2000" neutral="1510" max="1000"/>	
+    <servo name="RUDDER" no="0" min="600" neutral="1400" max="2400"/>		
   </servos>
 
   <command_laws>	<!-- links the abstract commands to physical servos -->
@@ -85,8 +85,8 @@
 
 
   <section name="INS" prefix="INS_">
-    <define name="ROLL_NEUTRAL_DEFAULT" value="0.5" unit="deg"/>
-    <define name="PITCH_NEUTRAL_DEFAULT" value="4." unit="deg"/>
+    <define name="ROLL_NEUTRAL_DEFAULT" value="4.0" unit="deg"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="2.0" unit="deg"/>
   </section>
 
   <section name="AUTO1" prefix="AUTO1_">
@@ -128,9 +128,9 @@
     <define name="AUTO_THROTTLE_LOITER_TRIM" value="-1000"/>
     <define name="AUTO_THROTTLE_DASH_TRIM" value="-1000"/>
     <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.15" unit="%/(m/s)"/>
-    <define name="AUTO_THROTTLE_PGAIN" value="0.01"/>
-    <define name="AUTO_THROTTLE_IGAIN" value="0.1"/>
-    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.05"/>
+    <define name="AUTO_THROTTLE_PGAIN" value="0.16"/>
+    <define name="AUTO_THROTTLE_IGAIN" value="0.05"/>
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.8"/>
 
     <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/>
   </section>
@@ -145,8 +145,8 @@
     <define name="PITCH_MAX_SETPOINT" value="15" unit="degrees"/>
     <define name="PITCH_MIN_SETPOINT" value="-15" unit="degrees"/>
 
-    <define name="PITCH_PGAIN" value="12000."/> <!-- adjusts pitch from current pitch to desired pitch-->
-    <define name="PITCH_DGAIN" value="500"/> <!-- takes the derivative of the pitch and predicts how to adjust accordingly-->
+    <define name="PITCH_PGAIN" value="20000."/> <!-- adjusts pitch from current pitch to desired pitch-->
+    <define name="PITCH_DGAIN" value="50"/> <!-- takes the derivative of the pitch and predicts how to adjust accordingly-->
 
     <define name="ELEVATOR_OF_ROLL" value="4000."/>
 
