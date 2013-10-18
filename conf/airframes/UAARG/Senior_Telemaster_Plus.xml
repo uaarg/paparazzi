@@ -1,0 +1,189 @@
+<!DOCTYPE airframe SYSTEM "../airframe.dtd">
+
+<!--
+	TWOG + CHIMU (Using SPI) + XTend (Using transparent mode)
+-->
+
+
+<airframe name="UA7">
+
+  <firmware name="fixedwing">
+
+    <target name="ap" board="twog_1.0">
+      <!-- <define name="STRONG_WIND"/> -->	<!-- commented out since Stephen's tunning flight plan file says to do so -->
+      <define name="WIND_INFO"/>
+      <define name="WIND_INFO_RET"/>
+      <define name="LOITER_TRIM"/>
+      <define name="ALT_KALMAN"/>
+      <subsystem name="spi_slave_hs"/>       <!-- Needed for CHIMU -->
+    </target>
+
+    <target name="sim" board="pc">
+      <subsystem name="ahrs" type="float_dcm"/>
+      <subsystem name="imu" type="aspirin_i2c"/>
+    </target>
+
+    <define name="ALT_KALMAN"/>
+
+    <subsystem name="ins" type="alt_float"/>
+
+    <subsystem name="radio_control" type="ppm"/>
+
+    <subsystem name="gps" type="ublox" />
+
+    <subsystem name="telemetry" type="transparent">
+      <configure name="MODEM_BAUD" value="B57600"/>
+    </subsystem>
+
+    <!-- Actuators -->
+    <subsystem name="control"/>
+
+    <!-- Sensors -->
+    <!-- <subsystem name="navigation"/>  -->	<!-- used when there are no advanced flight routines -->
+    <subsystem name="navigation" type="extra"/> <!-- needed for advanced flight routines such as poly-survey, etc... -->
+
+    <!-- LED's -->
+    <configure name="SYS_TIME_LED" value="1"/>
+    <configure name="RADIO_CONTROL_LED" value="2"/>
+    <configure name="GPS_LED" value="3"/>
+
+  </firmware>
+
+  <servos>	<!-- defines the physical servos connected to the TWOG. ideally: min=1000 neutral=1500 max=2000-->
+    <servo name="THROTTLE" no="2" min="700" neutral="700" max="2600"/>
+    <servo name="AILERON_LEFT" no="3" min="1800" neutral="1553" max="1225"/> <!--min is up, max is down--> <!-- ya'll motherlickers better not change this. we stayed up allllllll night to configure these motherlicking ailerons. -->
+    <servo name="AILERON_RIGHT" no="7" min="1725" neutral="1553" max="1350"/> <!-- min is down, max is up-->	
+    <servo name="ELEVATOR" no="6" min="2000" neutral="1510" max="1000"/>	
+    <servo name="RUDDER" no="0" min="600" neutral="1400" max="2400"/>		
+  </servos>
+
+  <command_laws>	<!-- links the abstract commands to physical servos -->
+    <set servo="AILERON_LEFT" value="@ROLL"/>
+    <set servo="AILERON_RIGHT" value="@ROLL"/>
+    <set servo="THROTTLE" value="@THROTTLE"/>
+    <set servo="ELEVATOR" value="@PITCH"/>
+    <set servo="RUDDER" value="@YAW"/>
+  </command_laws>
+
+  <commands>	<!-- Defines abstract commands needed to controfl aircraft -->
+    <axis name="THROTTLE" failsafe_value="0"/> <!-- range is 0 to 9600 -->
+    <axis name="ROLL" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
+    <axis name="PITCH" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
+    <axis name="BRAKE" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
+    <axis name="YAW" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
+    <axis name="KILL_SWITCH" failsafe_value="-9600"/> <!--not sure that the range is, probably the same as above - Cam -->
+  </commands>
+
+  <rc_commands>	<!-- defines what abstract commands the RC signals control (while in manual mode) -->
+    <set command="THROTTLE" value="@THROTTLE"/>
+    <set command="ROLL" value="@ROLL"/>
+    <set command="PITCH" value="@PITCH"/>
+    <set command="YAW" value="@YAW"/>
+    <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
+  </rc_commands>
+
+  <auto_rc_commands> <!-- defines what abstract commands the RC signals control while in auto mode -->
+    <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
+    <set command="YAW" value="@YAW"/>
+  </auto_rc_commands>
+
+
+  <section name="INS" prefix="INS_">
+    <define name="ROLL_NEUTRAL_DEFAULT" value="4.0" unit="deg"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="2.0" unit="deg"/>
+  </section>
+
+  <section name="AUTO1" prefix="AUTO1_">
+    <define name="MAX_ROLL" value="50" unit="deg"/>
+    <define name="MAX_PITCH" value="35" unit="deg"/>
+  </section>
+
+  <section name="BAT">
+    <define name="MilliAmpereOfAdc(adc)" value="((adc) - 505) * 124.0f"/>
+    <define name="LOW_BAT_LEVEL" value="11" unit="V"/>
+    <define name="CRITIC_BAT_LEVEL" value="10" unit="V"/>
+    <define name="CATASTROPHIC_BAT_LEVEL" value="9" unit="V"/>
+  </section>
+
+  <section name="MISC">
+    <define name="NOMINAL_AIRSPEED" value="20." unit="m/s"/>
+    <define name="CARROT" value="5." unit="s"/>
+    <define name="CONTROL_FREQUENCY" value="60" unit="Hz"/>
+    <define name="XBEE_INIT" value="&quot;ATPL2\rATRN5\rATTT80\r&quot;"/>
+    <define name="NO_XBEE_API_INIT" value="TRUE"/>
+    <define name="ALT_KALMAN_ENABLED" value="FALSE"/>
+    <define name="DEFAULT_CIRCLE_RADIUS" value="40."/>
+    <define name="GLIDE_AIRSPEED" value="10"/>
+    <define name="GLIDE_VSPEED" value="3."/>
+    <define name="GLIDE_PITCH" value="45" unit="deg"/>
+  </section>
+
+  <section name="VERTICAL CONTROL" prefix="V_CTL_">
+    <define name="POWER_CTL_BAT_NOMINAL" value="11.1" unit="volt"/>
+    <!-- outer loop proportional gain -->
+    <define name="ALTITUDE_PGAIN" value="0.03"/>
+    <!-- outer loop saturation -->
+    <define name="ALTITUDE_MAX_CLIMB" value="6."/>
+
+    <!-- auto throttle inner loop -->
+    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.625"/>
+    <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.416666666667"/>
+    <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.833333333333"/>
+    <define name="AUTO_THROTTLE_LOITER_TRIM" value="-1000"/>
+    <define name="AUTO_THROTTLE_DASH_TRIM" value="-1000"/>
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.15" unit="%/(m/s)"/>
+    <define name="AUTO_THROTTLE_PGAIN" value="0.16"/>
+    <define name="AUTO_THROTTLE_IGAIN" value="0.05"/>
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.8"/>
+
+    <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/>
+  </section>
+
+  <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
+    <define name="COURSE_PGAIN" value="0.6"/>
+    <define name="COURSE_DGAIN" value="0.3"/>
+    <define name="COURSE_PRE_BANK_CORRECTION" value="0.2"/>
+
+    <define name="ROLL_MAX_SETPOINT" value="40" unit="degrees"/>
+    <define name="ROLL_MIN_SETPOINT" value="-40" unit="degrees"/>
+    <define name="PITCH_MAX_SETPOINT" value="15" unit="degrees"/>
+    <define name="PITCH_MIN_SETPOINT" value="-15" unit="degrees"/>
+
+    <define name="PITCH_PGAIN" value="20000."/> <!-- adjusts pitch from current pitch to desired pitch-->
+    <define name="PITCH_DGAIN" value="50"/> <!-- takes the derivative of the pitch and predicts how to adjust accordingly-->
+
+    <define name="ELEVATOR_OF_ROLL" value="4000."/>
+
+    <define name="ROLL_ATTITUDE_GAIN" value="30000."/>
+    <define name="ROLL_RATE_GAIN" value="1500."/>
+  </section>
+
+  <section name="AGGRESSIVE" prefix="AGR_">
+    <define name="BLEND_START" value="20"/><!-- Altitude Error to Initiate Aggressive Climb CANNOT BE ZERO!!-->
+    <define name="BLEND_END" value="10"/><!-- Altitude Error to Blend Aggressive to Regular Climb Modes  CANNOT BE ZERO!!-->
+    <define name="CLIMB_THROTTLE" value="1.00"/><!-- Gaz for Aggressive Climb -->
+    <define name="CLIMB_PITCH" value="30." unit="degrees" /><!-- Pitch for Aggressive Climb -->
+    <define name="DESCENT_THROTTLE" value="0."/><!-- Gaz for Aggressive Decent -->
+    <define name="DESCENT_PITCH" value="-30." unit="degrees"/><!-- Pitch for Aggressive Decent -->
+    <define name="CLIMB_NAV_RATIO" value="0.8"/><!-- Percent Navigation for Altitude Error Equal to Start Altitude -->
+    <define name="DESCENT_NAV_RATIO" value="1.0"/>
+  </section>
+
+  <section name="FAILSAFE" prefix="FAILSAFE_">
+    <define name="DEFAULT_THROTTLE" value="0.0" unit="%"/>
+    <define name="DEFAULT_ROLL" value="25." unit="deg"/>
+    <define name="DEFAULT_PITCH" value="50.0" unit="deg"/>
+
+    <define name="HOME_RADIUS" value="DEFAULT_CIRCLE_RADIUS" unit="m"/>
+    <define name="KILL_MODE_DISTANCE" value="(MAX_DIST_FROM_HOME*1.5)"/>
+    <define name="DELAY_WITHOUT_GPS" value="3" unit="s"/>
+  </section>
+
+
+  <modules>
+    <load name="ahrs_chimu_spi.xml" >
+    <!-- <define name="CHIMU_BIG_ENDIAN" /> Use this with the older CHIMU-->
+    </load>
+  </modules>
+
+</airframe>
