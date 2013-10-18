@@ -16,6 +16,8 @@
       <define name="LOITER_TRIM"/>
       <define name="ALT_KALMAN"/>
       <subsystem name="spi_slave_hs"/>       <!-- Needed for CHIMU -->
+
+      <define name="USE_I2C0" /> <!-- Needed for airspeed sensor -->
     </target>
 
     <target name="sim" board="pc">
@@ -137,6 +139,7 @@
     <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.8"/>
 
     <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/>
+
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
@@ -181,8 +184,12 @@
 
 
   <modules>
-    <load name="ahrs_chimu_spi.xml" >
+    <load name="ahrs_chimu_spi.xml">
     <!-- <define name="CHIMU_BIG_ENDIAN" /> Use this with the older CHIMU-->
+    </load>
+
+    <load name="airspeed_ets.xml">
+      <define name="AIRSPEED_ETS_SYNC_SEND"/>
     </load>
   </modules>
 
