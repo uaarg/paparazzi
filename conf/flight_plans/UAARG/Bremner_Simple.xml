@@ -1,0 +1,85 @@
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+
+<flight_plan alt="660" ground_alt="605" lat0="53.63836" lon0="-113.28607" max_dist_from_home="1000" name="Tuning_Bremner" security_height="25" qfu="270"> <!-- Bremner -->
+
+  <!-- The header section allows one to include advanced navigation routines and header files that allow access to variables that may be useful for exceptions or advanced flightplan routines dependent on various internal autopilot variables -->
+  <header>
+#include "subsystems/navigation/nav_line.h"
+#include "airframe.h"
+  </header>
+  <!-- The waypoints section must contain 1 or more waypoints. For tuning, setup STDBY in a location in front of the pilot at least DEFAULT_CIRCLE_RADIUS metres away from the flight line if restricted to no overflights. Setup 1 and 2 in front of and to the left and right of the pilot, respectively. These are only used for testing ovals and eights after tuning. Again, waypoints should be at least a radius away from the flight line (probably 1.5xRadius) to prevent overflights. HOME can be set somewhere in the vicinity of STDBY or the pilot. CLIMB is for takeoff (mostly for sim, should manually takeoff for tuning)-->
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint name="STDBY" x="30." y="100."/>
+    <waypoint name="1" x="100.1" y="70.9"/>
+    <waypoint name="2" x="-100.3" y="80.1"/>
+    <waypoint name="CLIMB" x="-125.0" y="45.0"/>
+    <waypoint name="SEARCH1" x="-200.0" y="100.0"/>
+    <waypoint name="SEARCH2" x="200" y="300.0"/>
+
+  </waypoints>
+  <!-- The sectors section allows the definiton of regions of space from waypoints, useful for restricting flight area with exceptions -->
+  <sectors/>
+  <!-- The includes section allows predefined blocks of flightplan to be included -->
+  <includes>
+    <include name="SoftKillOut" procedure="bremner_sectors_outside.xml"/>
+    <include name="Failsafe" procedure="failsafe.xml">
+		<with from="Standby" to="Standby"/>
+    </include>
+  </includes>
+  <!-- The exceptions section allows for global error and failsafe handling -->
+  <!-- The blocks section contains each block of the flightplan, which actually make the aircraft do something -->
+  <blocks>
+    <block name="Wait GPS">
+      <set value="1" var="kill_throttle"/>
+      <while cond="!GpsFixValid()"/>
+    </block>
+
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <call fun="NavSetGroundReferenceHere()"/>
+    </block>
+
+    <block name="Holding point">
+      <!--set var="nav_mode" value="NAV_MODE_ROLL"/-->
+      <set value="1" var="kill_throttle"/>
+      <attitude roll="0" throttle="0" vmode="throttle"/>
+    </block>
+
+    <!-- need this for simulation, manual takeoff for real testing -->
+    <block key="t" name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png" group="home">
+      <exception cond="GetPosAlt() > (ground_alt+25)" deroute="Standby"/>
+      <set value="0" var="kill_throttle"/>
+      <set value="0" var="autopilot_flight_time"/>
+      <go from="HOME" throttle="1.0" vmode="throttle" wp="CLIMB" pitch="15"/>
+    </block>
+      
+    <block key="<Control>a" name="Standby" strip_button="Standby" strip_icon="home.png" group="home">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+
+    <block name="Level Auto Throttle Tuning">
+      <while cond="TRUE">
+      	<attitude roll="0.0" vmode="climb" climb="0.0"/>
+      </while>
+    </block>
+
+  	<!-- extra typical blocks for testing after tuning -->
+    <block key="F8" name="Figure 8 around wp 1" strip_button="Figure 8 (wp 1-2)" strip_icon="eight.png" group="base_pattern">
+      <eight center="1" radius="nav_radius" turn_around="2"/>
+    </block>
+
+    <block name="Oval 1-2" strip_button="Oval (wp 1-2)" strip_icon="oval.png" group="base_pattern">
+      <oval p1="1" p2="2" radius="nav_radius"/>
+    </block>
+
+    <block name="Line 1-2" strip_button="Line (wp 1-2)" strip_icon="line.png" group="base_pattern">
+      <call fun="nav_line_init()"/>
+      <call fun="nav_line(WP_1, WP_2, nav_radius)"/>
+    </block>
+
+    <block group="base_pattern" name="Search Area" strip_button="Search" strip_icon="survey.png">
+      <survey_rectangle grid="100" wp1="SEARCH1" wp2="SEARCH2"/>
+    </block>
+  </blocks>
+</flight_plan>
