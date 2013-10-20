@@ -22,7 +22,7 @@
 
     <target name="sim" board="pc">
       <subsystem name="ahrs" type="float_dcm"/>
-      <subsystem name="imu" type="aspirin_i2c"/>
+      <subsystem name="imu" type="aspirin_i2c_v1.5"/>
     </target>
 
     <define name="ALT_KALMAN"/>
