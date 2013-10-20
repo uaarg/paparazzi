@@ -139,7 +139,7 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
   <header>
 #include "subsystems/navigation/nav_line.h"
 #include "subsystems/datalink/datalink.h"
-#include "commands.h"
+#include "subsystems/commands.h"
 #include "airframe.h"
   </header>
   <!-- The waypoints section must contain 1 or more waypoints. For tuning, setup STDBY in a location in front of the pilot at least DEFAULT_CIRCLE_RADIUS metres away from the flight line if restricted to no overflights. Setup 1 and 2 in front of and to the left and right of the pilot, respectively. These are only used for testing ovals and eights after tuning. Again, waypoints should be at least a radius away from the flight line (probably 1.5xRadius) to prevent overflights. HOME can be set somewhere in the vicinity of STDBY or the pilot. CLIMB is for takeoff (mostly for sim, should manually takeoff for tuning)-->
@@ -164,8 +164,8 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
     <exception cond="And(60 > datalink_time, datalink_time > 15)" deroute="Standby"/>
     <exception cond="datalink_time > 60" deroute = "Suicide"/>
     <exception cond="commands[COMMAND_KILL_SWITCH] > 4000" deroute="Suicide"/>
-    <!-- <exception cond="And((estimator_z > ground_alt + 240),launch)" deroute="Standby2"/> -->
-    <!-- <exception cond="And(!InsideSoftKillOut(estimator_x, estimator_y),launch)" deroute="Standby3"/> -->
+    <!-- <exception cond="And((GetPosAlt() > ground_alt + 240),launch)" deroute="Standby2"/> -->
+    <!-- <exception cond="And(!InsideSoftKillOut(GetPosX(), GetPosY()),launch)" deroute="Standby3"/> -->
   </exceptions>
   <!-- The blocks section contains each block of the flightplan, which actually make the aircraft do something -->
   <blocks>
@@ -184,9 +184,9 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
     </block>
     <!-- need this for simulation, manual takeoff for real testing -->
     <block key="t" name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png" group="home">
-      <exception cond="estimator_z > (ground_alt+25)" deroute="Standby"/>
+      <exception cond="GetPosAlt() > (ground_alt+25)" deroute="Standby"/>
       <set value="0" var="kill_throttle"/>
-      <set value="0" var="estimator_flight_time"/>
+      <set value="0" var="autopilot_flight_time"/>
       <go from="HOME" throttle="1.0" vmode="throttle" wp="CLIMB" pitch="15"/>
     </block>
     <block name="Suicide Recovery">
@@ -238,7 +238,7 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
       </while>
     </block>
     <block name="Descent Auto Throttle Tuning">
-      <while cond="estimator_z > (ground_alt + 25)">
+      <while cond="GetPosAlt() > (ground_alt + 25)">
       	<attitude roll="0.0" vmode="climb" climb="-V_CTL_ALTITUDE_MAX_CLIMB"/>
       </while>
     </block>
@@ -267,7 +267,7 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
       </while>
     </block>
     <block name="Descent Auto Pitch Tuning">
-      <while cond="estimator_z > (ground_alt + 25)">
+      <while cond="GetPosAlt() > (ground_alt + 25)">
       	<attitude roll="0.0" pitch="auto" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" vmode="climb" climb="-V_CTL_ALTITUDE_MAX_CLIMB"/>
       </while>
     </block>
@@ -286,7 +286,7 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
     		nav_altitude = flight_altitude
     --> 
 	<block name="Altitude Tuning">
-      <set var="flight_altitude" value="estimator_z"/>
+      <set var="flight_altitude" value="GetPosAlt()"/>
       <while cond="TRUE">
       	<attitude roll="0.0" vmode="alt" alt="flight_altitude"/>
       </while>
