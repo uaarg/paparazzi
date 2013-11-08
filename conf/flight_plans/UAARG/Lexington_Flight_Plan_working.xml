@@ -42,7 +42,7 @@
     <waypoint name="waypoint_1" lat="38.14526944478353" lon="-76.42900277773539"/>
     <waypoint name="waypoint_2" lat="38.14950833320618" lon="-76.42883611149259"/>
     <waypoint name="waypoint_3" lat="38.15095555557145" lon="-76.43135000016954"/>
-    <waypoint name="waypoint_4" lat="38.150419444441795" lon="-76.43236666679383"/>
+    <waypoint name="waypoint_4" lat="38.15071666664547" lon="-76.4332166671753"/>
     <waypoint name="waypoint_5" lat="38.14953333324856" lon="-76.4325777774387"/>
     <waypoint name="waypoint_6" lat="38.14891111161974" lon="-76.43192777739631"/>
     <waypoint name="waypoint_7" lat="38.14659722222222" lon="-76.42964444478353"/>
@@ -53,18 +53,18 @@
 
   <sectors>
   <sector color="blue" name="SoftkillOut">
-      <corner name="_boundary_1"/>
-      <corner name="_boundary_2"/>
-      <corner name="_boundary_3"/>
-      <corner name="_boundary_4"/>
-      <corner name="_boundary_5"/>
-      <corner name="_boundary_6"/>
-      <corner name="_boundary_7"/>
-      <corner name="_boundary_8"/>
-      <corner name="_boundary_9"/>
-      <corner name="_boundary_10"/>
-      <corner name="_boundary_11"/>
-      <corner name="_boundary_12"/>
+      <corner name="boundary_1"/>
+      <corner name="boundary_2"/>
+      <corner name="boundary_3"/>
+      <corner name="boundary_4"/>
+      <corner name="boundary_5"/>
+      <corner name="boundary_6"/>
+      <corner name="boundary_7"/>
+      <corner name="boundary_8"/>
+      <corner name="boundary_9"/>
+      <corner name="boundary_10"/>
+      <corner name="boundary_11"/>
+      <corner name="boundary_12"/>
     </sector>
     <sector color="red" name="_search_area">
       <corner name="_search_area_1"/>
@@ -76,30 +76,30 @@
       <corner name="_search_area_7"/>
     </sector>
     <sector color="blue" name="Kill_area1">
-      <corner name="_boundary_1"/>
-      <corner name="_boundary_12"/>
-      <corner name="_boundary_11"/>
-      <corner name="_boundary_10"/>
+      <corner name="boundary_1"/>
+      <corner name="boundary_12"/>
+      <corner name="boundary_11"/>
+      <corner name="boundary_10"/>
     </sector>
     <sector color="blue" name="Kill_area2">
-      <corner name="_boundary_10"/>
-      <corner name="_boundary_9"/>
-      <corner name="_boundary_8"/>
-      <corner name="_boundary_7"/>
+      <corner name="boundary_10"/>
+      <corner name="boundary_9"/>
+      <corner name="boundary_8"/>
+      <corner name="boundary_7"/>
     </sector>
     <sector color="blue" name="Kill_area3">
-      <corner name="_boundary_7"/>
-      <corner name="_boundary_6"/>
-      <corner name="_boundary_5"/>
-      <corner name="_boundary_4"/>
+      <corner name="boundary_7"/>
+      <corner name="boundary_6"/>
+      <corner name="boundary_5"/>
+      <corner name="boundary_4"/>
     </sector>
      <sector color="blue" name="Kill_area4">
-      <corner name="_boundary_4"/>
-      <corner name="_boundary_3"/>
-      <corner name="_boundary_2"/>
-      <corner name="_boundary_1"/>
-      <corner name="_boundary_10"/>
-      <corner name="_boundary_7"/>
+      <corner name="boundary_4"/>
+      <corner name="boundary_3"/>
+      <corner name="boundary_2"/>
+      <corner name="boundary_1"/>
+      <corner name="boundary_10"/>
+      <corner name="boundary_7"/>
      </sector>
   </sectors>
 
@@ -108,9 +108,9 @@
     <!-- Add conditions that deroute to suicide in here. Make sure to also add to the exception within suicide.-->
     <exception cond="datalink_time > datalink_suicide_timeout" deroute="Suicide"/>
     <exception cond="commands[COMMAND_KILL_SWITCH] > 4000" deroute="Suicide"/>
-    <exception cond="And(And(!InsideKill_area4(estimator_x, estimator_y), !InsideKill_area3(estimator_x, estimator_y)), And(!InsideKill_area2(estimator_x, estimator_y), !InsideKill_area1(estimator_x, estimator_y)))" deroute="Suicide"/>
+<!-- DONT CHANGE THIS. I spent 3 hours figuring this out you fuzzy little man peach. -->
+    <exception cond="And(And(!InsideKill_area4(estimator_x, estimator_y), !InsideKill_area3(estimator_x, estimator_y)), And(!InsideKill_area2(estimator_x, estimator_y), !InsideKill_area1(estimator_x, estimator_y)))" deroute="Suicide"/> 
 
-<!-- "!Or(Or(Or(InsideKill_area1(estimator_x, estimator_y),InsideKill_area2(estimator_x, estimator_y)),InsideKill_area3(estimator_x, estimator_y)),InsideKill_area4(estimator_x, estimator_y))" --> 
     <!-- Out of bounds --> 
 <!-- End of conditions for suicide -->
   </exceptions>

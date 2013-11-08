@@ -133,7 +133,7 @@ something like 20m/s*15s = 300m away, so do a 15sec timeout on blocks?
 <!-- Change the root element to match your airspace -->
 
 <!-- the latitude and longitude you input put the way point "home" as the center of the map. in the waypoint block of code, whatever x and y coordinates enter will be taken off the home 0,0 x and y coordinates.-->
-<flight_plan alt="660" ground_alt="605" lat0="53.63836" lon0="-113.28607" max_dist_from_home="1000" name="Tuning_Bremner" security_height="25" qfu="270"> <!-- Bremner -->
+<flight_plan alt="660" ground_alt="605" lat0="53.63836" lon0="-113.28607" max_dist_from_home="2000" name="Tuning_Bremner" security_height="25" qfu="270"> <!-- Bremner -->
 
   <!-- The header section allows one to include advanced navigation routines and header files that allow access to variables that may be useful for exceptions or advanced flightplan routines dependent on various internal autopilot variables -->
   <header>

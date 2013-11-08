@@ -470,7 +470,7 @@ let () =
       String.length !port >= 4 && String.sub !port 0 4 = "/dev" in (* FIXME *)
     let fd =
       if !udp then begin
-	let sockaddr = Unix.ADDR_INET (Unix.inet_addr_any, !udp_port)
+	let sockaddr = Unix.ADDR_INET ((Unix.inet_addr_of_string "192.168.1.4"), !udp_port)
 	and socket = Unix.socket Unix.PF_INET Unix.SOCK_DGRAM 0 in
 	Unix.bind socket sockaddr;
 	socket

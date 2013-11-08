@@ -105,7 +105,7 @@
    airframe="airframes/UAARG/Senior_Telemaster_Plus.xml"
    radio="radios/UAARG/ppm_encoder.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
-   flight_plan="flight_plans/UAARG/Lexington_Flight_Plan.xml"
+   flight_plan="flight_plans/UAARG/Bremner-Testing-Stephen.xml"
    settings=" settings/fixedwing_basic.xml"
    gui_color="blue"
   />

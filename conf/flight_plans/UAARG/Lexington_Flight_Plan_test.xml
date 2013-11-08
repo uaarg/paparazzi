@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="40" ground_alt="5" lat0="38.144272" lon0="-76.427531" max_dist_from_home="1000" name="Tuning_Alma" qfu="225" security_height="30">
+<flight_plan alt="40" ground_alt="5" lat0="38.145227" lon0="-76.426339" max_dist_from_home="1500" name="Tuning_Alma" qfu="225" security_height="30">
   <header>
 #include "subsystems/navigation/nav_line.h"
 #include "subsystems/datalink/datalink.h"
@@ -18,18 +18,18 @@
     <waypoint name="SEARCH1" x="86.4" y="56.0"/>
     <waypoint name="SEARCH2" x="46.3" y="22.1"/>
 <!--############ No Fly Zone ##################-->
-    <waypoint name="_boundary_1" lat="38.14539999961853" lon="-76.4315861108568"/>
-    <waypoint name="_boundary_2" lat="38.14342500050863" lon="-76.43535833332274"/>
-    <waypoint name="_boundary_3" lat="38.14039444446564" lon="-76.43262777752346"/>
-    <waypoint name="_boundary_4" lat="38.14156944433848" lon="-76.42954722192553"/>
-    <waypoint name="_boundary_5" lat="38.13978888882531" lon="-76.42620277828641"/>
-    <waypoint name="_boundary_6" lat="38.14160555574629" lon="-76.42359166675145"/>
-    <waypoint name="_boundary_7" lat="38.14412499957614" lon="-76.42535277790493"/>
-    <waypoint name="_boundary_8" lat="38.14584166632758" lon="-76.42209999985165"/>
-    <waypoint name="_boundary_9" lat="38.14738055547078" lon="-76.42295000023313"/>
-    <waypoint name="_boundary_10" lat="38.14604999966092" lon="-76.42705555597942"/>
-    <waypoint name="_boundary_11" lat="38.1513249999947" lon="-76.429144443935833"/>
-    <waypoint name="_boundary_12" lat="38.15109444446034" lon="-76.43470833328035"/>
+    <waypoint name="boundary_1" lat="38.14539999961853" lon="-76.4315861108568"/>
+    <waypoint name="boundary_2" lat="38.14342500050863" lon="-76.43535833332274"/>
+    <waypoint name="boundary_3" lat="38.14039444446564" lon="-76.43262777752346"/>
+    <waypoint name="boundary_4" lat="38.14156944433848" lon="-76.42954722192553"/>
+    <waypoint name="boundary_5" lat="38.13978888882531" lon="-76.42620277828641"/>
+    <waypoint name="boundary_6" lat="38.14160555574629" lon="-76.42359166675145"/>
+    <waypoint name="boundary_7" lat="38.14412499957614" lon="-76.42535277790493"/>
+    <waypoint name="boundary_8" lat="38.14584166632758" lon="-76.42209999985165"/>
+    <waypoint name="boundary_9" lat="38.14738055547078" lon="-76.42295000023313"/>
+    <waypoint name="boundary_10" lat="38.14604999966092" lon="-76.42705555597942"/>
+    <waypoint name="boundary_11" lat="38.1513249999947" lon="-76.429144443935833"/>
+    <waypoint name="boundary_12" lat="38.15109444446034" lon="-76.43470833328035"/>
 <!--########################### Search Area ######################################-->
     <waypoint name="_search_area_1" lat="38.14456666628519" lon="-76.43198055585226"/>
     <waypoint name="_search_area_2" lat="38.14064722220103" lon="-76.42674444410537"/>
@@ -42,7 +42,7 @@
     <waypoint name="waypoint_1" lat="38.14526944478353" lon="-76.42900277773539"/>
     <waypoint name="waypoint_2" lat="38.14950833320618" lon="-76.42883611149259"/>
     <waypoint name="waypoint_3" lat="38.15095555557145" lon="-76.43135000016954"/>
-    <waypoint name="waypoint_4" lat="38.150419444441795" lon="-76.43236666679383"/>
+    <waypoint name="waypoint_4" lat="38.15071666664547" lon="-76.4332166671753"/>
     <waypoint name="waypoint_5" lat="38.14953333324856" lon="-76.4325777774387"/>
     <waypoint name="waypoint_6" lat="38.14891111161974" lon="-76.43192777739631"/>
     <waypoint name="waypoint_7" lat="38.14659722222222" lon="-76.42964444478353"/>
@@ -53,18 +53,18 @@
 
   <sectors>
   <sector color="blue" name="SoftkillOut">
-      <corner name="_boundary_1"/>
-      <corner name="_boundary_2"/>
-      <corner name="_boundary_3"/>
-      <corner name="_boundary_4"/>
-      <corner name="_boundary_5"/>
-      <corner name="_boundary_6"/>
-      <corner name="_boundary_7"/>
-      <corner name="_boundary_8"/>
-      <corner name="_boundary_9"/>
-      <corner name="_boundary_10"/>
-      <corner name="_boundary_11"/>
-      <corner name="_boundary_12"/>
+      <corner name="boundary_1"/>
+      <corner name="boundary_2"/>
+      <corner name="boundary_3"/>
+      <corner name="boundary_4"/>
+      <corner name="boundary_5"/>
+      <corner name="boundary_6"/>
+      <corner name="boundary_7"/>
+      <corner name="boundary_8"/>
+      <corner name="boundary_9"/>
+      <corner name="boundary_10"/>
+      <corner name="boundary_11"/>
+      <corner name="boundary_12"/> 
     </sector>
     <sector color="red" name="_search_area">
       <corner name="_search_area_1"/>
@@ -76,30 +76,28 @@
       <corner name="_search_area_7"/>
     </sector>
     <sector color="blue" name="Kill_area1">
-      <corner name="_boundary_1"/>
-      <corner name="_boundary_12"/>
-      <corner name="_boundary_11"/>
-      <corner name="_boundary_10"/>
+      <corner name="boundary_1"/>
+      <corner name="boundary_10"/>
+      <corner name="boundary_11"/>
+      <corner name="boundary_12"/>
     </sector>
     <sector color="blue" name="Kill_area2">
-      <corner name="_boundary_10"/>
-      <corner name="_boundary_9"/>
-      <corner name="_boundary_8"/>
-      <corner name="_boundary_7"/>
+      <corner name="boundary_7"/>
+      <corner name="boundary_8"/>
+      <corner name="boundary_9"/>
+      <corner name="boundary_10"/>
     </sector>
     <sector color="blue" name="Kill_area3">
-      <corner name="_boundary_7"/>
-      <corner name="_boundary_6"/>
-      <corner name="_boundary_5"/>
-      <corner name="_boundary_4"/>
+      <corner name="boundary_4"/>
+      <corner name="boundary_5"/>
+      <corner name="boundary_6"/>
+      <corner name="boundary_7"/>
     </sector>
      <sector color="blue" name="Kill_area4">
-      <corner name="_boundary_4"/>
-      <corner name="_boundary_3"/>
-      <corner name="_boundary_2"/>
-      <corner name="_boundary_1"/>
-      <corner name="_boundary_10"/>
-      <corner name="_boundary_7"/>
+      <corner name="boundary_1"/>
+      <corner name="boundary_4"/>
+      <corner name="boundary_7"/>
+      <corner name="boundary_10"/>
      </sector>
   </sectors>
 
@@ -108,11 +106,8 @@
     <!-- Add conditions that deroute to suicide in here. Make sure to also add to the exception within suicide.-->
     <exception cond="datalink_time > datalink_suicide_timeout" deroute="Suicide"/>
     <exception cond="commands[COMMAND_KILL_SWITCH] > 4000" deroute="Suicide"/>
-    <exception cond="And(And(!InsideKill_area4(estimator_x, estimator_y), !InsideKill_area3(estimator_x, estimator_y)), And(!InsideKill_area2(estimator_x, estimator_y), !InsideKill_area1(estimator_x, estimator_y)))" deroute="Suicide"/>
-
-<!-- "!Or(Or(Or(InsideKill_area1(estimator_x, estimator_y),InsideKill_area2(estimator_x, estimator_y)),InsideKill_area3(estimator_x, estimator_y)),InsideKill_area4(estimator_x, estimator_y))" --> 
-    <!-- Out of bounds --> 
-<!-- End of conditions for suicide -->
+<exception cond="!Or(Or(InsideKill_area1(estimator_x, estimator_y),InsideKill_area2(estimator_x, estimator_y)),Or(InsideKill_area3, InsideKill_area4))" deroute="Suicide"/> <!-- Out of bounds -->
+    <!-- End of conditions for suicide -->
   </exceptions>
   <blocks>
     <block name="Wait GPS">
