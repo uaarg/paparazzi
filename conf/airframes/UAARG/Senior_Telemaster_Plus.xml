@@ -50,7 +50,7 @@
     <servo name="THROTTLE" no="2" min="417" neutral="417" max="2317"/>
     <servo name="AILERON_LEFT" no="3" min="1813" neutral="1566" max="1237"/> <!--min is up, max is down--> 
     <servo name="AILERON_RIGHT" no="7" min="1734" neutral="1562" max="1359"/> <!-- min is down, max is up-->	
-    <servo name="ELEVATOR" no="6" min="1733" neutral="1233" max="933"/>	
+    <servo name="ELEVATOR" no="6" min="1800" neutral="1233" max="850"/>	
     <servo name="RUDDER" no="0" min="557" neutral="1357" max="2357"/>
 
 
@@ -150,12 +150,13 @@
     <define name="COURSE_PGAIN" value="0.6"/>
     <define name="COURSE_DGAIN" value="0.3"/>
     <define name="COURSE_PRE_BANK_CORRECTION" value="0.2"/>
-
+<!--This is the problem! Units are defined as degress, not deg, so the plane takes the "-15" value as radians, pitching far more than it needs to go. I won't change the value yet until we can reproduce the dive we had from our last flight, so dont change please :) -->
+<!-- ############################################################################################################################ -->
     <define name="ROLL_MAX_SETPOINT" value="40" unit="degrees"/>
     <define name="ROLL_MIN_SETPOINT" value="-40" unit="degrees"/>
     <define name="PITCH_MAX_SETPOINT" value="15" unit="degrees"/>
     <define name="PITCH_MIN_SETPOINT" value="-15" unit="degrees"/>
-
+<!-- ############################################################################################################################ -->
     <define name="PITCH_PGAIN" value="20000."/> <!-- adjusts pitch from current pitch to desired pitch-->
     <define name="PITCH_DGAIN" value="50"/> <!-- takes the derivative of the pitch and predicts how to adjust accordingly-->
 
