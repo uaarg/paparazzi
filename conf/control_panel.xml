@@ -14,9 +14,13 @@
     <program name="Data Link" command="sw/ground_segment/tmtc/link">
       <arg flag="-b" variable="ivy_bus"/>
     </program>
-    <program name="GCS" command="sw/ground_segment/cockpit/gcs">
+
+<!-- ############################################################## -->
+    <program name="GCS" command="sw/ground_segment/cockpit/gcs -mplayer 'tv:// -tv driver=v4l2:width=320:height=240:norm=NTSC:input=1:device=/dev/video1:alsa:adevice=hw.2,0:amode=1:audiorate=48000:forceaudio:volume=100:immediatemode=0'">
       <arg flag="-b" variable="ivy_bus"/>
     </program>
+<!-- ############################################################## -->
+
     <program name="Flight Plan Editor" command="sw/ground_segment/cockpit/gcs -edit"/>
     <program name="Messages" command="sw/ground_segment/tmtc/messages">
       <arg flag="-b" variable="ivy_bus"/>

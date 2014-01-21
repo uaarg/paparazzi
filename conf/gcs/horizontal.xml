@@ -9,6 +9,7 @@
    </rows>
    <widget size="400" name="aircraft"/>
    <widget name="alarms"/>
+   <widget NAME="plugin" SIZE="300"/>
   </columns>
  </rows>
 </layout>
