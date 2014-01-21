@@ -152,10 +152,10 @@
     <define name="COURSE_PRE_BANK_CORRECTION" value="0.2"/>
 <!--This is the problem! Units are defined as degress, not deg, so the plane takes the "-15" value as radians, pitching far more than it needs to go. I won't change the value yet until we can reproduce the dive we had from our last flight, so dont change please :) -->
 <!-- ############################################################################################################################ -->
-    <define name="ROLL_MAX_SETPOINT" value="40" unit="degrees"/>
-    <define name="ROLL_MIN_SETPOINT" value="-40" unit="degrees"/>
-    <define name="PITCH_MAX_SETPOINT" value="15" unit="degrees"/>
-    <define name="PITCH_MIN_SETPOINT" value="-15" unit="degrees"/>
+    <define name="ROLL_MAX_SETPOINT" value="40" unit="deg"/>
+    <define name="ROLL_MIN_SETPOINT" value="-40" unit="deg"/>
+    <define name="PITCH_MAX_SETPOINT" value="15" unit="deg"/>
+    <define name="PITCH_MIN_SETPOINT" value="-15" unit="deg"/>
 <!-- ############################################################################################################################ -->
     <define name="PITCH_PGAIN" value="20000."/> <!-- adjusts pitch from current pitch to desired pitch-->
     <define name="PITCH_DGAIN" value="50"/> <!-- takes the derivative of the pitch and predicts how to adjust accordingly-->
