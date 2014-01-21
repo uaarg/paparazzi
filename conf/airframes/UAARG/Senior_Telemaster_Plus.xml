@@ -170,7 +170,7 @@
     <define name="BLEND_START" value="20"/><!-- Altitude Error to Initiate Aggressive Climb CANNOT BE ZERO!!-->
     <define name="BLEND_END" value="10"/><!-- Altitude Error to Blend Aggressive to Regular Climb Modes  CANNOT BE ZERO!!-->
     <define name="CLIMB_THROTTLE" value="1.00"/><!-- Gaz for Aggressive Climb -->
-    <define name="CLIMB_PITCH" value="30." unit="degrees" /><!-- Pitch for Aggressive Climb -->
+    <define name="CLIMB_PITCH" value="30." unit="degreed" /><!-- Pitch for Aggressive Climb -->
     <define name="DESCENT_THROTTLE" value="0."/><!-- Gaz for Aggressive Decent -->
     <define name="DESCENT_PITCH" value="-30." unit="degrees"/><!-- Pitch for Aggressive Decent -->
     <define name="CLIMB_NAV_RATIO" value="0.8"/><!-- Percent Navigation for Altitude Error Equal to Start Altitude -->
