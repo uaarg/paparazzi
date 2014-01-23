@@ -1,0 +1,28 @@
+##########################################################################################
+To install the video drivers for the hybrid volar HX usb video plugin, follow these steps:
+##########################################################################################
+
+-->step 1: identify if your ubuntu version is running 64 bit or 32 (x86) bit.
+-->step 2: open a terminal, cd to the current folder (~/paparazzi/video_plugin) and run: 
+
+
+'sudo ./AVERMEDIA-Linux-x86-H826D-0.10-beta-kernel3.2.0.sh'   <!-- (change the x86 to x64 if you are running a 64 bit machine) -->
+
+
+-->step 3: follow the on-screen instructions to install the driver onto your computer
+
+-->step 4: Once installed, you can use the following command in a terminal to test the video feed:
+
+
+'mplayer tv:// -tv driver=v4l2:width=320:height=240:norm=NTSC:input=1:device=/dev/video1:noaudio'
+
+
+(NOTE: if you don't have mplayer installed on your machine, just write 'sudo apt-get install mplayer2' into a terminal to install it.)
+
+
+If all is good up to this point, once you start the paprazzi GCS, build the code, and execute, there should be the live video feed on the bottom right of the screen (if you have the Aver tv usb device plugged in and the apropriate video number is chosen.)
+
+
+For those who want to delve deeper into the GCS configuration file to see where I did the modifications to get the video player working, go into /paparazzi/conf/control_panel.xml file. If you want to perform any modifications to the video feed, just look for the part of the file that I have marked off as the live video feed section.
+
+-Sheldon Marquis

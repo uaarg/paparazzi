@@ -15,11 +15,28 @@
       <arg flag="-b" variable="ivy_bus"/>
     </program>
 
-<!-- ############################################################## -->
-    <program name="GCS" command="sw/ground_segment/cockpit/gcs -mplayer 'tv:// -tv driver=v4l2:width=320:height=240:norm=NTSC:input=1:device=/dev/video1:alsa:adevice=hw.2,0:amode=1:audiorate=48000:forceaudio:volume=100:immediatemode=0'">
+
+
+
+
+
+<!-- ################### Live Video Feed Section ########################################### -->
+
+<!-- NOTE: only change variables in here if you are having trouble getting the live video feed up and running. The most common issue that can arise is the video number for the USB video feed is not number one in your machine, probably caused by 1 already being taken up by a webcam, etc. if you need to find the number the computer has chosen for the USB dongle, unplug the device, plug it back in, then type into a terminal 'dmesg' to see what the Devices video number is. (it usually comes up as "A827 registered V4L2 device video1[video]) -SM -->
+
+    <program name="GCS" command="sw/ground_segment/cockpit/gcs -layout horizontal.xml -mplayer 'tv:// -nosound -tv driver=v4l2:width=320:height=240:norm=NTSC:input=1:device=/dev/video1:noaudio'">
       <arg flag="-b" variable="ivy_bus"/>
     </program>
-<!-- ############################################################## -->
+
+
+<!-- ####################################################################################### -->
+
+
+
+
+
+
+
 
     <program name="Flight Plan Editor" command="sw/ground_segment/cockpit/gcs -edit"/>
     <program name="Messages" command="sw/ground_segment/tmtc/messages">

@@ -1,0 +1,240 @@
+<!-- 49.913319,-98.272748 -->
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+<flight_plan alt="660" ground_alt="605" lat0="49.913319" lon0="-98.232348" max_dist_from_home="2000" name="Tuning_Bremner" security_height="25" qfu="270"> <!-- Bremner -->
+
+  <!-- The header section allows one to include advanced navigation routines and header files that allow access to variables that may be useful for exceptions or advanced flightplan routines dependent on various internal autopilot variables -->
+  <header>
+#include "subsystems/navigation/nav_line.h"
+#include "subsystems/datalink/datalink.h"
+#include "commands.h"
+#include "airframe.h"
+  </header>
+  <!-- The waypoints section must contain 1 or more waypoints. For tuning, setup STDBY in a location in front of the pilot at least DEFAULT_CIRCLE_RADIUS metres away from the flight line if restricted to no overflights. Setup 1 and 2 in front of and to the left and right of the pilot, respectively. These are only used for testing ovals and eights after tuning. Again, waypoints should be at least a radius away from the flight line (probably 1.5xRadius) to prevent overflights. HOME can be set somewhere in the vicinity of STDBY or the pilot. CLIMB is for takeoff (mostly for sim, should manually takeoff for tuning)-->
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint name="STDBY" x="30." y="100."/>
+    <waypoint name="1" x="100.1" y="70.9"/>
+    <waypoint name="2" x="-100.3" y="80.1"/>
+    <waypoint name="CLIMB" x="-125.0" y="45.0"/>
+    <waypoint name="SEARCH1" x="-200.0" y="100.0"/>
+    <waypoint name="SEARCH2" x="200" y="300.0"/>
+
+  </waypoints>
+  <!-- The sectors section allows the definiton of regions of space from waypoints, useful for restricting flight area with exceptions -->
+  <sectors/>
+  <!-- The includes section allows predefined blocks of flightplan to be included -->
+  <includes>
+    <include name="SoftKillOut" procedure="bremner_sectors_outside.xml"/>
+  </includes>
+  <!-- The exceptions section allows for global error and failsafe handling -->
+  <exceptions>
+    <exception cond="And(60 > datalink_time, datalink_time > 15)" deroute="Standby"/>
+    <exception cond="datalink_time > 60" deroute = "Suicide"/>
+    <exception cond="commands[COMMAND_KILL_SWITCH] > 4000" deroute="Suicide"/>
+    <!-- <exception cond="And((estimator_z > ground_alt + 240),launch)" deroute="Standby2"/> -->
+    <!-- <exception cond="And(!InsideSoftKillOut(estimator_x, estimator_y),launch)" deroute="Standby3"/> -->
+  </exceptions>
+  <!-- The blocks section contains each block of the flightplan, which actually make the aircraft do something -->
+  <blocks>
+    <block name="Wait GPS">
+      <set value="1" var="kill_throttle"/>
+      <while cond="!GpsFixValid()"/>
+    </block>
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <call fun="NavSetGroundReferenceHere()"/>
+    </block>
+    <block name="Holding point">
+      <!--set var="nav_mode" value="NAV_MODE_ROLL"/-->
+      <set value="1" var="kill_throttle"/>
+      <attitude roll="0" throttle="0" vmode="throttle"/>
+    </block>
+    <!-- need this for simulation, manual takeoff for real testing -->
+    <block key="t" name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png" group="home">
+      <exception cond="estimator_z > (ground_alt+25)" deroute="Standby"/>
+      <set value="0" var="kill_throttle"/>
+      <set value="0" var="estimator_flight_time"/>
+      <go from="HOME" throttle="1.0" vmode="throttle" wp="CLIMB" pitch="15"/>
+    </block>
+    <block name="Suicide Recovery">
+      <set value="0" var="kill_throttle"/>
+    </block>
+      
+    <block key="<Control>a" name="Standby" strip_button="Standby" strip_icon="home.png" group="home">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+    <block key="<Control>a" name="Standby1" strip_button="Standby" strip_icon="home.png" group="home">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+    <block key="<Control>a" name="Standby2" strip_button="Standby" strip_icon="home.png" group="home">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+    <block key="<Control>a" name="Standby3" strip_button="Standby" strip_icon="home.png" group="home">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+    <!-- first, tune the pitch and roll loops. This can be done using auto1. Here for sim demos. This block may cause a fly-away -->
+    <block name="Sim Pitch Roll Tuning">
+      <while cond="TRUE">
+    	<attitude roll="0.0" pitch="0.0" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="stage_time>7"/>
+    	<attitude roll="30.0" pitch="0.0" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="stage_time>7"/>
+    	<attitude roll="0.0" pitch="0.0" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="stage_time>7"/>
+    	<attitude roll="-30.0" pitch="0.0" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="stage_time>7"/>
+    	<attitude roll="0.0" pitch="0.0" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="stage_time>7"/>
+    	<attitude roll="0.0" pitch="20.0" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="stage_time>7"/>
+    	<attitude roll="0.0" pitch="0.0" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="stage_time>7"/>
+    	<attitude roll="0.0" pitch="-20.0" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="stage_time>7"/>
+    	<attitude roll="0.0" pitch="0.0" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="stage_time>7"/>
+      </while>
+    </block>
+    <!-- now tune the auto throttle climb loop -->
+    <!-- 	lateral_mode = LATERAL_MODE_ROLL
+    		h_ctl_roll_setpoint = 0.0deg
+    		v_ctl_climb_mode = V_CTL_CLIMB_MODE_AUTO_THROTTLE
+    		nav_pitch = 0.0deg
+    		v_ctl_mode = V_CTL_MODE_AUTO_CLIMB
+    		v_ctl_climb_setpoint = 0.0
+    --> 
+    <block name="Level Auto Throttle Tuning">
+      <while cond="TRUE">
+      	<attitude roll="0.0" vmode="climb" climb="0.0"/>
+      </while>
+    </block>
+    <block name="Ascent Auto Throttle Tuning">
+      <while cond="TRUE">
+      	<attitude roll="0.0" vmode="climb" climb="V_CTL_ALTITUDE_MAX_CLIMB"/>
+      </while>
+    </block>
+    <block name="Descent Auto Throttle Tuning">
+      <while cond="estimator_z > (ground_alt + 25)">
+      	<attitude roll="0.0" vmode="climb" climb="-V_CTL_ALTITUDE_MAX_CLIMB"/>
+      </while>
+    </block>
+    <block name="Variable Auto Throttle Tuning">
+      <set var="nav_climb" value="0.0"/>
+      <while cond="TRUE">
+      	<attitude roll="0.0" vmode="climb" climb="nav_climb"/>
+      </while>
+    </block>
+    <!-- now tune the auto pitch loop -->
+    <!-- 	lateral_mode = LATERAL_MODE_ROLL
+    		h_ctl_roll_setpoint = 0.0deg
+    		v_ctl_climb_mode = V_CTL_CLIMB_MODE_AUTO_PITCH
+    		nav_throttle_setpoint = 9600*(V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE)
+    		v_ctl_mode = V_CTL_MODE_AUTO_CLIMB
+    		v_ctl_climb_setpoint = 0.0
+    --> 
+    <block name="Level Auto Pitch Tuning">
+      <while cond="TRUE">
+      	<attitude roll="0.0" pitch="auto" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" vmode="climb" climb="0.0"/>
+      </while>
+    </block>
+    <block name="Ascent Auto Pitch Tuning">
+      <while cond="TRUE">
+      	<attitude roll="0.0" pitch="auto" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" vmode="climb" climb="V_CTL_ALTITUDE_MAX_CLIMB"/>
+      </while>
+    </block>
+    <block name="Descent Auto Pitch Tuning">
+      <while cond="estimator_z > (ground_alt + 25)">
+      	<attitude roll="0.0" pitch="auto" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" vmode="climb" climb="-V_CTL_ALTITUDE_MAX_CLIMB"/>
+      </while>
+    </block>
+    <block name="Variable Auto Pitch Tuning">
+      <set var="nav_climb" value="0.0"/>
+      <while cond="TRUE">
+      	<attitude roll="0.0" pitch="auto" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" vmode="climb" climb="nav_climb"/>
+      </while>
+    </block>
+    <!-- now tune the altitude loop -->
+    <!-- 	lateral_mode = LATERAL_MODE_ROLL
+    		h_ctl_roll_setpoint = 0.0deg
+    		v_ctl_climb_mode = V_CTL_CLIMB_MODE_AUTO_THROTTLE
+    		nav_pitch = 0.0deg
+    		v_ctl_mode = V_CTL_MODE_AUTO_ALT
+    		nav_altitude = flight_altitude
+    --> 
+	<block name="Altitude Tuning">
+      <set var="flight_altitude" value="estimator_z"/>
+      <while cond="TRUE">
+      	<attitude roll="0.0" vmode="alt" alt="flight_altitude"/>
+      </while>
+    </block>
+    <!-- now that the stabilization and altitude working, tune the course loop -->
+    <!-- 	lateral_mode = LATERAL_MODE_COURSE
+    		h_ctl_course_setpoint = nav_course
+    		v_ctl_climb_mode = V_CTL_CLIMB_MODE_AUTO_THROTTLE
+    		nav_pitch = 0.0deg
+    		v_ctl_mode = V_CTL_MODE_AUTO_THROTTLE
+    		nav_throttle_setpoint = 9600*(V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE)
+    -->
+    <block name="Course Tuning">
+      <set var="nav_course" value="estimator_hspeed_dir"/>
+      <while cond="TRUE">
+      	<heading course="nav_course" vmode="throttle" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" until="FALSE"/> <!--continues forever-->
+      </while>
+    </block>
+    <!-- everything should be good, try some stuff -->
+
+    <!-- airspeed control loop tuning -->
+    <!-- be sure to use the settings file airspeed_ctl_tuning.xml -->
+    <!--	airspeed will take precedence as groundspeed set lower
+    		setting pitch pgain to zero disables the auto pitch part of the airspeed loop, no climb control
+    -->
+    <!--
+    <block name="Airspeed (Airspeed) Tuning">
+      <set var="v_ctl_auto_groundspeed_setpoint" value="0.5*V_CTL_AUTO_AIRSPEED_SETPOINT"/> 
+      <set var="v_ctl_auto_airspeed_setpoint" value="V_CTL_AUTO_AIRSPEED_SETPOINT"/>
+      <set var="v_ctl_auto_pitch_pgain" value="0.0"/>
+      <while cond="TRUE">
+      	<attitude roll="0.0" vmode="climb" climb="0.0"/>
+      </while>
+  	</block>
+  	-->
+
+  	<!--	groundspeed will take precedence as airspeed set lower
+    		setting pitch pgain to zero disables the auto pitch part of the airspeed loop, no climb control
+    -->
+    <!--
+  	<block name="Airspeed (Groundspeed) Tuning">
+      <set var="v_ctl_auto_groundspeed_setpoint" value="V_CTL_AUTO_GROUNDSPEED_SETPOINT"/>
+      <set var="v_ctl_auto_airspeed_setpoint" value="0.5*V_CTL_AUTO_GROUNDSPEED_SETPOINT"/>
+      <set var="v_ctl_auto_pitch_pgain" value="0.0"/>
+      <while cond="TRUE">
+      	<attitude roll="0.0" vmode="climb" climb="0.0"/>
+      </while>
+  	</block>
+ 	-->
+  	<!-- airspeed should be tuned now, use in addition to pitch, airspeed will take precedence (coupled with climb more than groundspeed) -->
+  	<!--
+  	<block name="Airspeed (Auto Pitch) Tuning">
+      <set var="v_ctl_auto_groundspeed_setpoint" value="0.5*V_CTL_AUTO_AIRSPEED_SETPOINT"/>
+      <set var="v_ctl_auto_airspeed_setpoint" value="V_CTL_AUTO_AIRSPEED_SETPOINT"/>
+      <set var="v_ctl_auto_pitch_pgain" value="V_CTL_AUTO_PITCH_PGAIN"/>
+      <set var="nav_climb" value="0.0"/>
+      <while cond="TRUE">
+      	<attitude roll="0.0" vmode="climb" climb="nav_climb"/>
+      </while>
+  	</block>
+  -->
+
+  	<!-- extra typical blocks for testing after tuning -->
+    <block key="F8" name="Figure 8 around wp 1" strip_button="Figure 8 (wp 1-2)" strip_icon="eight.png" group="base_pattern">
+      <eight center="1" radius="nav_radius" turn_around="2"/>
+    </block>
+    <block name="Oval 1-2" strip_button="Oval (wp 1-2)" strip_icon="oval.png" group="base_pattern">
+      <oval p1="1" p2="2" radius="nav_radius"/>
+    </block>
+    <block name="Line 1-2" strip_button="Line (wp 1-2)" strip_icon="line.png" group="base_pattern">
+      <call fun="nav_line_init()"/>
+      <call fun="nav_line(WP_1, WP_2, nav_radius)"/>
+    </block>
+    <block group="base_pattern" name="Search Area" strip_button="Search" strip_icon="survey.png">
+      <survey_rectangle grid="100" wp1="SEARCH1" wp2="SEARCH2"/>
+    </block>
+    <block name="Suicide">
+      <set value="1" var="kill_throttle"/>
+      <attitude climb="-3" height="0" roll="2000" throttle="0" vmode="throttle"/>
+      <exception cond="And(2 > datalink_time, 4000 > commands[COMMAND_KILL_SWITCH])" deroute="Suicide Recovery"/>
+    </block>
+
+  </blocks>
+</flight_plan>
