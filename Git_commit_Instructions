@@ -1,0 +1,17 @@
+1.) open a terminal
+2.) cd to the paparazzi folder
+3.) type 'git status' to see what files on the current computer were modified
+
+4.) type git add to add the respective files you want to add (for example, git add /home/uaarg/paparazzi/lol.txt)
+
+5.) once all files are chosen, type 'git commit' 
+(if an editor doesn't open, just type 'git config --global core.editor "gedit"' to reset the default editor to gedit)
+
+6.) once in the editor, type out the message you want to append to the commit you are making
+
+7.) save, exit the editor, then, once your sure the commit is ready, type in 'git push'
+
+8.) type in the username and password
+
+8.) once complete, type in 'git log' to see if your commit made it onto the repository
+
