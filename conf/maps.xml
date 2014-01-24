@@ -1,0 +1,5 @@
+<!DOCTYPE maps SYSTEM "maps.dtd">
+
+<maps google_version="145"/>
+
+<!-- Now maps will load, UAARG wasn't loading any of the maps because the google_version was left blank. -->
