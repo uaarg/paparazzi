@@ -15,6 +15,7 @@
       <define name="WIND_INFO_RET"/>
       <define name="LOITER_TRIM"/>
       <define name="ALT_KALMAN"/>
+      
       <subsystem name="spi_slave_hs"/>       <!-- Needed for CHIMU -->
     </target>
 
@@ -70,6 +71,7 @@
     <set servo="THROTTLE" value="@THROTTLE"/>
     <set servo="ELEVATOR" value="@PITCH"/>
     <set servo="RUDDER" value="@YAW"/>
+
   </command_laws>
 
   <commands>	<!-- Defines abstract commands needed to controfl aircraft -->
@@ -78,7 +80,7 @@
     <axis name="PITCH" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
     <axis name="BRAKE" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
     <axis name="YAW" failsafe_value="0"/> <!-- range is -9600 to 9600 -->
-    <axis name="KILL_SWITCH" failsafe_value="-9600"/> <!--not sure that the range is, probably the same as above - Cam -->
+    <axis name="KILL_SWITCH" failsafe_value="-1200"/> <!--not sure what the range is, probably the same as above - Cam -->
   </commands>
 
   <rc_commands>	<!-- defines what abstract commands the RC signals control (while in manual mode) -->
@@ -89,7 +91,7 @@
     <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
   </rc_commands>
 
-  <auto_rc_commands> <!-- defines what abstract commands the RC signals control while in auto mode -->
+  <auto_rc_commands> <!-- defines what abstract commands the RC signals control while in auto 2 mode -->
     <set command="KILL_SWITCH" value="@KILL_SWITCH"/>
     <set command="YAW" value="@YAW"/>
   </auto_rc_commands>
@@ -170,9 +172,9 @@
     <define name="BLEND_START" value="20"/><!-- Altitude Error to Initiate Aggressive Climb CANNOT BE ZERO!!-->
     <define name="BLEND_END" value="10"/><!-- Altitude Error to Blend Aggressive to Regular Climb Modes  CANNOT BE ZERO!!-->
     <define name="CLIMB_THROTTLE" value="1.00"/><!-- Gaz for Aggressive Climb -->
-    <define name="CLIMB_PITCH" value="30." unit="degreed" /><!-- Pitch for Aggressive Climb -->
+    <define name="CLIMB_PITCH" value="30." unit="deg" /><!-- Pitch for Aggressive Climb -->
     <define name="DESCENT_THROTTLE" value="0."/><!-- Gaz for Aggressive Decent -->
-    <define name="DESCENT_PITCH" value="-30." unit="degrees"/><!-- Pitch for Aggressive Decent -->
+    <define name="DESCENT_PITCH" value="-30." unit="deg"/><!-- Pitch for Aggressive Decent -->
     <define name="CLIMB_NAV_RATIO" value="0.8"/><!-- Percent Navigation for Altitude Error Equal to Start Altitude -->
     <define name="DESCENT_NAV_RATIO" value="1.0"/>
   </section>
