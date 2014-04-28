@@ -66,10 +66,10 @@
   </servos>
 
   <command_laws>	<!-- links the abstract commands to physical servos -->
-    <set servo="AILERON_LEFT" value="-@ROLL"/> <!-- takes negative value of roll (New PPM Apr.26 2014) -->
-    <set servo="AILERON_RIGHT" value="-@ROLL"/><!-- takes negative value of roll (New PPM Apr.26 2014) -->
+    <set servo="AILERON_LEFT" value="@ROLL"/> <!-- takes negative value of roll (New PPM Apr.26 2014) -->
+    <set servo="AILERON_RIGHT" value="@ROLL"/><!-- takes negative value of roll (New PPM Apr.26 2014) -->
     <set servo="THROTTLE" value="@THROTTLE"/>
-    <set servo="ELEVATOR" value="-@PITCH"/><!-- takes negative value of pitch (New PPM Apr.26 2014) -->
+    <set servo="ELEVATOR" value="@PITCH"/><!-- takes negative value of pitch (New PPM Apr.26 2014) -->
     <set servo="RUDDER" value="@YAW"/>
 
   </command_laws>
