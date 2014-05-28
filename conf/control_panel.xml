@@ -52,6 +52,7 @@
       <arg flag="-b" variable="ivy_bus"/>
       <arg flag="-d" constant="/dev/ttyUSB1"/>
     </program>
+    <program name="Nmea Generator" command="sw/ground_segment/python/nmea_generator/nmea_generator.py"/>
   </section>
   <section name="sessions">
     <session name="Flight USB-serial@57600">
