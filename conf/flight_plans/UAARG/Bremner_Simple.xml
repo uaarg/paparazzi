@@ -4,7 +4,6 @@
 
   <!-- The header section allows one to include advanced navigation routines and header files that allow access to variables that may be useful for exceptions or advanced flightplan routines dependent on various internal autopilot variables -->
   <header>
-#include "subsystems/navigation/nav_line.h"
 #include "airframe.h"
   </header>
   <!-- The waypoints section must contain 1 or more waypoints. For tuning, setup STDBY in a location in front of the pilot at least DEFAULT_CIRCLE_RADIUS metres away from the flight line if restricted to no overflights. Setup 1 and 2 in front of and to the left and right of the pilot, respectively. These are only used for testing ovals and eights after tuning. Again, waypoints should be at least a radius away from the flight line (probably 1.5xRadius) to prevent overflights. HOME can be set somewhere in the vicinity of STDBY or the pilot. CLIMB is for takeoff (mostly for sim, should manually takeoff for tuning)-->
@@ -71,11 +70,6 @@
 
     <block name="Oval 1-2" strip_button="Oval (wp 1-2)" strip_icon="oval.png" group="base_pattern">
       <oval p1="1" p2="2" radius="nav_radius"/>
-    </block>
-
-    <block name="Line 1-2" strip_button="Line (wp 1-2)" strip_icon="line.png" group="base_pattern">
-      <call fun="nav_line_init()"/>
-      <call fun="nav_line(WP_1, WP_2, nav_radius)"/>
     </block>
 
     <block group="base_pattern" name="Search Area" strip_button="Search" strip_icon="survey.png">
