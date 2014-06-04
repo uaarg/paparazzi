@@ -147,10 +147,10 @@
     <define name="COURSE_DGAIN" value="0.3"/>
     <define name="COURSE_PRE_BANK_CORRECTION" value="0.2"/>
 
-    <define name="ROLL_MAX_SETPOINT" value="40" unit="degrees"/>
-    <define name="ROLL_MIN_SETPOINT" value="-40" unit="degrees"/>
-    <define name="PITCH_MAX_SETPOINT" value="15" unit="degrees"/>
-    <define name="PITCH_MIN_SETPOINT" value="-15" unit="degrees"/>
+    <define name="ROLL_MAX_SETPOINT" value="40" unit="deg"/>
+    <define name="ROLL_MIN_SETPOINT" value="-40" unit="deg"/>
+    <define name="PITCH_MAX_SETPOINT" value="15" unit="deg"/>
+    <define name="PITCH_MIN_SETPOINT" value="-15" unit="deg"/>
 
     <define name="PITCH_PGAIN" value="20000."/> <!-- adjusts pitch from current pitch to desired pitch-->
     <define name="PITCH_DGAIN" value="50"/> <!-- takes the derivative of the pitch and predicts how to adjust accordingly-->
