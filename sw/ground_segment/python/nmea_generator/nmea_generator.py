@@ -26,6 +26,7 @@ import sys
 import os
 import argparse
 from ivy.std_api import *
+import utm
 
 PPRZ_HOME = os.getenv("PAPARAZZI_HOME")
 sys.path.append(PPRZ_HOME + "/sw/lib/python")
@@ -72,7 +73,13 @@ class Runner:
         message = GPSMessage(*larg)
 
         print(message.data, file=sys.stderr) # Printing to stderr so that it appears in the Paparazzi Center terminal (stdout doesn't)
-
+        print(message.data['utm_zone'], file=sys.stderr)
+        print(message.data['utm_north'], file=sys.stderr)
+        print(message.data['utm_east'], file=sys.stderr)
+        northing = float(message.data['utm_north']) / 100
+        easting = float(message.data['utm_east']) / 100
+        zone = int(message.data['utm_zone'])
+        print(utm.to_latlon(easting, northing, zone, northern=True), file=sys.stderr)
 
 def main():
     messages_xml_map.ParseMessages()
