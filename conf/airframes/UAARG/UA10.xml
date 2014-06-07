@@ -61,7 +61,7 @@
     <axis name="PITCH" failsafe_value="0"/>
     <axis name="BRAKE" failsafe_value="-9600"/>
     <axis name="YAW" failsafe_value="0"/>
-    <axis name="EGG_DROP" failsafe_value="0"/>
+    <axis name="GEAR" failsafe_value="0"/>
   </commands>
   
   
@@ -81,7 +81,7 @@
     <set value="@THROTTLE" servo="THROTTLE"/>
     <set value="@PITCH" servo="ELEVATOR"/>
     <set value="@YAW" servo="RUDDER"/>
-    <set value="@EGG_DROP" servo="DROP"/>
+    <set value="@GEAR" servo="DROP"/>
   </command_laws>
 
 
