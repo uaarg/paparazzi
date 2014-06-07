@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- $Id: cockpitSX.xml 3160 2009-03-31 23:22:21Z flixr $
+<!-- $Id$
 --
 -- (c) 2006 Pascal Brisset, Antoine Drouin
 --
@@ -28,6 +28,7 @@
 -- data_max: max width of a pulse to be considered as a data pulse
 -- sync_min: min width of a pulse to be considered as a synchro pulse
 -- sync_max: max width of a pulse to be considered as a synchro pulse
+-- pulse_type: POSITIVE ( Futaba and others) | NEGATIVE (JR)
 -- min, max and sync are expressed in micro-seconds
 -->
 
@@ -43,15 +44,14 @@
 -->
 
 <!DOCTYPE radio SYSTEM "../radio.dtd">
-<!--<serial name="Spektrum Serial" data_min="900pulse_type="NEGATIVE">-->
-<radio name="JR XP903" data_min="900" data_max="2100" sync_min ="5000" sync_max ="15000" pulse_type="NEGATIVE">
- <channel ctl="left_stick_vert" function="THROTTLE"     max="2050" neutral="950" min="950" average="0"/>
- <channel ctl="right_stick_horiz" function="ROLL"    min="2050" neutral="1500" max="950" average="0"/>
- <channel ctl="right_stick_vert" function="PITCH"      min="2050" neutral="1500" max="950" average="0"/>
- <channel ctl="left_stick_horiz" function="YAW" min="950" neutral="1500" max="2050" average="0"/>
- <channel ctl="switch_g" function="UNUSED"    min="2050" neutral="1500" max="948" average="1"/>
- <channel ctl="switch_C" function="MODE"    min="2050" neutral="1500" max="950" average="1"/>
- <channel ctl="aux2" function="AUX2"     min="2050" neutral="1496" max="948" average="1"/>
- <channel ctl="aux3" function="AUX3"    min="2050" neutral="1500" max="950" average="1"/>
- <channel ctl="aux4" function="AUX4"     min="2050" neutral="1496" max="948" average="1"/>
+<radio name="RE12" data_min="800" data_max="2200" sync_min="5000" sync_max="15000" pulse_type="positive">
+ <channel ctl="C" function="PITCH" min="950" neutral="1500" max="2050" average="0"/>
+ <channel ctl="B" function="ROLL" min="950" neutral="1500" max="2050" average="0"/>
+ <channel ctl="A" function="THROTTLE" min="950" neutral="950" max="2050" average="0"/>
+ <channel ctl="D" function="YAW" min="950" neutral="1500" max="2050" average="0"/>
+ <channel ctl="F" function="GEAR" min="950" neutral="1500" max="2050" average="1"/>
+ <channel ctl="G" function="GAIN2" min="950" neutral="1500" max="2050" average="1"/>
+ <channel ctl="E" function="KILL_SWITCH" min="950" neutral="1500" max="2050" average="1"/>
+ <channel ctl="H" function="MODE" min="950" neutral="1500" max="2050" average="1"/>
+
 </radio>
