@@ -15,10 +15,7 @@
     </target>
 
 
-    <subsystem name="radio_control" type="spektrum">
-      <define name="RADIO_MODE" value="RADIO_AUX2"/>
-      <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
-    </subsystem>
+    <subsystem name="radio_control" type="ppm"/>
 
     <subsystem name="gps" type="ublox"/>
     <subsystem name="telemetry" type="transparent">
@@ -80,10 +77,6 @@
   </rc_commands>
 
 
-  <auto_rc_commands> <!--controls available to pilot in AUTO2-->
-    <set value="@YAW" command="YAW"/>
-    <set command="GEAR" value="@GEAR"/>
-  </auto_rc_commands>
   
   
   
@@ -141,6 +134,10 @@
     <define name="MAX_BAT_LEVEL" value="16.8" unit="V"/>
 
   </section>
+
+
+
+
 
   <!--The following is a copy and paste. Check thoroughly before flying-->
   <section name="INS" prefix="INS_">
