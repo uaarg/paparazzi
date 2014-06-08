@@ -54,6 +54,13 @@
 
 
 
+
+
+
+
+
+
+
 <!--The following is the commands sections. This deals with how the control surface relate to movement and rc inpu-->
   <commands> <!--The commands the autopilot board outputs-->
     <axis name="THROTTLE" failsafe_value="0"/>
