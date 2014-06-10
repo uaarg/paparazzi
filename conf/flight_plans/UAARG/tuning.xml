@@ -1,0 +1,35 @@
+<procedure>
+
+  <blocks>
+   
+    
+    <block name="Level Auto Throttle Tuning">
+      <while cond="TRUE">
+        <attitude roll="0.0" vmode="climb" climb="0.0"/>
+      </while>
+    </block>
+    
+
+    <block name="Loiter Trim">
+      <while cond="TRUE">
+        <attitude roll="0.0" throttle="V_CTL_AUTO_THROTTLE_MIN_CRUISE_THROTTLE" vmode="throttle" />
+      </while>
+    </block>
+
+    <block name="Dash Trim">
+      <while cond="TRUE">
+        <attitude roll="0.0" throttle="V_CTL_AUTO_THROTTLE_MAX_CRUISE_THROTTLE" vmode="throttle" />
+      </while>
+    </block>
+
+    <block name="Cruise Trim">
+      <while cond="TRUE">
+        <attitude roll="0.0" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" vmode="throttle" />
+      </while>
+    </block>
+    
+
+  </blocks>
+  
+  
+</procedure>

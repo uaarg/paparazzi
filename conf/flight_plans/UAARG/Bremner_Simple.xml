@@ -1,8 +1,68 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<!-- insert long drawn out comment-->
+<!--insert plenty long drawn out comment here-->
 
 
-<!-- Bremner Field information -->
+<!-- Bremner -->
+<flight_plan alt="660" ground_alt="605" lat0="53.63836" lon0="-113.28607" max_dist_from_home="1000" name="Bremner_Testing" security_height="25" qfu="270">
+
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint name="STDBY" x="30." y="100."/>
+    <waypoint name="1" x="100.1" y="70.9"/>
+    <waypoint name="2" x="-100.3" y="80.1"/>
+    <waypoint name="CLIMB" x="-125.0" y="45.0"/>
+    <waypoint name="SEARCH1" x="-200.0" y="100.0"/>
+    <waypoint name="SEARCH2" x="200" y="300.0"/>
+  
+  </waypoints>
 
 
+  <includes>
+    <include name="Failsafe" procedure="failsafe.xml">
+      <with from="Standby" to="Standby"/>
+    </include>
+    <include name="Tuning" procedure="tuning.xml">
+    </include>
+  </includes>
+
+  
+  <blocks>
+    <block name="Wait GPS">
+      <while cond="!GpsFixValid()"/>
+      <set var="kill_throttle" value="1"/>
+    </block>
+
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <call fun="NavSetGroundReferenceHere()"/>
+    </block>
+
+    <block name="Holding point">
+      <set value="1" var="kill_throttle"/>
+      <attitude roll="0" throttle="0" vmode="throttle"/>
+    </block>
+
+    <block key="t" name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png" group="home">
+      <exception cond="GetPosAlt() > GetAltRef()+25" deroute="Standby"/>
+      <set value="0" var="kill_throttle"/>
+      <set value="0" var="autopilot_flight_time"/>
+      <go from="HOME" throttle="1.0" vmode="throttle" wp="CLIMB" pitch="15"/>
+    </block>
+
+    <block key="Ctrl+a" name="Standby" strip_button="Standby" strip_icon="home.png" group="home">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+        
+    
+    
+    
+  </blocks>
+  
+  
+  
+  
+  
+</flight_plan>
+  
+  
