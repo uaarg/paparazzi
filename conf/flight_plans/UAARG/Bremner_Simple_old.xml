@@ -53,7 +53,7 @@
       <go from="HOME" throttle="1.0" vmode="throttle" wp="CLIMB" pitch="15"/>
     </block>
       
-    <block key="<Control>a" name="Standby" strip_button="Standby" strip_icon="home.png" group="home">
+    <block key="Control+a" name="Standby" strip_button="Standby" strip_icon="home.png" group="home">
       <circle radius="nav_radius" wp="STDBY"/>
     </block>
 
