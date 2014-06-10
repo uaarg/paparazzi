@@ -15,8 +15,7 @@
     </target>
 
 
-    <subsystem name="radio_control" type="spektrum"> <!--change this line to ppm and see if radio works also change spektrum.xml to gear-->
-      <define name="RADIO_MODE" value="RADIO_AUX2"/>
+    <subsystem name="radio_control" type="ppm"> <!--change this line to ppm and see if radio works also change spektrum.xml to gear-->
       <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
     </subsystem>
 
