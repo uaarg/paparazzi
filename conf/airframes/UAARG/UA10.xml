@@ -5,19 +5,24 @@
   <firmware name="fixedwing">
     
     
-    <target name="sim" board="pc"/>
-    <target name="jsbsim" board="pc"/>
+    <target name="sim" board="pc">
+      <subsystem name="radio_control" type="ppm"/>
+    </target>
+
     <target name="ap" board="lisa_m_2.0">
       <!-- These lines may need to be added to due to the 100hz refresh rate of the Aspirin. Do testing with and wihtout it to determine if there is any effect--> 
       <!--<configure name="PERIODIC_FREQUENCY" value="120"/>
       <configure name="AHRS_PROPAGATE_FREQUENCY" value="100"/>
       <configure name="AHRS_CORRECT_FREQUENCY" value="100"/>-->
+
+      <subsystem name="radio_control" type="spektrum">
+        <define name="RADIO_MODE" value="RADIO_AUX2"/>
+        <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
+      </subsystem>
     </target>
 
 
-    <subsystem name="radio_control" type="ppm"> <!--change this line to ppm and see if radio works also change spektrum.xml to gear-->
-      <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
-    </subsystem>
+    
 
     <subsystem name="gps" type="ublox"/>
     <subsystem name="telemetry" type="transparent">
@@ -35,14 +40,6 @@
     
   </firmware>
 
-
-
-
-  <section name="SIMU">
-    <define name="JSBSIM_MODEL" value="&quot;Malolo1&quot;"/>
-    <define name="JSBSIM_IR_ROLL_NEUTRAL" value="0." unit="deg"/>
-    <define name="JSBSIM_IR_PITCH_NEUTRAL" value="0." unit="deg"/>
-  </section>
 
 
 
