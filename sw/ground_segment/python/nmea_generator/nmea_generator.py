@@ -79,7 +79,19 @@ class Runner:
         northing = float(message.data['utm_north']) / 100
         easting = float(message.data['utm_east']) / 100
         zone = int(message.data['utm_zone'])
-        print(utm.to_latlon(easting, northing, zone, northern=True), file=sys.stderr)
+        print(utm.to_latlon(easting, northing, zone, northern=True))
+	outgoing=[]
+	import time
+	from datetime import datetime, timedelta
+	print(datetime.now(), file=sys.stderr)
+	microseconds=datetime.now().microsecond
+	seconds=microseconds/1000000.0
+	print(seconds,file=sys.stderr)
+	timeNow=datetime.now()
+	timerightNow="%s%s%.2f" % (timeNow.hour, timeNow.minute, seconds)
+	outgoing.append("GPGGA")
+	outgoing.append(timerightNow)
+	print(outgoing,file=sys.stderr)
 
 def main():
     messages_xml_map.ParseMessages()
