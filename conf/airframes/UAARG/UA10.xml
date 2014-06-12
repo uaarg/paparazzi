@@ -84,7 +84,7 @@
     <set value="@ROLL" command="ROLL"/>
     <set value="@PITCH" command="PITCH"/>
     <set value="@YAW" command="YAW"/>
-    <set value="@GEAR"command="GEAR" />
+    <set value="@GEAR" command="GEAR" />
   </rc_commands>
 
 
@@ -255,20 +255,29 @@
   <section name="VERTICAL CONTROL" prefix="V_CTL_">
     <define name="POWER_CTL_BAT_NOMINAL" value="14.9" unit="V"/>
 
+    <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/><!-- time it takes to go from 0% throttle to 100% throttle-->
 
-    <define name="ALTITUDE_PGAIN" value="0.03"/><!--the rate at which paparazzi will change the altitude-->
-    
-    <define name="ALTITUDE_MAX_CLIMB" value="2."/> <!-- max climb setting -->
-    
+
 
     <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.45"/> <!-- nominal cruise throttle %-->
     <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.25"/> <!-- minimum cruise throttle setting-->
     <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.75"/> <!-- maximum cruise throttle setting-->
 
 
-    <define name="AUTO_THROTTLE_LOITER_TRIM" value="1500"/> <!--elevator trim when on min cruise throttle setting to maintain altitude-->
+
+<define name="AUTO_THROTTLE_LOITER_TRIM" value="1500"/> <!--elevator trim when on min cruise throttle setting to maintain altitude-->
     <define name="AUTO_THROTTLE_DASH_TRIM" value="-4000"/> <!--elevator trim when on max cruise throttle setting to maintain altitude-->
 
+
+
+
+
+
+
+    <define name="ALTITUDE_PGAIN" value="0.03"/><!--the rate at which paparazzi will change the altitude-->
+    
+    <define name="ALTITUDE_MAX_CLIMB" value="2."/> <!-- max climb setting -->
+    
 
     <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.15" unit="%/(m/s)"/> <!-- rate at which to increase throttle on climb error-->
 
@@ -277,7 +286,7 @@
 
     <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.05"/><!-- how much to change pitch based on climb error -->
 
-    <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/><!-- time it takes to go from 0% throttle to 100% throttle-->
+    
 
   </section>
 
@@ -291,7 +300,7 @@
 
 <!--The following is a copy and paste. Check thoroughly before flying-->  
   <section name="AGGRESSIVE" prefix="AGR_">
-    <define name="BLEND_START" value="20"/>
+    <define name="BLEND_START" value="20000"/><!--really high to prevent it-->
     <!-- Altitude Error to Initiate Aggressive Climb CANNOT BE ZERO!!-->
     <define name="BLEND_END" value="10"/>
     <!-- Altitude Error to Blend Aggressive to Regular Climb Modes CANNOT BE ZERO!!-->
