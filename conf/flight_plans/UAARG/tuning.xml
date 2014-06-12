@@ -27,6 +27,17 @@
         <attitude roll="0.0" throttle="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" vmode="throttle" />
       </while>
     </block>
+
+    <block name="Ascent Auto Throttle Tuning">
+      <while cond="TRUE">
+      	<attitude roll="0.0" vmode="climb" climb="V_CTL_ALTITUDE_MAX_CLIMB"/>
+      </while>
+    </block>
+    <block name="Descent Auto Throttle Tuning">
+      <while cond="GetPosAlt() > (ground_alt + 25)">
+      	<attitude roll="0.0" vmode="climb" climb="-V_CTL_ALTITUDE_MAX_CLIMB"/>
+      </while>
+    </block>
     
 
   </blocks>
