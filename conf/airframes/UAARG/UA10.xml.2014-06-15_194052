@@ -35,15 +35,17 @@
       <define name="F_PROPAGATE_QUAT"/>
     </subsystem>
     
-    <subsystem name="ins" type="alt_float"/>
+    <subsystem name="ins" type="alt_float">
+      <define name="USE_BAROMETER" value="TRUE"/>
+    </subsystem>
     
   
-  
+    <define name="USE_BAROMETER" value="TRUE"/> <!--hopefully this line tells paparazzi to use the aspirin Barometer-->
     
 
 
-    <target name="usb_tunnel_3" board="lisa_m_2.0"/><!-- GPS tunnel-->
-    <target name="usb_tunnel_2" board="lisa_m_2.0"/> <!--xbee tunnel-->
+    <target name="usb_tunnel_3" board="lisa_m_2.0" /><!-- GPS tunnel-->
+    <target name="usb_tunnel_2" board="lisa_m_2.0" /> <!--xbee tunnel-->
   </firmware>
 
 
@@ -59,7 +61,7 @@
     <axis name="THROTTLE" failsafe_value="0"/>
     <axis name="ROLL" failsafe_value="0"/>
     <axis name="PITCH" failsafe_value="0"/>
-    <axis name="BRAKE" failsafe_value="-9600"/>
+    <axis name="BRAKE" failsafe_value="0"/>
     <axis name="YAW" failsafe_value="0"/>
     <axis name="GEAR" failsafe_value="0"/>
   </commands>
@@ -69,15 +71,15 @@
     <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="0"/>
     <servo name="DROP" max="2000" neutral="1500" min="1000" no="1"/>
     <servo name="ELEVATOR" max="2000" neutral="1472" min="1100" no="2"/> 
-    <servo name="AILERON_RIGHT" max="1700" neutral="1500" min="1100" no="3"/>
-    <servo name="AILERON_LEFT" max="1900" neutral="1500" min="1300" no="4"/>
+    <servo name="AILERON_RIGHT" max="1700" neutral="1491" min="1100" no="3"/>
+    <servo name="AILERON_LEFT" max="1900" neutral="1480" min="1300" no="4"/>
     <servo name="RUDDER" max="1000" neutral="1500" min="2000" no="5"/>
   </servos>
   
   
   <command_laws> <!--How the commands relate to servo movement-->
-    <set value="@ROLL+.5*(@BRAKE+9600)" servo="AILERON_LEFT"/>
-    <set value="@ROLL-.5*(@BRAKE+9600)" servo="AILERON_RIGHT"/>
+    <set value="@ROLL+.5*(@BRAKE+12600)" servo="AILERON_LEFT"/>
+    <set value="@ROLL-.5*(@BRAKE+12600)" servo="AILERON_RIGHT"/>
     <set value="@THROTTLE" servo="THROTTLE"/>
     <set value="@PITCH" servo="ELEVATOR"/>
     <set value="@YAW" servo="RUDDER"/>
@@ -90,8 +92,8 @@
     <set value="@ROLL" command="ROLL"/>
     <set value="@PITCH" command="PITCH"/>
     <set value="@YAW" command="YAW"/>
-    <set value="@GEAR" command="GEAR"/>
-    <set value="@AUX1" command="BRAKE"/>
+    <set value="@GEAR" command="GEAR" />
+    <set value="@AUX1" command="BRAKE" />
   </rc_commands>
 
 
@@ -167,12 +169,12 @@
   
   <section name="BAT">
     <define name="MILLIAMP_AT_FULL_THROTTLE" value="3000"/>
-    <define name="CATASTROPHIC_BAT_LEVEL" value="12.7" unit="V"/>
-    <define name="CRITIC_BAT_LEVEL" value="13.2" unit="V"/>
+    <define name="CATASTROPHIC_BAT_LEVEL" value="14.9" unit="V"/>
+    <define name="CRITIC_BAT_LEVEL" value="15.0" unit="V"/>
     <define name="LOW_BAT_LEVEL" value="15.1" unit="V"/>
-    <define name="MAX_BAT_LEVEL" value="16.7" unit="V"/>
+    <define name="MAX_BAT_LEVEL" value="16.8" unit="V"/>
     <define name="VOLTAGE_ADC_SCALE" value="0.01115"/> 
-    <define name="VoltageOfAdc(adc)" value="(VOLTAGE_ADC_SCALE * adc)"/>
+    <define name="VoltageOfAdc(adc)" value ="(VOLTAGE_ADC_SCALE * adc)"/>
   </section>
 
   
@@ -203,7 +205,7 @@
 
   <section name="INS" prefix="INS_"> <!--These are the angles which are output when the plane is in the "flat" position. Similar to BODY_TO_IMU -->
     <define name="ROLL_NEUTRAL_DEFAULT" value="0" unit="deg"/>
-    <define name="PITCH_NEUTRAL_DEFAULT" value="0" unit="deg"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="-2" unit="deg"/>
   </section>
 
 
@@ -231,20 +233,20 @@
     <define name="COURSE_DGAIN" value="17.1" unit="deg"/>
 
 
-    <define name="ROLL_MAX_SETPOINT" value="34.4920593063" unit="deg"/> <!-- these are the max and min values the plane can roll and pitch when in auto -->
+    <define name="ROLL_MAX_SETPOINT" value="35" unit="deg"/> <!-- these are the max and min values the plane can roll and pitch when in auto -->
     <define name="PITCH_MAX_SETPOINT" value="30" unit="deg"/>
     <define name="PITCH_MIN_SETPOINT" value="-30" unit="deg"/>
 
 
-    <define name="PITCH_PGAIN" value="18513"/><!-- the rate at which paparazzi will change the pitch  -->
+    <define name="PITCH_PGAIN" value="12000."/><!-- the rate at which paparazzi will change the pitch  -->
     <define name="PITCH_DGAIN" value="1.5"/> <!-- the rate at which paparazzi couteracts pgain -->
 
-    <define name="ROLL_ATTITUDE_GAIN" value="38068"/> <!--same idea as pitch pgain but for roll.--> <!--ROLL_PGAIN is still valid but paparazzi recommends using this one-->
+    <define name="ROLL_ATTITUDE_GAIN" value="7500"/> <!--same idea as pitch pgain but for roll.--> <!--ROLL_PGAIN is still valid but paparazzi recommends using this one-->
 
     <define name="ROLL_RATE_GAIN" value="1500"/> <!-- thinking this is probably some sort of gain that maintains flight with no Roll. So for example when flying straight and level and the wind rolls the plane, this will correct it. Maybe.-->
 <!--most likely doesn't work as it uses a gyro and we have not defined one-->
 
-    <define name="ELEVATOR_OF_ROLL" value="3409"/><!-- try adjusting to maintain altitude on turns-->
+    <define name="ELEVATOR_OF_ROLL" value="1250"/><!-- try adjusting to maintain altitude on turns-->
 
     <define name="ROLL_SLEW" value="0.1"/> <!-- not too sure trying playing around with it. -->
         
@@ -325,6 +327,13 @@
 
   </section>
 
+ <modules>
+    <load name="servo_switch.xml">
+      <define name="SERVO_SWITCH_ON_VALUE"  value="1100"/>
+      <define name="SERVO_SWITCH_OFF_VALUE" value="1900"/>
+      <define name="SERVO_SWITCH_SERVO"     value="DROP"/>
+   </load>
+  </modules>
 
 
   <!--End not checked stuff-->
