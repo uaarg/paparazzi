@@ -154,7 +154,7 @@
   <aircraft
    name="UA10"
    ac_id="2"
-   airframe="airframes/UAARG/UA10_flaperons.xml"
+   airframe="airframes/UAARG/UA10.xml"
    radio="radios/UAARG/spektrum.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
    flight_plan="flight_plans/UAARG/Bremner_Simple.xml"

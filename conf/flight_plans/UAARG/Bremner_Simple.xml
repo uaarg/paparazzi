@@ -19,9 +19,9 @@
 
 
   <includes>
-    <include name="Failsafe" procedure="failsafe.xml">
+    <!--<include name="Failsafe" procedure="failsafe.xml">
       <with from="Standby" to="Standby"/>
-    </include>
+    </include>-->
     <include name="Tuning" procedure="tuning.xml">
     </include>
   </includes>
@@ -52,6 +52,10 @@
 
     <block key="Ctrl+a" name="Standby" strip_button="Standby" strip_icon="home.png" group="home">
       <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+
+    <block name="WP1">
+      <circle radius="nav_radius" wp="1"/>
     </block>
         
     
