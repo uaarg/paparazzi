@@ -39,7 +39,11 @@ paparazzi.sublime-workspace
 # Vagrant VM files
 /.vagrant
 
-/var
+# Ignore everything in var/ except the var/logs/ directory
+/var/*
+/var/*/
+!/var/logs/
+
 /dox
 
 /paparazzi
