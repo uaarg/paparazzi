@@ -2,7 +2,7 @@
 #
 # navstik_1.0.makefile
 #
-# http://wiki.paparazziuav.org/wiki/Navstik
+# http://paparazzi.enac.fr/wiki/Navstik
 #
 
 BOARD=navstik

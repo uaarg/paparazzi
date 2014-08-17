@@ -313,7 +313,7 @@ let keys_help = fun () ->
     "Zoom: Mouse Wheel, PgUp, PgDown\n\
     Pan: Map & keyboard arrows\n\
     Fit to window: f\n\
-    Center active A/C: c or C\n\
+    Center active A/C: c\n\
     Fullscreen: F11\n\
     Load Map Tile: Right\n\
     Create Waypoint: Ctrl-Left\n\
