@@ -141,6 +141,105 @@ STM32 architecture
   [#814] (https://github.com/paparazzi/paparazzi/pull/814)
 
 
+
+General
+-------
+
+- modules: use VPATH to make it easier to load external modules
+  [#760] (https://github.com/paparazzi/paparazzi/pull/760)
+- ground_segement: try to update AGL even if GPS is lost
+  [#742] (https://github.com/paparazzi/paparazzi/issues/742)
+- GCS: add exponentiation operator to papgets
+- logalizer: export lat/lon with 9 decimal places
+- GCS: display AP mode forward correctly
+  [#748] (https://github.com/paparazzi/paparazzi/pull/748)
+- tools: flash via bmp: reset and detach from target after uploading
+  [#746] (https://github.com/paparazzi/paparazzi/issues/746)
+- tools: DFU flashing: allow 1 BIT SQUARED vendor
+  [#778] (https://github.com/paparazzi/paparazzi/pull/778)
+- tools: add tcp_aircraft_server
+  [#750] (https://github.com/paparazzi/paparazzi/pull/750)
+- tools: add tool to syncronize video on replay
+  [#770] (https://github.com/paparazzi/paparazzi/pull/770)
+  [#776] (https://github.com/paparazzi/paparazzi/pull/776)
+- messages: add GEO_MAG message to send magnetic field
+  [#735] (https://github.com/paparazzi/paparazzi/pull/735)
+- messages: add speed setpoint to GUIDANCE_H_REF_INT message
+  [#763] (https://github.com/paparazzi/paparazzi/issues/763)
+- NPS: block and setting messages only parsed for correct AC_ID
+  [#777] (https://github.com/paparazzi/paparazzi/pull/777)
+
+Airborne
+--------
+
+- fixedwing: correct altitude setpoint during NavGlide
+  [#785] (https://github.com/paparazzi/paparazzi/pull/785)
+- flight plans: don't set nav_pitch to 0 at each stage init
+  [#727] (https://github.com/paparazzi/paparazzi/pull/727)
+- modules: gps_ubx_ucenter: fix version check for Ublox 7
+- ardrone2: mag freeze fix
+  [#767] (https://github.com/paparazzi/paparazzi/pull/767)
+- boards: add support for navstik
+  [#744] (https://github.com/paparazzi/paparazzi/pull/744)
+- boards: fix PWM on lisa_l
+- peripherals: ms5611: check temp an pressure range
+  [#758] (https://github.com/paparazzi/paparazzi/issues/758)
+- imu: aspirin_2_spi: wait 1.5s before configuring mag
+  [#779] (https://github.com/paparazzi/paparazzi/pull/779)
+- imu: body_to_imu adjustable during runtime via settings
+  [#783] (https://github.com/paparazzi/paparazzi/pull/783)
+- ahrs: int_cmpl_quat: fix rate integration range/resolution
+  [#782] (https://github.com/paparazzi/paparazzi/pull/782)
+- ins: properly define INS_VFF_R_GPS
+  [#741] (https://github.com/paparazzi/paparazzi/issues/741)
+- ins: allow define of VFF_R_SONAR_OF_M
+  [#764] (https://github.com/paparazzi/paparazzi/issues/764)
+- electrical: min bat level check
+  [#745] (https://github.com/paparazzi/paparazzi/issues/745)
+- electrical: fix for negative currents
+  [#753] (https://github.com/paparazzi/paparazzi/issues/753)
+
+
+Rotorcraft Firmware
+-------------------
+
+- RC input: zero yaw command if throttle is zero
+  [#737] (https://github.com/paparazzi/paparazzi/pull/737)
+- prevent motor arming in kill mode
+  [#740] (https://github.com/paparazzi/paparazzi/pull/740)
+- change rotorcraft nav API to use points rather than wp id
+  [#749] (https://github.com/paparazzi/paparazzi/pull/749)
+- use roll/pitch RC deadbands in attitude mode
+  [#773] (https://github.com/paparazzi/paparazzi/pull/773)
+- route precision fix
+  [#775] (https://github.com/paparazzi/paparazzi/pull/775)
+- guidance_v: limit z_ref in update_ref_from_zd_sp
+  [#754] (https://github.com/paparazzi/paparazzi/pull/754)
+- mission module for rotorcrafts
+  [#759] (https://github.com/paparazzi/paparazzi/pull/759)
+- guidance_v: only limit throttle if RC ok
+  [#766] (https://github.com/paparazzi/paparazzi/pull/766)
+
+STM32 architecture
+------------------
+
+- fix I2C bitrate on F4
+  [#729] (https://github.com/paparazzi/paparazzi/pull/729)
+- fix sys_time_usleep
+  [#739] (https://github.com/paparazzi/paparazzi/pull/739)
+- fix spektrum on F4
+  [#732] (https://github.com/paparazzi/paparazzi/pull/732)
+- timer frequency cleanup
+  [#734] (https://github.com/paparazzi/paparazzi/pull/734)
+- split spektrum uart rx and config pin for Apogee
+  [#733] (https://github.com/paparazzi/paparazzi/pull/733)
+- add suport for pwm input
+- fix reset for I2C3
+  [#751] (https://github.com/paparazzi/paparazzi/pull/751)
+- simplify actuators_pwm
+  [#757] (https://github.com/paparazzi/paparazzi/pull/757)
+
+
 Paparazzi 5.1.1_testing
 =======================
 
