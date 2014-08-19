@@ -174,6 +174,16 @@
    gui_color="blue"
   />
   <aircraft
+   name="UA11"
+   ac_id="3"
+   airframe="airframes/UAARG/UA11.xml"
+   radio="radios/UAARG/spektrum.xml"
+   telemetry="telemetry/default_fixedwing_imu.xml"
+   flight_plan="flight_plans/UAARG/Bremner_Simple.xml"
+   settings=" settings/fixedwing_basic.xml settings/control/ctrl_UAARG.xml"
+   gui_color="blue"
+  />
+  <aircraft
    name="UA9"
    ac_id="1"
    airframe="airframes/UAARG/UA9.xml"
