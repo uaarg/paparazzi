@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 Piotr Esden-Tempski <piotr@esden.net>
+ *
+ * Copyright (C) 2009-2013 The Paparazzi Team
  *
  * This file is part of paparazzi.
  *
@@ -17,19 +18,15 @@
  * along with paparazzi; see the file COPYING.  If not, write to
  * the Free Software Foundation, 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ */
+
+/**
+ * @file arch/omap/mcu_arch.h
+ * omap arch dependant microcontroller initialisation functions.
  *
+ * Because Linux runs on omap, we don't have to initialize the MCU ourselves.
  */
 
-#ifndef CONFIG_LISA_MX_2_0_H
-#define CONFIG_LISA_MX_2_0_H
+#include "mcu_arch.h"
 
-#include "boards/lisa_mx_common.h"
-
-/*
- * Spektrum
- */
-/* The line that is pulled low at power up to initiate the bind process */
-#define SPEKTRUM_BIND_PIN GPIO3
-#define SPEKTRUM_BIND_PIN_PORT GPIOC
-
-#endif /* CONFIG_LISA_MX_2_0_H */
+void mcu_arch_init(void) { }
