@@ -7,7 +7,7 @@
     
     
 
-    <target name="ap" board="lisa_mx_2.0">
+    <target name="ap" board="lisa_mx_2.1">
       <!-- These lines may need to be added to due to the 100hz refresh rate of the Aspirin. Do testing with and wihtout it to determine if there is any effect--> 
       <!--<configure name="PERIODIC_FREQUENCY" value="120"/>
       <configure name="AHRS_PROPAGATE_FREQUENCY" value="100"/>
@@ -44,8 +44,7 @@
     <configure name="FLASH_MODE" value="SWD"/>
     <!--- <configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
 
-    <target name="usb_tunnel_3" board="lisa_mx_2.0"/><!-- GPS tunnel-->
-    <target name="usb_tunnel_2" board="lisa_mx_2.0"/> <!--xbee tunnel-->
+
   </firmware>
 
 
