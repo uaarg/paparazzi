@@ -42,7 +42,7 @@ paparazzi.sublime-workspace
 # Ignore everything in var/ except the var/logs/ directory
 /var/*
 /var/*/
-!/var/logs/
+
 
 /dox
 
