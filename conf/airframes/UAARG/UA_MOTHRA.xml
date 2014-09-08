@@ -17,12 +17,18 @@
         <define name="RADIO_MODE" value="RADIO_AUX2"/>
         <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
       </subsystem>
+      
     </target>
 
     <target name="sim" board="pc">
       <subsystem name="radio_control" type="ppm"/>
     </target>
+    <subsystem name="actuators"     type="pwm">
+      
+      <define name="USE_SERVOS_7AND8"/>
+    </subsystem>
     
+
 
     <subsystem name="gps" type="ublox">
       <configure name="GPS_BAUD" value="B57600"/>
@@ -44,6 +50,9 @@
     <configure name="FLASH_MODE" value="SWD"/>
     <!--- <configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
 
+    <define name="USE_ADC"/>
+    <define name="USE_ADC_3"/> 
+    
 
   </firmware>
 
@@ -67,12 +76,12 @@
   
   
   <servos><!--the servos the outpilot autoputs commands output to-->
-    <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="0"/>
-    <servo name="DROP" max="2000" neutral="1500" min="1000" no="1"/>
+    <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="6"/>
+    <servo name="DROP" max="2000" neutral="1500" min="1000" no="5"/>
     <servo name="ELEVATOR" max="2000" neutral="1500" min="1000" no="2"/> 
-    <servo name="AILERON_RIGHT" max="2000" neutral="1500" min="1000" no="3"/>
+    <servo name="AILERON_RIGHT" max="2000" neutral="1500" min="1000" no="5"/>
     <servo name="AILERON_LEFT" max="2000" neutral="1500" min="1000" no="4"/>
-    <servo name="RUDDER" max="2000" neutral="1500" min="1000" no="5"/>
+    <servo name="RUDDER" max="2000" neutral="1500" min="1000" no="3"/>
   </servos>
   
   
@@ -172,8 +181,11 @@
     <define name="CRITIC_BAT_LEVEL" value="13.2" unit="V"/>
     <define name="LOW_BAT_LEVEL" value="15.1" unit="V"/>
     <define name="MAX_BAT_LEVEL" value="16.7" unit="V"/>
-    <define name="VOLTAGE_ADC_SCALE" value="0.05454545454"/> 
+    <define name="VOLTAGE_ADC_SCALE" value="0.005454545454"/> 
     <define name="VoltageOfAdc(adc)" value="(VOLTAGE_ADC_SCALE * adc)"/>
+
+    <define name="ADC_CHANNEL_CURRENT" value="ADC_3" />
+    <define name="MilliAmpereOfAdc(adc)" value="Max(0,80.57*(adc-1770))"/>
   </section>
 
   
