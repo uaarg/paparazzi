@@ -77,11 +77,11 @@
   
   <servos><!--the servos the outpilot autoputs commands output to-->
     <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="6"/>
-    <servo name="DROP" max="2000" neutral="1500" min="1000" no="5"/>
-    <servo name="ELEVATOR" max="2000" neutral="1500" min="1000" no="2"/> 
-    <servo name="AILERON_RIGHT" max="2000" neutral="1500" min="1000" no="5"/>
-    <servo name="AILERON_LEFT" max="2000" neutral="1500" min="1000" no="4"/>
-    <servo name="RUDDER" max="2000" neutral="1500" min="1000" no="3"/>
+    <servo name="DROP" max="2000" neutral="1500" min="1000" no="1"/>
+    <servo name="ELEVATOR" max="1000" neutral="1500" min="2000" no="4"/> 
+    <servo name="AILERON_RIGHT" max="2000" neutral="1500" min="1000" no="3"/>
+    <servo name="AILERON_LEFT" max="2000" neutral="1500" min="1000" no="2"/>
+    <servo name="RUDDER" max="2000" neutral="1500" min="1000" no="5"/>
   </servos>
   
   
@@ -185,7 +185,7 @@
     <define name="VoltageOfAdc(adc)" value="(VOLTAGE_ADC_SCALE * adc)"/>
 
     <define name="ADC_CHANNEL_CURRENT" value="ADC_3" />
-    <define name="MilliAmpereOfAdc(adc)" value="Max(0,80.57*(adc-1770))"/>
+    <define name="MilliAmpereOfAdc(adc)" value="80.57*(adc-1770)"/>
   </section>
 
   
