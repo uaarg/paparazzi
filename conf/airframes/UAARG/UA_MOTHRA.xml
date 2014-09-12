@@ -3,16 +3,7 @@
 
 <airframe name="Mothra">
   <firmware name="fixedwing">
-    
-    
-    
-
     <target name="ap" board="lisa_mx_2.1">
-      <!-- These lines may need to be added to due to the 100hz refresh rate of the Aspirin. Do testing with and wihtout it to determine if there is any effect--> 
-      <!--<configure name="PERIODIC_FREQUENCY" value="120"/>
-      <configure name="AHRS_PROPAGATE_FREQUENCY" value="100"/>
-      <configure name="AHRS_CORRECT_FREQUENCY" value="100"/>-->
-
       <subsystem name="radio_control" type="spektrum">
         <define name="RADIO_MODE" value="RADIO_AUX2"/>
         <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
@@ -36,7 +27,7 @@
     <subsystem name="telemetry" type="transparent">
       <configure name="MODEM_BAUD" value="B57600"/>
     </subsystem>
-    <subsystem name="imu" type="aspirin_v2.2"/>
+    <subsystem name="imu" type="lisa_mx_v2.1"/>
     <subsystem name="navigation"/>
     <subsystem name="control"/>
     <subsystem name="ahrs" type="float_cmpl_quat">
@@ -125,9 +116,9 @@
     <!--Then open the messages windows and look at the attitude data-->
     <!--Attitude should be completely 0. -->
     <!--If not take the value given, convert to degrees and subtract from current values-->
-    <define name="BODY_TO_IMU_PHI" value="-90." unit="deg"/> 
-    <define name="BODY_TO_IMU_THETA" value="0." unit="deg"/>
-    <define name="BODY_TO_IMU_PSI" value="0." unit="deg"/>
+    <define name="BODY_TO_IMU_PHI" value="90." unit="deg"/> 
+    <define name="BODY_TO_IMU_THETA" value="-90." unit="deg"/>
+    <define name="BODY_TO_IMU_PSI" value="180." unit="deg"/>
 
     <!--needs to be calibraated for plane via python scripts and location if using different ahrs-->
     <!--See http://wiki.paparazziuav.org/wiki/ImuCalibration -->
@@ -243,14 +234,13 @@
     <define name="PITCH_DGAIN" value="1.5"/> <!-- the rate at which paparazzi couteracts pgain -->
 
     <define name="ROLL_ATTITUDE_GAIN" value="38068"/> <!--same idea as pitch pgain but for roll.--> <!--ROLL_PGAIN is still valid but paparazzi recommends using this one-->
-
     <define name="ROLL_RATE_GAIN" value="1500"/> <!-- thinking this is probably some sort of gain that maintains flight with no Roll. So for example when flying straight and level and the wind rolls the plane, this will correct it. Maybe.-->
 <!--most likely doesn't work as it uses a gyro and we have not defined one-->
 
-    <define name="ELEVATOR_OF_ROLL" value="3409"/><!-- try adjusting to maintain altitude on turns-->
+  <define name="ELEVATOR_OF_ROLL" value="3409"/><!--Adjust to maintain altitude on turns-->
 
-    <define name="ROLL_SLEW" value="0.1"/> <!-- not too sure trying playing around with it. -->
-        
+  <define name="ROLL_SLEW" value="0.1"/> <!-- not too sure trying playing around with it. -->
+
   </section>
 
 
@@ -271,7 +261,7 @@
 
 
 
-<define name="AUTO_THROTTLE_LOITER_TRIM" value="1500"/> <!--elevator trim when on min cruise throttle setting to maintain altitude-->
+    <define name="AUTO_THROTTLE_LOITER_TRIM" value="1500"/> <!--elevator trim when on min cruise throttle setting to maintain altitude-->
     <define name="AUTO_THROTTLE_DASH_TRIM" value="-4000"/> <!--elevator trim when on max cruise throttle setting to maintain altitude-->
 
 
@@ -282,7 +272,7 @@
 
     <define name="ALTITUDE_PGAIN" value="0.03"/><!--the rate at which paparazzi will change the altitude-->
     
-    <define name="ALTITUDE_MAX_CLIMB" value="2."/> <!-- max climb setting -->
+    <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/> <!-- max climb setting -->
     
 
     <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.15" unit="%/(m/s)"/> <!-- rate at which to increase throttle on climb error-->
@@ -316,7 +306,7 @@
     <!-- Pitch for Aggressive Climb -->
     <define name="DESCENT_THROTTLE" value="0.1"/>
     <!-- Gaz for Aggressive Decent -->
-    <define name="DESCENT_PITCH" value="-0.25"/>
+    <define name="DESCENT_PITCH" value="10" unit="deg"/>
     <!-- Pitch for Aggressive Decent -->
     <define name="CLIMB_NAV_RATIO" value="0.8"/>
     <!-- Percent Navigation for Altitude Error Equal to Start Altitude -->
@@ -327,6 +317,8 @@
 
 
   <!--End not checked stuff-->
-  
+
+
+
   
 </airframe>
