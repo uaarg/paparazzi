@@ -24,6 +24,7 @@
       <define name="USE_SERVOS_7AND8"/>
     </subsystem>
     
+    <define name="RC_LOST_MODE" value="PPRZ_MODE_AUTO2"/>
 
 
     <subsystem name="gps" type="ublox">
@@ -61,8 +62,8 @@
 <!--The following is the commands sections. This deals with how the control surface relate to movement and rc inpu-->
   <commands> <!--The commands the autopilot board outputs-->
     <axis name="THROTTLE" failsafe_value="0"/>
-    <axis name="ROLL" failsafe_value="0"/>
-    <axis name="PITCH" failsafe_value="0"/>
+    <axis name="ROLL" failsafe_value="9600"/>
+    <axis name="PITCH" failsafe_value="-9600"/>
     <axis name="BRAKE" failsafe_value="0"/>
     <axis name="YAW" failsafe_value="0"/>
     <axis name="GEAR" failsafe_value="0"/>
