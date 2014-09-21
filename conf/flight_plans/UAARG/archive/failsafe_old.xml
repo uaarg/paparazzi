@@ -1,0 +1,36 @@
+<!DOCTYPE procedure SYSTEM "../flight_plan.dtd">
+
+<procedure>
+
+  <header>
+    #include "subsystems/datalink/datalink.h"
+    #include "subsystems/commands.h"
+
+    #define datalink_home_timeout 10
+    #define datalink_suicide_timeout 20
+  </header>
+
+  <exceptions>
+    <exception cond="!Or(datalink_suicide_timeout > datalink_time, datalink_time > datalink_home_timeout)" deroute="Standby"/> <!-- Lost Autopilot Link-->
+    <!-- Add conditions that deroute to suicide in here. Make sure to also add to the exception within suicide.-->
+    <exception cond="datalink_time > datalink_suicide_timeout" deroute="Suicide"/>
+    <!--<exception cond="commands[COMMAND_KILL_SWITCH] > 4000" deroute="Suicide"/>-->
+    <!-- End of conditions for suicide -->
+  </exceptions>
+
+  <blocks>
+    <block name="Suicide">
+      <set value="1" var="kill_throttle"/>
+      <attitude climb="-3" height="0" roll="2000" throttle="0" vmode="throttle"/>
+      <exception cond="2 > datalink_time" deroute="Suicide_Recovery"/>
+      <!-- insert this linke if using kill switch on TXexception cond="And(2 > datalink_time, 4000 > commands[COMMAND_KILL_SWITCH])" deroute="Suicide_Recovery"/>-->
+    </block>
+
+    <block name="Suicide_Recovery">
+      <set value="0" var="kill_throttle"/>
+      <deroute block="Standby"/>
+    </block>
+
+  </blocks>
+
+</procedure>
