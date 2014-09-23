@@ -1,23 +1,12 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="660" ground_alt="605" lat0="53.63836" lon0="-113.28607" max_dist_from_home="1000" name="Bremner_Simple" qfu="270" security_height="25">
-  <header>
-
-</header>
+<flight_plan alt="660" ground_alt="674" lat0="53.52726265919033" lon0="-113.52611392736435" max_dist_from_home="25" name="Quad_Testing" qfu="270" security_height="25">
   <waypoints>
-    <waypoint name="HOME" x="0" y="0"/>
-    <waypoint name="STDBY" x="30." y="100."/>
-    <waypoint name="1" x="100.1" y="70.9"/>
-    <waypoint name="2" x="-100.3" y="80.1"/>
-    <waypoint name="CLIMB" x="-125.0" y="45.0"/>
-    
+    <waypoint name="HOME" x="26.6" y="23.4"/>
+    <waypoint name="STDBY" x="16.3" y="29.9"/>
   </waypoints>
   <includes>
     <include name="Failsafe" procedure="failsafe.xml">
-      <with from="Standby" to="Standby"/>
-    </include>
-    <include name="Tuning" procedure="tuning.xml"/>
-    <include name="Testing" procedure="testing.xml">
       <with from="Standby" to="Standby"/>
     </include>
   </includes>

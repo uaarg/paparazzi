@@ -1,0 +1,70 @@
+<procedure>
+
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint name="ENDURANCE1" x="113.1" y="168.7"/>
+    <waypoint name="ENDURANCE2" x="120.3" y="439.4"/>
+    <waypoint name="ENDURANCE3" x="456.6" y="422.6"/>
+    <waypoint name="ENDURANCE4" x="455.8" y="166.6"/>
+    <waypoint name="Tight_Circle" x="100" y="100"/>
+    <waypoint name="ALT_TEST_1" x="-200" y="35"/>
+    <waypoint alt="860.0" name="ALT_TEST_2" x="0" y="35"/>
+    <waypoint name="ALT_TEST_3" x="200" y="35"/>
+  </waypoints>
+
+  <blocks>
+
+   <block group="testing" name="ENDURANCE">
+      <while cond="TRUE">
+         <go wp="ENDURANCE1"/>
+         <go wp="ENDURANCE2"/> 
+         <go wp="ENDURANCE3"/>
+         <go wp="ENDURANCE4"/>
+      </while>
+   </block>
+
+   <block group="testing" name="ALT_CHANGE">
+      <go wp="ALT_TEST_1"/>
+      <go wp="ALT_TEST_2"/> 
+      <go wp="ALT_TEST_3"/>
+      <deroute block="Standby"/>
+      
+   </block>
+
+   <block group="testing" name="TightCircle_32">
+      <while cond="TRUE">
+         <circle radius="32" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_45">
+      <while cond="TRUE">
+         <circle radius="45" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_27">
+      <while cond="TRUE">
+         <circle radius="27" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_-32">
+      <while cond="TRUE">
+         <circle radius="-32" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_-45">
+      <while cond="TRUE">
+         <circle radius="-45" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_-27">
+      <while cond="TRUE">
+         <circle radius="-27" wp="Tight_Circle"/>
+      </while>
+   </block>
+  </blocks>
+</procedure>
