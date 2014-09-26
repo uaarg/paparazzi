@@ -13,7 +13,7 @@
   </header>
 
   <exceptions>
-    <exception cond="datalink_time > datalink_standby" deroute="Standby"/> <!-- Lost Telemetry Link, sends plane to circle WP standby-->
+    <exception cond="datalink_termination > datalink_time > datalink_standby" deroute="Standby"/> <!-- Lost Telemetry Link, sends plane to circle WP standby-->
 
     <exception cond="datalink_time > datalink_termination" deroute="Termination"/> <!-- if the plane the plane has lost the datalink for longer than datalink_termination, the plane will automatically go into sucicide.-->
 
@@ -36,7 +36,7 @@
     <block name="Termination"><!-- block designed to automatically terminate the plane unless conditions are met-->
       <set value="1" var="kill_throttle"/>
       <attitude climb="2000" height="0" roll="2000" throttle="0" vmode="throttle"/>
-      <exception cond="And(2 > datalink_time, radio_control.status == rc_ok)" deroute="Termination_Recovery"/>
+      <!--<exception cond="2 > datalink_time" deroute="Termination_Recovery"/> -->
       
     </block>
 
