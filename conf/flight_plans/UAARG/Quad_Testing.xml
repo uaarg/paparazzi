@@ -4,6 +4,9 @@
   <waypoints>
     <waypoint name="HOME" x="26.6" y="23.4"/>
     <waypoint name="STDBY" x="16.3" y="29.9"/>
+    <waypoint name="1" x="100.1" y="70.9"/>
+    <waypoint name="2" x="-100.3" y="80.1"/>
+    <waypoint name="CLIMB" x="-125.0" y="45.0"/>
   </waypoints>
   <includes>
     <include name="Failsafe" procedure="failsafe.xml">
