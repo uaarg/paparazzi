@@ -1,5 +1,7 @@
 import select
 import subprocess
+import time
+import sys
 
 def monitorIperfInit(proc):
     inputs = [proc.stdout]
@@ -77,27 +79,30 @@ def main():
     # if there's an event on the iperf stream
     # then grab whatever gps message we see on the ivy bus at that time
     # and log it
+
+    # set up all the processes and i/o handles
     iperfProc = iperfHandler()
     ivyprobeProc = ivyprobeHandler()
-    inputs = [iperfProc.stdout, ivyprobeProc.stdout]
+    inputs = [iperfProc.stdout, ivyprobeProc.stdout, sys.stdin]
+    logfile = open('iperf_log.txt', 'w')
+
     iperfData = []
-    iperf_event_flag = 0
-    while inputs:
+    running = 1
+    while running:
         inputready, outputready, exceptready = select.select(inputs, [], [])
         for s in inputready:
             if s is iperfProc.stdout and iperfProc.stdout.readline != '':
                 # grab iperf line
                 line = iperfProc.stdout.readline()
                 parsedIperfLine = iperfParseOneLine(line)
-                print(parsedIperfLine)
-                time = parsedIperfLine['timestamp']
+                print >> logfile, parsedIperfLine
                 iperfData.append(parsedIperfLine)
 
                 # grab data from ivy bus
                 ivyLine = ivyprobeProc.stdout.readline()
-                print(ivyLine)
+                print >> logfile, ivyLine
 
-                # log it out somewhere
+    logfile.close()
 
 if __name__ == '__main__':
     main()
