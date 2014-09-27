@@ -82,6 +82,9 @@
     <program name="App Server" command="sw/ground_segment/tmtc/app_server"/>
 
     <program name="NatNet" command="sw/ground_segment/misc/natnet2ivy"/>
+
+    <program name="Nmea Generator" command="sw/ground_segment/python/nmea_generator/nmea_generator.py"/>
+    <program name="Iperf Mapper" command="sw/ground_segment/python/iperf_mapper/iperf_mapper.py"/>
  </section>
 
 
