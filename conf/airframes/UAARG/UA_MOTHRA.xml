@@ -161,7 +161,7 @@
   <section name="AHRS" prefix="AHRS_"> <!--This is local magnetic field data. Needs to be changed for different fields-->
     <!--CHANGE THIS FOR DIFFERENT LOCATIONS!!-->
     <!--See http://wiki.paparazziuav.org/wiki/Subsystem/ahrs#Local_Magnetic_Field For more details-->
-    <!--Note an update automatically module may be included. compiling failed with it inlcuded.-->
+    <!--Note a module that automatically updates this value has been added, see below. (geo_mag.xml)-->
 <!--
     <define name="H_X" value="0.243211"/>
     <define name="H_Y" value="0.063974"/>
@@ -335,8 +335,10 @@
   </section>
 
 
-
-
-
+  <modules>
+    <load name="geo_mag.xml"/>
+    <!--<load name="send_imu_mag_current.xml"/>-->
+     <!-- uncomment this line to measure IMU current Calibration--> 
+ </modules>
   
 </airframe>
