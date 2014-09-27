@@ -1,7 +1,6 @@
 import select
 import subprocess
 
-
 def monitorIperfInit(proc):
     inputs = [proc.stdout]
     inputready, outputready, exceptready = select.select(inputs, [], [])
@@ -20,7 +19,6 @@ def iperfHandler(iperf_cmd = "/usr/bin/iperf", iperf_interval = 1):
     Constructs the iperf server command, runs instance, and handles it.
     """
     from subprocess import Popen, PIPE
-    iperfData = []
 
     # construct command
     iperf_cmd += (" -s -i %d -y c" % iperf_interval)
@@ -29,6 +27,22 @@ def iperfHandler(iperf_cmd = "/usr/bin/iperf", iperf_interval = 1):
     iperf_process = Popen(iperf_cmd, shell=True, stdout=PIPE)
 
     return iperf_process
+
+def ivyprobeHandler(cmd = "/usr/bin/ivyprobe", ip = "127.255.255.255:2010"):
+    """
+    Constructs the ivyprobe server command, runs instance, and handles it.
+    """
+    from subprocess import Popen, PIPE
+
+    # construct command
+    message_name = "GPS"
+    regex = "\"^([^ ]+) %s (.*)$\"" % message_name
+    cmd = cmd + " " + ip + " " + regex
+    # start process
+    proc = Popen(cmd, shell=True, stdout=PIPE)
+
+    return proc
+
 
 def iperfParseOneLine(line):
         """
@@ -58,24 +72,32 @@ def iperfParseOneLine(line):
         parseDict = dict(zip(keys, fields))
         return parseDict
 
-def onIvyMessage():
-    print("lol")
-
 def main():
     # monitor iperf stream for events
     # if there's an event on the iperf stream
     # then grab whatever gps message we see on the ivy bus at that time
     # and log it
     iperfProc = iperfHandler()
-    inputs = [iperfProc.stdout]
+    ivyprobeProc = ivyprobeHandler()
+    inputs = [iperfProc.stdout, ivyprobeProc.stdout]
     iperfData = []
-    while 1:
+    iperf_event_flag = 0
+    while inputs:
         inputready, outputready, exceptready = select.select(inputs, [], [])
         for s in inputready:
-            if s == iperfProc.stdout and iperfProc.stdout.readline != '':
+            if s is iperfProc.stdout and iperfProc.stdout.readline != '':
                 # grab iperf line
                 line = iperfProc.stdout.readline()
-                iperfData.append(iperfParseOneLine(line))
+                parsedIperfLine = iperfParseOneLine(line)
+                print(parsedIperfLine)
+                time = parsedIperfLine['timestamp']
+                iperfData.append(parsedIperfLine)
+
+                # grab data from ivy bus
+                ivyLine = ivyprobeProc.stdout.readline()
+                print(ivyLine)
+
+                # log it out somewhere
 
 if __name__ == '__main__':
     main()
