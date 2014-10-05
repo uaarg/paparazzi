@@ -32,6 +32,7 @@
       <message name="CAM_POINT"           period="1.0"/>
       <message name="COMMANDS"            period="5"/>
       <message name="FBW_STATUS"          period="2"/>
+      <message name="BARO_MS5611"         period="1.0"/>
     </mode>
     <mode name="minimal">
       <message name="ALIVE"               period="5"/>
