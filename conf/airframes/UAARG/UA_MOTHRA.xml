@@ -40,7 +40,9 @@
       <define name="F_PROPAGATE_QUAT"/>
     </subsystem>
     
-    <subsystem name="ins" type="alt_float"/>
+    <subsystem name="ins" type="alt_float">
+      <define name="USE_BAROMETER" value="TRUE"/>
+    </subsystem>
     
   
     <configure name="NO_LUFTBOOT" value="1"/>
