@@ -11,8 +11,9 @@
       
       <define name="USE_ADC"/>
       <define name="USE_ADC_2"/> 
+      <define name="USE_I2C2" />
+      <define name="USE_AIRSPEED"/> <!-- change from MEASURE <=> USE --> 
 
-      
     </target>
 
     <target name="sim" board="pc">
@@ -173,13 +174,9 @@
 
 
 
-
-
-
-
   
   <section name="BAT">
-    <!--<define name="MILLIAMP_AT_FULL_THROTTLE" value="3000"/>-->
+    <!--<define name="MILLIAMP_AT_FULL_THROTTLE" value="3000"/> not needed due to current sensor-->
     <define name="CATASTROPHIC_BAT_LEVEL" value="12.7" unit="V"/>
     <define name="CRITIC_BAT_LEVEL" value="14.8" unit="V"/>
     <define name="LOW_BAT_LEVEL" value="15.1" unit="V"/>
@@ -303,6 +300,17 @@
     <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.09"/><!-- how much to change pitch based on climb error -->
 
     
+    <!--airspeed tuning -->
+    <define name="AUTO_AIRSPEED_SETPOINT" value="13.0"  unit="m/s" /> <!-- SETPOINT values may need to be adjusted to suit your aircraft -->
+    <define name="AUTO_AIRSPEED_PGAIN"    value="0.060" />
+    <define name="AUTO_AIRSPEED_IGAIN"    value="0.050" /> 
+ 
+    <define name="AUTO_GROUNDSPEED_SETPOINT" value="7.0"  unit="m/s" /> <!-- SETPOINT values may need to be adjusted to suit your aircraft -->
+    <define name="AUTO_GROUNDSPEED_PGAIN"    value="0.75" />
+    <define name="AUTO_GROUNDSPEED_IGAIN"    value="0.25" />
+
+    <define name="AUTO_PITCH_MAX_PITCH" value="RadOfDeg(25)"/>
+    <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-20)"/>
 
   </section>
 
@@ -339,8 +347,12 @@
 
   <modules>
     <load name="geo_mag.xml"/>
-    <!--<load name="send_imu_mag_current.xml"/>-->
-     <!-- uncomment this line to measure IMU current Calibration--> 
+    <load name="airspeed_ets.xml">
+      <define name="AIRSPEED_ETS_SYNC_SEND"/>
+      <define name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/> 
+
+    </load>
+    <!--<load name="send_imu_mag_current.xml"/>-->      <!-- uncomment this line to measure IMU current Calibration--> 
  </modules>
   
 </airframe>
