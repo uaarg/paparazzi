@@ -38,6 +38,7 @@
     <subsystem name="navigation"/>
     <subsystem name="control"/>
     <subsystem name="ahrs" type="float_cmpl_quat">
+      <configure name="USE_MAGNETOMETER" value="TRUE"/>
       <define name="F_PROPAGATE_QUAT"/>
     </subsystem>
     
@@ -133,23 +134,25 @@
    
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
-    <define name="MAG_X_NEUTRAL" value="-490"/>
-    <define name="MAG_Y_NEUTRAL" value="836"/>
-    <define name="MAG_Z_NEUTRAL" value="-248"/>
-    <define name="MAG_X_SENS" value="2.84911073385" integer="16"/>
-    <define name="MAG_Y_SENS" value="2.72875496162" integer="16"/>
-    <define name="MAG_Z_SENS" value="3.13133991535" integer="16"/>
+    <define name="MAG_X_NEUTRAL" value="2553"/>
+    <define name="MAG_Y_NEUTRAL" value="656"/>
+    <define name="MAG_Z_NEUTRAL" value="131"/>
+    <define name="MAG_X_SENS" value="1.26287158167" integer="16"/>
+    <define name="MAG_Y_SENS" value="2.63148615556" integer="16"/>
+    <define name="MAG_Z_SENS" value="2.33034754788" integer="16"/>
+
 
     
 
 
 
     <!-- Current draw magnetic field calibration-->
-    <!--
-    <define name= "MAG_X_CURRENT_COEF" value="0.0591913538739"/>
-    <define name= "MAG_Y_CURRENT_COEF" value="-0.132912120794"/>
-    <define name= "MAG_Z_CURRENT_COEF" value="-0.0724604582039"/>
-    -->
+    <!--Please note that if you dont have any experience in Paparazzi and are not looking online you can enable current calibration raw data from a module. look below at modules and uncomment the module.-->
+
+    <define name= "MAG_X_CURRENT_COEF" value="0.0"/>
+    <define name= "MAG_Y_CURRENT_COEF" value="0.00125529854039"/>
+    <define name= "MAG_Z_CURRENT_COEF" value="0.00438574329755"/>
+
     
   </section>
 
@@ -165,11 +168,13 @@
     <!--CHANGE THIS FOR DIFFERENT LOCATIONS!!-->
     <!--See http://wiki.paparazziuav.org/wiki/Subsystem/ahrs#Local_Magnetic_Field For more details-->
     <!--Note a module that automatically updates this value has been added, see below. (geo_mag.xml)-->
-<!--
-    <define name="H_X" value="0.243211"/>
-    <define name="H_Y" value="0.063974"/>
-    <define name="H_Z" value="0.967861"/>
--->
+
+<!-- Local magnetic field vector Bremner Field-->
+
+    <define name="H_X" value="0.24375"/>
+    <define name="H_Y" value="0.0635875"/>
+    <define name="H_Z" value="0.967751"/>
+
   </section>
 
 
@@ -352,7 +357,7 @@
       <define name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/> 
 
     </load>
-    <!--<load name="send_imu_mag_current.xml"/>-->      <!-- uncomment this line to measure IMU current Calibration--> 
+   <!-- <load name="send_imu_mag_current.xml"/>   -->   <!-- uncomment this line to measure IMU current Calibration--> 
  </modules>
   
 </airframe>
