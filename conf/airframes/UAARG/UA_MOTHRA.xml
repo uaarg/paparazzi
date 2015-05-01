@@ -12,7 +12,7 @@
       <define name="USE_ADC"/>
       <define name="USE_ADC_2"/> 
       <define name="USE_I2C2" />
-      <define name="USE_AIRSPEED"/> <!-- change from MEASURE <=> USE --> 
+      <define name="MEASURE_AIRSPEED"/> <!-- change from MEASURE <=> USE --> 
 
     </target>
 
@@ -75,18 +75,18 @@
   
   
   <servos><!--the servos the outpilot autoputs commands output to-->
-    <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="6"/>
+    <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="5"/>
     <servo name="DROP" max="2000" neutral="1500" min="1000" no="0"/>
     <servo name="ELEVATOR" max="1000" neutral="1457" min="2000" no="3"/> 
-    <servo name="AILERON_RIGHT" max="2000" neutral="1466" min="1000" no="2"/>
-    <servo name="AILERON_LEFT" max="2000" neutral="1466" min="0" no="1"/>
+    <servo name="AILERON_RIGHT" max="1800" neutral="1466" min="1200" no="2"/>
+    <servo name="AILERON_LEFT" max="1800" neutral="1466" min="1200" no="1"/>
     <servo name="RUDDER" max="2000" neutral="1531" min="1000" no="4"/>
   </servos>
   
   
   <command_laws> <!--How the commands relate to servo movement-->
-    <set value="@ROLL-.5*(@BRAKE)" servo="AILERON_LEFT"/>
-    <set value="@ROLL+.5*(@BRAKE)" servo="AILERON_RIGHT"/>
+    <set value="@ROLL+.5*(@BRAKE)" servo="AILERON_LEFT"/>
+    <set value="@ROLL-.5*(@BRAKE)" servo="AILERON_RIGHT"/>
     <set value="@THROTTLE" servo="THROTTLE"/>
     <set value="@PITCH" servo="ELEVATOR"/>
     <set value="@YAW" servo="RUDDER"/>
@@ -305,18 +305,18 @@
     <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.09"/><!-- how much to change pitch based on climb error -->
 
     
-    <!--airspeed tuning -->
-    <define name="AUTO_AIRSPEED_SETPOINT" value="13.0"  unit="m/s" /> <!-- SETPOINT values may need to be adjusted to suit your aircraft -->
+    <!--airspeed tuning 
+    <define name="AUTO_AIRSPEED_SETPOINT" value="13.0"  unit="m/s" /> - SETPOINT values may need to be adjusted to suit your aircraft --
     <define name="AUTO_AIRSPEED_PGAIN"    value="0.060" />
     <define name="AUTO_AIRSPEED_IGAIN"    value="0.050" /> 
  
-    <define name="AUTO_GROUNDSPEED_SETPOINT" value="7.0"  unit="m/s" /> <!-- SETPOINT values may need to be adjusted to suit your aircraft -->
+    <define name="AUTO_GROUNDSPEED_SETPOINT" value="7.0"  unit="m/s" /> < SETPOINT values may need to be adjusted to suit your aircraft 
     <define name="AUTO_GROUNDSPEED_PGAIN"    value="0.75" />
     <define name="AUTO_GROUNDSPEED_IGAIN"    value="0.25" />
 
     <define name="AUTO_PITCH_MAX_PITCH" value="RadOfDeg(25)"/>
     <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-20)"/>
-
+-->
   </section>
 
 
