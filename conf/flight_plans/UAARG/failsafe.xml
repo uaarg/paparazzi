@@ -36,7 +36,7 @@
     <block name="Termination"><!-- block designed to automatically terminate the plane unless conditions are met-->
       <set value="1" var="kill_throttle"/>
       <attitude climb="2000" height="0" roll="2000" throttle="0" vmode="throttle"/>
-      <!--<exception cond="2 > datalink_time" deroute="Termination_Recovery"/> -->
+      <exception cond="2 > datalink_time" deroute="Termination_Recovery"/>
       
     </block>
 
