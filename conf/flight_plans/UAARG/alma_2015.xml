@@ -1,0 +1,189 @@
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+
+<flight_plan alt="335" ground_alt="135.636" lat0="48.5094694" lon0="-71.6480361" max_dist_from_home="3500" name="Alma_2015" qfu="270" security_height="25">
+<header>
+
+
+</header>
+
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint name="STDBY" x="286.2" y="130.6"/>
+    <waypoint name="1" x="48.3" y="82.0"/>
+    <waypoint name="2" x="186.8" y="27.4"/>
+    <waypoint name="CLIMB" x="165.5" y="11.4"/>
+
+    <waypoint name="wp1" x="-78.1" y="235.4"/>
+    <waypoint name="wp2" x="-139.5" y="310.2"/>
+    <waypoint name="wp3" x="1275.1" y="-451.0"/>
+    <waypoint name="wp4" x="1332.9" y="-347.9"/>
+    <waypoint name="wp5" x="-106.8" y="448.5"/>
+    <waypoint name="wp6" x="-71.8" y="557.2"/>
+    <waypoint name="wp7" x="1371.5" y="-217.5"/>
+    <waypoint name="wp8" x="1420.0" y="-86.0"/>
+    <waypoint name="wp9" x="-41.7" y="671.4"/>
+    <waypoint name="wp10" x="-8.8" y="787.8"/>
+    <waypoint name="wp11" x="1463.0" y="46.0"/>
+    <waypoint name="wp12" x="1508.3" y="179.0"/>
+    <waypoint name="wp13" x="19.0" y="911.1"/>
+    <waypoint name="wp14" x="1560.7" y="311.6"/>
+    <waypoint name="wp15" x="1606.9" y="433.8"/>
+    <waypoint alt="285" name="wp16" x="1176.6" y="590.3"/>
+    <waypoint alt="285.0" name="wp17" x="1063.0" y="498.1"/>
+    <waypoint alt="285" name="wp18" x="820.7" y="399.1"/>
+    <waypoint alt="285" name="wp19" x="681.9" y="662.5"/>
+    <waypoint alt="285" name="wp20" x="423.8" y="487.1"/>
+    <waypoint alt="285" name="wp21" x="202.5" y="283.4"/>
+
+
+
+    <waypoint name="_1sfoc" lat="48.5113889" lon="-71.6547222"/>
+    <waypoint name="_2sfoc" lat="48.5211111" lon="-71.6513889"/>
+    <waypoint name="_3sfoc" lat="48.5157528" lon="-71.6214111"/>
+    <waypoint name="_4sfoc" lat="48.5027528" lon="-71.6282000"/>
+    <waypoint name="_1sa" lat="48.5113222" lon="-71.6519472"/>
+    <waypoint name="_2sa" lat="48.5188889" lon="-71.6494444"/>
+    <waypoint name="_3sa" lat="48.5145056" lon="-71.6239111"/>
+    <waypoint name="_4sa" lat="48.5042333" lon="-71.6292556"/>
+  </waypoints>
+
+
+
+  <sectors>
+    <sector color="red" name="SFOC">
+      <corner name="_1sfoc"/>
+      <corner name="_2sfoc"/>
+      <corner name="_3sfoc"/>
+      <corner name="_4sfoc"/>
+    </sector>
+    <sector color="blue" name="Search_Area">
+      <corner name="_1sa"/>
+      <corner name="_2sa"/>
+      <corner name="_3sa"/>
+      <corner name="_4sa"/>
+    </sector>
+  </sectors>
+
+  <includes>
+    <include name="Failsafe" procedure="failsafe_can.xml">
+      <with from="Standby" to="Standby"/>
+    </include>
+  </includes>
+
+  <blocks>
+    <block name="Wait GPS">
+      <while cond="!GpsFixValid()"/>
+      <set value="1" var="kill_throttle"/>
+    </block>
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <call fun="NavSetGroundReferenceHere()"/>
+    </block>
+    <block name="Holding point">
+      <set value="1" var="kill_throttle"/>
+      <attitude roll="0" throttle="0" vmode="throttle"/>
+    </block>
+    <block group="home" key="t" name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png">
+      <exception cond="GetPosAlt() > GetAltRef()+25" deroute="Standby"/>
+      <set value="0" var="kill_throttle"/>
+      <set value="0" var="autopilot_flight_time"/>
+      <go from="HOME" pitch="15" throttle="1.0" vmode="throttle" wp="CLIMB"/>
+    </block>
+    <block group="home" key="Ctrl+a" name="Standby" strip_button="Standby" strip_icon="home.png">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+    <block name="WP1">
+      <circle radius="nav_radius" wp="1"/>
+    </block>
+
+    <block name="Andrewhasshortlegs">
+      <path wpts="wp1, wp2, wp3, wp4, wp5, wp6, wp7, wp8, wp9, wp10, wp11, wp12, wp13, wp14, wp15, wp16, wp17, wp18, wp19, wp20, wp21"/>
+    </block>
+
+    <block name="Gowp1">
+      <go wp="wp1"/>
+      <deroute block="Gowp2"/>
+    </block>
+    <block name="Gowp2">
+      <go wp="wp2"/>
+      <deroute block="Gowp3"/>
+    </block>
+    <block name="Gowp3">
+      <go wp="wp3"/>
+      <deroute block="Gowp4"/>
+    </block>
+    <block name="Gowp4">
+      <go wp="wp4"/>
+      <deroute block="Gowp5"/>
+    </block>
+    <block name="Gowp5">
+      <go wp="wp5"/>
+      <deroute block="Gowp6"/>
+    </block>
+    <block name="Gowp6">
+      <go wp="wp6"/>
+      <deroute block="Gowp7"/>
+    </block>
+    <block name="Gowp7">
+      <go wp="wp7"/>
+      <deroute block="Gowp8"/>
+    </block>
+    <block name="Gowp8">
+      <go wp="wp8"/>
+      <deroute block="Gowp9"/>
+    </block>
+    <block name="Gowp9">
+      <go wp="wp9"/>
+      <deroute block="Gowp10"/>
+    </block>
+    <block name="Gowp10">
+      <go wp="wp10"/>
+      <deroute block="Gowp11"/>
+    </block>
+    <block name="Gowp11">
+      <go wp="wp11"/>
+      <deroute block="Gowp12"/>
+    </block>
+    <block name="Gowp12">
+      <go wp="wp12"/>
+      <deroute block="Gowp13"/>
+    </block>
+    <block name="Gowp13">
+      <go wp="wp13"/>
+      <deroute block="Gowp14"/>
+    </block>
+    <block name="Gowp14">
+      <go wp="wp14"/>
+      <deroute block="Gowp15"/>
+    </block>
+    <block name="Gowp15">
+      <go wp="wp15"/>
+      <deroute block="Gowp16"/>
+    </block>
+    <block name="Gowp16">
+      <go wp="wp16"/>
+      <deroute block="Gowp17"/>
+    </block>
+    <block name="Gowp17">
+      <go wp="wp17"/>
+      <deroute block="Gowp18"/>
+    </block>
+    <block name="Gowp18">
+      <go wp="wp18"/>
+      <deroute block="Gowp19"/>
+    </block>
+    <block name="Gowp19">
+      <go wp="wp19"/>
+      <deroute block="Gowp20"/>
+    </block>
+    <block name="Gowp20">
+      <go wp="wp20"/>
+      <deroute block="Gowp21"/>
+    </block>
+    <block name="Gowp21">
+      <go wp="wp21"/>
+      <deroute block="Standby"/>
+    </block>
+
+  </blocks>
+</flight_plan>
