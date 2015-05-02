@@ -10,7 +10,6 @@
     <waypoint name="HOME" x="0" y="0"/>
     <waypoint name="STDBY" x="286.2" y="130.6"/>
     <waypoint name="1" x="48.3" y="82.0"/>
-    <waypoint name="2" x="186.8" y="27.4"/>
     <waypoint name="CLIMB" x="165.5" y="11.4"/>
 
     <waypoint name="wp1" x="-78.1" y="235.4"/>
@@ -29,13 +28,17 @@
     <waypoint name="wp14" x="1560.7" y="311.6"/>
     <waypoint name="wp15" x="1606.9" y="433.8"/>
     <waypoint alt="285" name="wp16" x="1176.6" y="590.3"/>
-    <waypoint alt="285.0" name="wp17" x="1063.0" y="498.1"/>
+    <waypoint alt="285" name="wp17" x="1063.0" y="498.1"/>
     <waypoint alt="285" name="wp18" x="820.7" y="399.1"/>
     <waypoint alt="285" name="wp19" x="681.9" y="662.5"/>
     <waypoint alt="285" name="wp20" x="423.8" y="487.1"/>
     <waypoint alt="285" name="wp21" x="202.5" y="283.4"/>
 
-
+    <waypoint alt="215" name="QR1" x="266.2" y="110.6"/>
+    <waypoint alt="215" name="QR2" x="246.2" y="90.6"/>
+    <waypoint alt="215" name="QR3" x="226.2" y="70.6"/>
+    <waypoint alt="215" name="QR4" x="206.2" y="50.6"/>
+    <waypoint alt="215" name="QR5" x="186.2" y="30.6"/>
 
     <waypoint name="_1sfoc" lat="48.5113889" lon="-71.6547222"/>
     <waypoint name="_2sfoc" lat="48.5211111" lon="-71.6513889"/>
@@ -96,8 +99,12 @@
       <circle radius="nav_radius" wp="1"/>
     </block>
 
-    <block name="Andrewhasshortlegs">
+    <block name="General_Search_All">
       <path wpts="wp1, wp2, wp3, wp4, wp5, wp6, wp7, wp8, wp9, wp10, wp11, wp12, wp13, wp14, wp15, wp16, wp17, wp18, wp19, wp20, wp21"/>
+    </block>
+
+    <block name="General_QR">
+      <path wpts="QR1, QR2, QR3, QR4, QR5"/>
     </block>
 
     <block name="Gowp1">

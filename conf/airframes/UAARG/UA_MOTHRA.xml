@@ -168,13 +168,13 @@
     <!--See http://wiki.paparazziuav.org/wiki/Subsystem/ahrs#Local_Magnetic_Field For more details-->
     <!--Note a module that automatically updates this value has been added, see below. (geo_mag.xml)-->
 
-<!-- Local magnetic field vector Bremner Field
+<!-- Local magnetic field vector Bremner Field-->
 
     <define name="H_X" value="0.24375"/>
     <define name="H_Y" value="0.0635875"/>
     <define name="H_Z" value="0.967751"/>
 
--->
+
   </section>
 
 
