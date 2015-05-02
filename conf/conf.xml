@@ -220,8 +220,8 @@
    airframe="airframes/UAARG/UA_MOTHRA.xml"
    radio="radios/UAARG/spektrum.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
-   flight_plan="flight_plans/UAARG/Bremner_Simple.xml"
-   settings=" settings/fixedwing_basic.xml settings/control/ctrl_UAARG.xml settings/estimation/body_to_imu.xml"
+   flight_plan="flight_plans/UAARG/alma_2015.xml"
+   settings=" settings/fixedwing_basic.xml settings/control/ctrl_UAARG.xml"
    gui_color="blue"
   />
   <aircraft
