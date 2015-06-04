@@ -287,11 +287,6 @@
     <define name="AUTO_THROTTLE_DASH_TRIM" value="2492"/> <!--elevator trim when on max cruise throttle setting to maintain altitude-->
 
 
-
-
-
-
-
     <define name="ALTITUDE_PGAIN" value="0.06"/><!--the rate at which paparazzi will change the altitude-->
     
     <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/> <!-- max climb setting -->
