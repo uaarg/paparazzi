@@ -86,6 +86,10 @@ struct AhrsIntCmplQuat {
    * only update through #ahrs_int_cmpl_quat_SetMagZeta
    */
   float mag_zeta;
+
+  /* internal counters for the gains */
+  uint16_t accel_cnt; ///< number of propagations since last accel update
+  uint16_t mag_cnt;   ///< number of propagations since last mag update
 };
 
 extern struct AhrsIntCmplQuat ahrs_impl;
@@ -131,10 +135,5 @@ static inline void ahrs_int_cmpl_quat_SetMagZeta(float zeta) {
   ahrs_set_mag_gains();
 }
 
-
-#ifdef AHRS_UPDATE_FW_ESTIMATOR
-extern float ins_roll_neutral;
-extern float ins_pitch_neutral;
-#endif
 
 #endif /* AHRS_INT_CMPL_QUAT_H */

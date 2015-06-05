@@ -46,7 +46,7 @@ CFLAGS += -mtune=geode # optimize for geode
 CFLAGS + = -Wstrict-prototypes -Wmissing-declarations
 CFLAGS += -Wmissing-prototypes -Wnested-externs
 CFLAGS += $(CSTANDARD)
-CFLAGS += $($(TARGET).CFLAGS) $(LOCAL_CFLAGS)
+CFLAGS += $($(TARGET).CFLAGS) $(USER_CFLAGS)
 
 #Additional libraries.
 MATH_LIB = -lm
@@ -67,7 +67,7 @@ $(OBJDIR):
 elf: $(OBJDIR)/$(TARGET).elf
 
 # Program the device.
-load upload program: $(OBJDIR)/$(TARGET).elf
+upload program: $(OBJDIR)/$(TARGET).elf
 	scp $(OBJDIR)/$(TARGET).elf $(USER)@$(HOST):$(TARGET_DIR)
 
 # Link: create ELF output file from object files.

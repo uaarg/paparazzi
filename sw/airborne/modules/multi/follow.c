@@ -47,11 +47,13 @@
 #define FOLLOW_OFFSET_Z 0.0
 #endif
 
-void follow_init( void ) {
+void follow_init(void)
+{
 
 }
 
-void follow_change_wp( unsigned char* buffer ) {
+void follow_change_wp(unsigned char *buffer)
+{
   struct EcefCoor_i new_pos;
   struct EnuCoor_i enu;
   new_pos.x = DL_REMOTE_GPS_ecef_x(buffer);
@@ -72,5 +74,5 @@ void follow_change_wp( unsigned char* buffer ) {
   // TODO: Remove the angle to the north
 
   // Move the waypoint
-  INT32_VECT3_COPY(waypoints[FOLLOW_WAYPOINT_ID], enu);
+  VECT3_COPY(waypoints[FOLLOW_WAYPOINT_ID], enu);
 }

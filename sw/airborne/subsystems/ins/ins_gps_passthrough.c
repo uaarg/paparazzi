@@ -58,31 +58,36 @@ struct InsGpsPassthrough ins_impl;
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
-static void send_ins(void) {
-  DOWNLINK_SEND_INS(DefaultChannel, DefaultDevice,
-      &ins_impl.ltp_pos.x, &ins_impl.ltp_pos.y, &ins_impl.ltp_pos.z,
-      &ins_impl.ltp_speed.x, &ins_impl.ltp_speed.y, &ins_impl.ltp_speed.z,
-      &ins_impl.ltp_accel.x, &ins_impl.ltp_accel.y, &ins_impl.ltp_accel.z);
+static void send_ins(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_INS(trans, dev, AC_ID,
+                    &ins_impl.ltp_pos.x, &ins_impl.ltp_pos.y, &ins_impl.ltp_pos.z,
+                    &ins_impl.ltp_speed.x, &ins_impl.ltp_speed.y, &ins_impl.ltp_speed.z,
+                    &ins_impl.ltp_accel.x, &ins_impl.ltp_accel.y, &ins_impl.ltp_accel.z);
 }
 
-static void send_ins_z(void) {
+static void send_ins_z(struct transport_tx *trans, struct link_device *dev)
+{
   static const float fake_baro_z = 0.0;
-  DOWNLINK_SEND_INS_Z(DefaultChannel, DefaultDevice,
-      &fake_baro_z, &ins_impl.ltp_pos.z, &ins_impl.ltp_speed.z, &ins_impl.ltp_accel.z);
+  pprz_msg_send_INS_Z(trans, dev, AC_ID,
+                      (float *)&fake_baro_z, &ins_impl.ltp_pos.z,
+                      &ins_impl.ltp_speed.z, &ins_impl.ltp_accel.z);
 }
 
-static void send_ins_ref(void) {
+static void send_ins_ref(struct transport_tx *trans, struct link_device *dev)
+{
   static const float fake_qfe = 0.0;
   if (ins_impl.ltp_initialized) {
-    DOWNLINK_SEND_INS_REF(DefaultChannel, DefaultDevice,
-        &ins_impl.ltp_def.ecef.x, &ins_impl.ltp_def.ecef.y, &ins_impl.ltp_def.ecef.z,
-        &ins_impl.ltp_def.lla.lat, &ins_impl.ltp_def.lla.lon, &ins_impl.ltp_def.lla.alt,
-        &ins_impl.ltp_def.hmsl, &fake_qfe);
+    pprz_msg_send_INS_REF(trans, dev, AC_ID,
+                          &ins_impl.ltp_def.ecef.x, &ins_impl.ltp_def.ecef.y, &ins_impl.ltp_def.ecef.z,
+                          &ins_impl.ltp_def.lla.lat, &ins_impl.ltp_def.lla.lon, &ins_impl.ltp_def.lla.alt,
+                          &ins_impl.ltp_def.hmsl, (float *)&fake_qfe);
   }
 }
 #endif
 
-void ins_init(void) {
+void ins_init(void)
+{
 
 #if USE_INS_NAV_INIT
   struct LlaCoor_i llh_nav0; /* Height above the ellipsoid */
@@ -114,13 +119,16 @@ void ins_init(void) {
 #endif
 }
 
-void ins_periodic(void) {
-  if (ins_impl.ltp_initialized)
+void ins_periodic(void)
+{
+  if (ins_impl.ltp_initialized) {
     ins.status = INS_RUNNING;
+  }
 }
 
 
-void ins_reset_local_origin(void) {
+void ins_reset_local_origin(void)
+{
   ltp_def_from_ecef_i(&ins_impl.ltp_def, &gps.ecef_pos);
   ins_impl.ltp_def.lla.alt = gps.lla_pos.alt;
   ins_impl.ltp_def.hmsl = gps.hmsl;
@@ -128,18 +136,20 @@ void ins_reset_local_origin(void) {
   ins_impl.ltp_initialized = TRUE;
 }
 
-void ins_reset_altitude_ref(void) {
+void ins_reset_altitude_ref(void)
+{
   struct LlaCoor_i lla = {
-    state.ned_origin_i.lla.lon,
-    state.ned_origin_i.lla.lat,
-    gps.lla_pos.alt
+    .lat = state.ned_origin_i.lla.lat,
+    .lon = state.ned_origin_i.lla.lon,
+    .alt = gps.lla_pos.alt
   };
-  ltp_def_from_lla_i(&ins_impl.ltp_def, &lla),
+  ltp_def_from_lla_i(&ins_impl.ltp_def, &lla);
   ins_impl.ltp_def.hmsl = gps.hmsl;
   stateSetLocalOrigin_i(&ins_impl.ltp_def);
 }
 
-void ins_update_gps(void) {
+void ins_update_gps(void)
+{
   if (gps.fix == GPS_FIX_3D) {
     if (!ins_impl.ltp_initialized) {
       ins_reset_local_origin();

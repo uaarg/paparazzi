@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006  Pascal Brisset, Antoine Drouin
+ * Copyright (C) 2006-2014  The Paparazzi Team
  *
  * This file is part of paparazzi.
  *
@@ -40,9 +40,9 @@
 #define V_CTL_MODE_NB            4
 extern uint8_t v_ctl_mode;
 
+/* Inner loop */
 extern float v_ctl_climb_setpoint;
 extern uint8_t v_ctl_climb_mode;
-
 #define V_CTL_CLIMB_MODE_AUTO_THROTTLE 0
 #define V_CTL_CLIMB_MODE_AUTO_PITCH    1
 
@@ -66,21 +66,21 @@ extern pprz_t v_ctl_throttle_setpoint;
 extern pprz_t v_ctl_throttle_slewed;
 extern float v_ctl_pitch_setpoint;
 
-extern void v_ctl_init( void );
-extern void v_ctl_altitude_loop( void );
-extern void v_ctl_climb_loop ( void );
+extern void v_ctl_init(void);
+extern void v_ctl_altitude_loop(void);
+extern void v_ctl_climb_loop(void);
 
 /** Computes throttle_slewed from throttle_setpoint */
-extern void v_ctl_throttle_slew( void );
+extern void v_ctl_throttle_slew(void);
 
 #define guidance_v_SetCruiseThrottle(_v) { \
-  v_ctl_auto_throttle_cruise_throttle = (_v ? _v : v_ctl_auto_throttle_nominal_cruise_throttle); \
-  Bound(v_ctl_auto_throttle_cruise_throttle, v_ctl_auto_throttle_min_cruise_throttle, v_ctl_auto_throttle_max_cruise_throttle); \
-}
+    v_ctl_auto_throttle_cruise_throttle = (_v ? _v : v_ctl_auto_throttle_nominal_cruise_throttle); \
+    Bound(v_ctl_auto_throttle_cruise_throttle, v_ctl_auto_throttle_min_cruise_throttle, v_ctl_auto_throttle_max_cruise_throttle); \
+  }
 
-#define guidance_v_SetAutoThrottleIgain(_v) {	\
-    v_ctl_auto_throttle_igain = _v;		\
-    v_ctl_auto_throttle_sum_err = 0;		\
+#define guidance_v_SetAutoThrottleIgain(_v) { \
+    v_ctl_auto_throttle_igain = _v;   \
+    v_ctl_auto_throttle_sum_err = 0;    \
   }
 
 

@@ -20,7 +20,7 @@
  */
 
 /**
- * @file subsystems/navigation/common_flight_plan.c
+ * @file subsystems/navigation/common_flight_plan.h
  * Common flight_plan functions shared between fixedwing and rotorcraft.
  */
 
@@ -35,8 +35,8 @@ extern uint16_t stage_time, block_time;
 extern uint8_t nav_stage, nav_block;
 extern uint8_t last_block, last_stage;
 
-
-void nav_init_stage(void); /* needs to be implemented by fixedwing and rotorcraft seperately */
+/** needs to be implemented by fixedwing and rotorcraft seperately */
+void nav_init_stage(void);
 
 void nav_init_block(void);
 void nav_goto_block(uint8_t block_id);
@@ -48,12 +48,13 @@ void nav_goto_block(uint8_t block_id);
 #define GotoBlock(b) { nav_block=b; nav_init_block(); }
 
 #define Stage(s) case s: nav_stage=s;
+#define NextStage() { nav_stage++; InitStage(); }
 #define NextStageAndBreak() { nav_stage++; InitStage(); break; }
 #define NextStageAndBreakFrom(wp) { last_wp = wp; NextStageAndBreak(); }
 
 #define Label(x) label_ ## x:
 #define Goto(x) { goto label_ ## x; }
-#define Return() ({ nav_block=last_block; nav_stage=last_stage; block_time=0; FALSE;})
+#define Return() { nav_block=last_block; nav_stage=last_stage; block_time=0;}
 
 #define And(x, y) ((x) && (y))
 #define Or(x, y) ((x) || (y))

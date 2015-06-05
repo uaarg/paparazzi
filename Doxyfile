@@ -655,7 +655,7 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = doc/manual \
+INPUT                  = README.md doc/manual \
                          sw/airborne
 
 # This tag can be used to specify the character encoding of the source files
@@ -1528,7 +1528,6 @@ PREDEFINED             = USE_GPS \
                          USE_MAGNETOMETER \
                          USE_BAROMETER \
                          USE_LED \
-                         USE_SYS_TIME \
                          SPI_MASTER \
                          SPI_SLAVE \
                          USE_SPI0 \

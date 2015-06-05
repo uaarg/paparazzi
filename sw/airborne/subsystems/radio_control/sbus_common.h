@@ -14,21 +14,24 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with paparazzi; see the file COPYING.  If not, write to
- * the Free Software Foundation, 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * along with paparazzi; see the file COPYING.  If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @file subsystems/radio_control/sbus_common.h
+ *
+ * Common sbus structs and defines.
  */
 
 #ifndef RC_SBUS_COMMON_H
 #define RC_SBUS_COMMON_H
 
-/** @file subsystems/radio_control/sbus_common.h
- *
- * Futaba SBUS decoder
- */
-
 #include "std.h"
 #include "mcu_periph/uart.h"
+
+/* in case you want to override RADIO_CONTROL_NB_CHANNEL */
+#include "generated/airframe.h"
 
 /**
  * Macro to use radio.h file
@@ -57,12 +60,22 @@
  */
 #define SBUS_BUF_LENGTH 24
 #define SBUS_NB_CHANNEL 16
+
+/**
+ * Default number of channels to actually use.
+ */
+#ifndef RADIO_CONTROL_NB_CHANNEL
 #define RADIO_CONTROL_NB_CHANNEL SBUS_NB_CHANNEL
+#endif
+
+#if RADIO_CONTROL_NB_CHANNEL > SBUS_NB_CHANNEL
+#error "RADIO_CONTROL_NB_CHANNEL mustn't be higher than 16."
+#endif
 
 /**
  * SBUS structure
  */
-struct _sbus {
+struct Sbus {
   uint16_t pulses[SBUS_NB_CHANNEL]; ///< decoded values
   uint16_t ppm[SBUS_NB_CHANNEL];    ///< decoded and converted values
   bool_t frame_available;           ///< new frame available
@@ -74,12 +87,23 @@ struct _sbus {
 /**
  * Init function
  */
-void sbus_common_init(struct _sbus* sbus, struct uart_periph* dev);
+void sbus_common_init(struct Sbus *sbus, struct uart_periph *dev);
 
 /**
  * Decoding event function
  */
-void sbus_common_decode_event(struct _sbus* sbus, struct uart_periph* dev);
+void sbus_common_decode_event(struct Sbus *sbus, struct uart_periph *dev);
+
+
+/**
+ * RC event function with handler callback.
+ */
+extern void radio_control_impl_event(void (* _received_frame_handler)(void));
+
+/**
+ * Event macro with handler callback
+ */
+#define RadioControlEvent(_received_frame_handler) radio_control_impl_event(_received_frame_handler)
 
 
 #endif /* RC_SBUS_H */

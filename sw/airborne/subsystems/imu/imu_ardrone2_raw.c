@@ -29,16 +29,7 @@
 #include "imu_ardrone2_raw.h"
 #include "mcu_periph/uart.h"
 
-void imu_impl_init(void) {
+void imu_impl_init(void)
+{
   navdata_init();
-}
-
-void imu_periodic(void) {
-}
-
-void navdata_event(void) {
-
-#if USE_UART1
-  uart1_handler();
-#endif
 }

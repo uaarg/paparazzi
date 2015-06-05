@@ -10,9 +10,9 @@ BOARD_VERSION=2
 BOARD_TYPE=raw
 BOARD_CFG=\"boards/$(BOARD)$(BOARD_VERSION)_$(BOARD_TYPE).h\"
 
-ARCH=omap
+ARCH=linux
 $(TARGET).ARCHDIR = $(ARCH)
-# include conf/Makefile.ardrone2 (with specific upload rules) instead of only Makefile.omap:
+# include conf/Makefile.ardrone2 (with specific upload rules) instead of only Makefile.linux:
 ap.MAKEFILE = ardrone2
 
 # -----------------------------------------------------------------------
@@ -33,12 +33,18 @@ ARDRONE2_IP_ADDRESS_PROBE ?= 1
 GPS_PORT           ?= UART1
 GPS_BAUD           ?= B57600
 
+# The datalink default uses UDP
+MODEM_HOST         ?= \"192.168.1.255\"
+
 # Here we define what the UART1_DEV device mapping
 $(TARGET).CFLAGS   += -DUART1_DEV=\"/dev/ttyUSB0\"
 #$(TARGET).CFLAGS  += -DUART0_DEV=\"/dev/ttyO3\"
 
 # for distinction between RAW and SDK version
 $(TARGET).CFLAGS +=-DARDRONE2_RAW
+
+# handle linux signals by hand
+$(TARGET).CFLAGS += -DUSE_LINUX_SIGNAL
 
 # -----------------------------------------------------------------------
 

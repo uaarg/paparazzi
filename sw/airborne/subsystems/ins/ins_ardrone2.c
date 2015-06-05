@@ -43,7 +43,8 @@ PRINT_CONFIG_MSG("USE_INS_NAV_INIT defaulting to TRUE")
 
 struct InsArdrone2 ins_impl;
 
-void ins_init() {
+void ins_init()
+{
 #if USE_INS_NAV_INIT
   struct LlaCoor_i llh_nav0; /* Height above the ellipsoid */
   llh_nav0.lat = NAV_LAT0;
@@ -68,32 +69,54 @@ void ins_init() {
   INT32_VECT3_ZERO(ins_impl.ltp_accel);
 }
 
-void ins_periodic( void ) {
-  if (ins_impl.ltp_initialized)
+void ins_periodic(void)
+{
+  if (ins_impl.ltp_initialized) {
     ins.status = INS_RUNNING;
+  }
 }
 
-void ins_reset_local_origin( void ) {
+void ins_reset_local_origin(void)
+{
+#if USE_GPS
+  if (gps.fix == GPS_FIX_3D) {
+    ltp_def_from_ecef_i(&ins_impl.ltp_def, &gps.ecef_pos);
+    ins_impl.ltp_def.lla.alt = gps.lla_pos.alt;
+    ins_impl.ltp_def.hmsl = gps.hmsl;
+    ins_impl.ltp_initialized = TRUE;
+    stateSetLocalOrigin_i(&ins_impl.ltp_def);
+  }
+  else {
+    ins_impl.ltp_initialized = FALSE;
+  }
+#else
   ins_impl.ltp_initialized = FALSE;
+#endif
 }
 
-void ins_reset_altitude_ref( void ) {
+void ins_reset_altitude_ref(void)
+{
 #if USE_GPS
   struct LlaCoor_i lla = {
-    state.ned_origin_i.lla.lon,
-    state.ned_origin_i.lla.lat,
-    gps.lla_pos.alt
+    .lat = state.ned_origin_i.lla.lat,
+    .lon = state.ned_origin_i.lla.lon,
+    .alt = gps.lla_pos.alt
   };
-  ltp_def_from_lla_i(&ins_impl.ltp_def, &lla),
+  ltp_def_from_lla_i(&ins_impl.ltp_def, &lla);
   ins_impl.ltp_def.hmsl = gps.hmsl;
   stateSetLocalOrigin_i(&ins_impl.ltp_def);
 #endif
 }
 
-void ins_propagate() {
+void ins_propagate(float __attribute__((unused)) dt)
+{
   /* untilt accels and speeds */
-  FLOAT_RMAT_VECT3_TRANSP_MUL(ins_impl.ltp_accel, (*stateGetNedToBodyRMat_f()), ahrs_impl.accel);
-  FLOAT_RMAT_VECT3_TRANSP_MUL(ins_impl.ltp_speed, (*stateGetNedToBodyRMat_f()), ahrs_impl.speed);
+  float_rmat_transp_vmult((struct FloatVect3 *)&ins_impl.ltp_accel,
+                          stateGetNedToBodyRMat_f(),
+                          (struct FloatVect3 *)&ahrs_impl.accel);
+  float_rmat_transp_vmult((struct FloatVect3 *)&ins_impl.ltp_speed,
+                          stateGetNedToBodyRMat_f(),
+                          (struct FloatVect3 *)&ahrs_impl.speed);
 
   //Add g to the accelerations
   ins_impl.ltp_accel.z += 9.81;
@@ -111,12 +134,13 @@ void ins_propagate() {
 }
 
 
-void ins_update_gps(void) {
+void ins_update_gps(void)
+{
 #if USE_GPS
   //Check for GPS fix
   if (gps.fix == GPS_FIX_3D) {
     //Set the initial coordinates
-    if(!ins_impl.ltp_initialized) {
+    if (!ins_impl.ltp_initialized) {
       ltp_def_from_ecef_i(&ins_impl.ltp_def, &gps.ecef_pos);
       ins_impl.ltp_def.lla.alt = gps.lla_pos.alt;
       ins_impl.ltp_def.hmsl = gps.hmsl;

@@ -31,15 +31,31 @@ class setting = fun (i:int) (xml:Xml.xml) (current_value:GMisc.label) set_defaul
 object
   method index = i
   method xml = xml
+  val mutable last_known_value = None
+  method last_known_value =
+    match last_known_value with
+    | None -> raise Not_found
+    | Some v ->
+        let auc = Pprz.alt_unit_coef_of_xml xml in
+        let (alt_a, alt_b) = Ocaml_tools.affine_transform auc in
+        (v -. alt_b) /. alt_a
   method current_value =
     let auc = Pprz.alt_unit_coef_of_xml xml in
     let (alt_a, alt_b) = Ocaml_tools.affine_transform auc in
     (float_of_string current_value#text -. alt_b) /. alt_a
   method update = fun s ->
-    if current_value#text <> s then begin
-      current_value#set_text s;
-      try set_default (float_of_string s) with Failure "float_of_string" -> ()
-    end
+    (* if not yet confirmed, display "?" *)
+    if s = "?" then
+      current_value#set_text "?"
+    else
+      if current_value#text <> s then begin
+        current_value#set_text s;
+        try
+          let v = float_of_string s in
+          last_known_value <- Some v;
+          set_default v
+        with Failure "float_of_string" -> ()
+      end
 end
 
 let pipe_regexp = Str.regexp "|"
@@ -183,9 +199,14 @@ let one_setting = fun (i:int) (do_change:int -> float -> unit) packing dl_settin
   let set_default = fun x ->
     if not !modified then set_default x else () in
 
-  (* Update value *)
+  (* build setting *)
+  let setting = new setting i dl_setting current_value set_default in
+
+  (* click current_value label to request an update, a value of infinity for do_change requests new value *)
   let callback = fun _ ->
-    do_change i infinity; true in
+    do_change i infinity;
+    current_value#set_text "?";
+    true in
   ignore (eb#event#connect#button_press ~callback);
 
   (* Auto check button *)
@@ -197,12 +218,18 @@ let one_setting = fun (i:int) (do_change:int -> float -> unit) packing dl_settin
   let commit_but = GButton.button ~packing:hbox#pack () in
   commit_but#set_border_width 2;
   let _icon = GMisc.image ~stock:`APPLY ~packing:commit_but#add () in
+  let idx = ref 0 in
   let callback = fun x ->
-    prev_value := (try Some ((float_of_string current_value#text-.alt_b)/.alt_a) with _ -> None);
-    commit x
+    prev_value := (try Some setting#last_known_value with _ ->
+      idx := -1;
+      Array.iteri (fun i v -> if current_value#text = v then idx := i) values;
+      if !idx >= 0 then Some (lower +. (float_of_int !idx)) else None);
+    commit x;
+    current_value#set_text "?"
   in
   ignore (commit_but#connect#clicked ~callback);
   tooltips#set_tip commit_but#coerce ~text:"Commit";
+  tooltips#set_tip current_value#coerce ~text:"Current value, click to request update.";
 
   (* Undo button *)
   let undo_but = GButton.button ~packing:hbox#pack () in
@@ -210,7 +237,7 @@ let one_setting = fun (i:int) (do_change:int -> float -> unit) packing dl_settin
   let callback = fun _ ->
     match !prev_value with
         None -> ()
-      | Some v -> do_change i v in
+      | Some v -> current_value#set_text "?"; do_change i v in
   ignore (undo_but#connect#clicked ~callback);
   tooltips#set_tip undo_but#coerce ~text:"Undo";
 
@@ -254,7 +281,8 @@ let one_setting = fun (i:int) (do_change:int -> float -> unit) packing dl_settin
       | t -> failwith (sprintf "Page_settings.one_setting, Unexpected tag: '%s'" t))
     (Xml.children dl_setting);
 
-  new setting i dl_setting current_value set_default
+  (* return setting *)
+  setting
 
 
 
@@ -309,26 +337,31 @@ object (self)
   method widget = sw#coerce
   method length = length
   method keys = !keys
-  method set = fun i v ->
+  method set = fun i value ->
     if visible self#widget then
       let setting = variables.(i) in
-      let auc = Pprz.alt_unit_coef_of_xml setting#xml in
-      let (alt_a, alt_b) = Ocaml_tools.affine_transform auc in
-      let v = alt_a *. v +. alt_b in
-      let s = string_of_float v in
+      let s, v = match value with
+        | None -> "?", -1
+        | Some x ->
+          let v = try float_of_string x with _ -> failwith (sprintf "Pages.settings#set:wrong values.(%d) = %s" i x) in
+          let auc = Pprz.alt_unit_coef_of_xml setting#xml in
+          let (alt_a, alt_b) = Ocaml_tools.affine_transform auc in
+          let v = alt_a *. v +. alt_b in
+          string_of_float v, truncate v
+      in
       if i < 0 || i >= Array.length variables then
         failwith (sprintf "Pages.settings#set: %d out of bounnds (length=%d)" i (Array.length variables));
       let s =
         let values = values_of_dl_setting setting#xml in
         try
           let lower = int_of_string (ExtXml.attrib setting#xml "min") in
-          values.(truncate v - lower)
+          values.(v - lower)
         with
             _ -> s in
       setting#update s
   method assoc var = List.assoc var assocs
   method save = fun airframe_filename ->
-    let settings = Array.fold_right (fun setting r -> try (setting#index, setting#xml, setting#current_value)::r with _ -> r) variables [] in
+    let settings = Array.fold_right (fun setting r -> try (setting#index, setting#xml, setting#last_known_value)::r with _ -> r) variables [] in
     SaveSettings.popup airframe_filename (Array.of_list settings) do_change
 end
 

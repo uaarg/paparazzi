@@ -14,17 +14,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with paparazzi; see the file COPYING.  If not, write to
- * the Free Software Foundation, 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * along with paparazzi; see the file COPYING.  If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * @file link_mcu_usart.h
+ * Transport for the communication between FBW and AP via UART.
  *
  */
 
-/** \brief Transport for the communication between FBW and AP via UART.
- */
-
-#ifndef LINK_MCU_H
-#define LINK_MCU_H
+#ifndef LINK_MCU_USART_H
+#define LINK_MCU_USART_H
 
 #include <inttypes.h>
 #include "inter_mcu.h"
@@ -41,10 +42,10 @@ extern struct link_mcu_msg link_mcu_from_fbw_msg;
 
 extern bool_t link_mcu_received;
 
-extern void link_mcu_send( void );
-extern void link_mcu_init( void );
-extern void link_mcu_event_task( void );
-extern void link_mcu_periodic_task( void );
+extern void link_mcu_send(void);
+extern void link_mcu_init(void);
+extern void link_mcu_event_task(void);
+extern void link_mcu_periodic_task(void);
 
 
-#endif
+#endif /* LINK_MCU_USART_H */

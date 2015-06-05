@@ -43,22 +43,20 @@
 #include "firmwares/fixedwing/autopilot.h"
 #include "paparazzi.h"
 #include "mcu_periph/i2c.h"
+#include "mcu_periph/uart.h"
 
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 #endif
 
-#ifdef MCU_SPI_LINK
-#include "link_mcu_spi.h"
-#endif
-
-#ifdef MCU_UART_LINK
-#include "link_mcu_usart.h"
+#ifdef FBW_DATALINK
+#include "firmwares/fixedwing/fbw_datalink.h"
 #endif
 
 uint8_t fbw_mode;
 
 #include "inter_mcu.h"
+#include "link_mcu.h"
 
 #ifdef USE_NPS
 #include "nps_autopilot.h"
@@ -79,38 +77,44 @@ tid_t electrical_tid;   ///< id for electrical_periodic() timer
 
 /********** PERIODIC MESSAGES ************************************************/
 #if PERIODIC_TELEMETRY
-static void send_commands(void) {
-  DOWNLINK_SEND_COMMANDS(DefaultChannel, DefaultDevice, COMMANDS_NB, commands);
+static void send_commands(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_COMMANDS(trans, dev, AC_ID, COMMANDS_NB, commands);
 }
 
 #ifdef RADIO_CONTROL
-static void send_fbw_status(void) {
-  DOWNLINK_SEND_FBW_STATUS(DefaultChannel, DefaultDevice,
-      &(radio_control.status), &(radio_control.frame_rate), &fbw_mode, &electrical.vsupply, &electrical.current);
+static void send_fbw_status(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_FBW_STATUS(trans, dev, AC_ID,
+                           &(radio_control.status), &(radio_control.frame_rate), &fbw_mode, &electrical.vsupply, &electrical.current);
 }
 
-static void send_rc(void) {
-  DOWNLINK_SEND_RC(DefaultChannel, DefaultDevice, RADIO_CONTROL_NB_CHANNEL, radio_control.values);
+static void send_rc(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_RC(trans, dev, AC_ID, RADIO_CONTROL_NB_CHANNEL, radio_control.values);
 }
 
 #else
-static void send_fbw_status(void) {
+static void send_fbw_status(struct transport_tx *trans, struct link_device *dev)
+{
   uint8_t dummy = 0;
-  DOWNLINK_SEND_FBW_STATUS(DefaultChannel, DefaultDevice,
-      &dummy, &dummy, &fbw_mode, &electrical.vsupply, &electrical.current);
+  pprz_msg_send_FBW_STATUS(trans, dev, AC_ID,
+                           &dummy, &dummy, &fbw_mode, &electrical.vsupply, &electrical.current);
 }
 #endif
 
 #ifdef ACTUATORS
-static void send_actuators(void) {
-  DOWNLINK_SEND_ACTUATORS(DefaultChannel, DefaultDevice , ACTUATORS_NB, actuators);
+static void send_actuators(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_ACTUATORS(trans, dev, AC_ID , ACTUATORS_NB, actuators);
 }
 #endif
 
 #endif
 
 /********** INIT *************************************************************/
-void init_fbw( void ) {
+void init_fbw(void)
+{
 
   mcu_init();
 
@@ -130,15 +134,17 @@ void init_fbw( void ) {
 #ifdef INTER_MCU
   inter_mcu_init();
 #endif
-#ifdef MCU_SPI_LINK
+#if defined MCU_SPI_LINK || defined MCU_CAN_LINK
   link_mcu_init();
+#endif
+#ifdef MCU_SPI_LINK
   link_mcu_restart();
 #endif
 
   fbw_mode = FBW_MODE_FAILSAFE;
 
   /**** start timers for periodic functions *****/
-  fbw_periodic_tid = sys_time_register_timer((1./60.), NULL);
+  fbw_periodic_tid = sys_time_register_timer((1. / 60.), NULL);
   electrical_tid = sys_time_register_timer(0.1, NULL);
 
 #ifndef SINGLE_MCU
@@ -159,7 +165,8 @@ void init_fbw( void ) {
 }
 
 
-static inline void set_failsafe_mode( void ) {
+static inline void set_failsafe_mode(void)
+{
   fbw_mode = FBW_MODE_FAILSAFE;
   SetCommands(commands_failsafe);
   fbw_new_actuators = 1;
@@ -167,31 +174,49 @@ static inline void set_failsafe_mode( void ) {
 
 
 #ifdef RADIO_CONTROL
-static inline void handle_rc_frame( void ) {
+static inline void handle_rc_frame(void)
+{
   fbw_mode = FBW_MODE_OF_PPRZ(radio_control.values[RADIO_MODE]);
-  if (fbw_mode == FBW_MODE_MANUAL)
-  {
+  if (fbw_mode == FBW_MODE_MANUAL) {
     SetCommandsFromRC(commands, radio_control.values);
     fbw_new_actuators = 1;
   }
 }
 #endif
 
-
+uint8_t ap_has_been_ok = FALSE;
 /********** EVENT ************************************************************/
 
-void event_task_fbw( void) {
+void event_task_fbw(void)
+{
 #ifdef RADIO_CONTROL
   RadioControlEvent(handle_rc_frame);
 #endif
 
+#if USE_I2C0 || USE_I2C1 || USE_I2C2 || USE_I2C3
   i2c_event();
+#endif
+
+#ifndef SITL
+  uart_event();
+#endif
 
 #ifdef INTER_MCU
 #if defined MCU_SPI_LINK | defined MCU_UART_LINK
-    link_mcu_event_task();
+  link_mcu_event_task();
 #endif /* MCU_SPI_LINK */
 
+
+#if OUTBACK_CHALLENGE_VERY_DANGEROUS_RULE_NO_AP_MUST_FAILSAFE
+#warning OUTBACK_CHALLENGE_VERY_DANGEROUS_RULE_NO_AP_MUST_FAILSAFE loose ap is forced crash
+  if (ap_ok) {
+    ap_has_been_ok = TRUE;
+  }
+
+  if ((ap_has_been_ok) && (!ap_ok)) {
+    commands[COMMAND_FORCECRASH] = 9600;
+  }
+#endif
 
   if (inter_mcu_received_ap) {
     inter_mcu_received_ap = FALSE;
@@ -199,7 +224,11 @@ void event_task_fbw( void) {
     command_roll_trim = ap_state->command_roll_trim;
     command_pitch_trim = ap_state->command_pitch_trim;
     command_yaw_trim = ap_state->command_yaw_trim;
-#ifndef OUTBACK_CHALLENGE_DANGEROUS_RULE_RC_LOST_NO_AP
+#if OUTBACK_CHALLENGE_DANGEROUS_RULE_RC_LOST_NO_AP
+    // LOST-RC: do NOT go to autonomous
+    // auto = stay in auto
+    // manual = stay in manual
+#else
     if (ap_ok && fbw_mode == FBW_MODE_FAILSAFE) {
       fbw_mode = FBW_MODE_AUTO;
     }
@@ -208,8 +237,7 @@ void event_task_fbw( void) {
       SetCommands(ap_state->commands);
     }
 #ifdef SetApOnlyCommands
-    else
-    {
+    else {
       SetApOnlyCommands(ap_state->commands);
     }
 #endif
@@ -222,40 +250,41 @@ void event_task_fbw( void) {
 
 #if OUTBACK_CHALLENGE_VERY_DANGEROUS_RULE_AP_CAN_FORCE_FAILSAFE
 #warning DANGER DANGER DANGER DANGER: Outback Challenge Rule FORCE-CRASH-RULE: DANGER DANGER: AP is now capable to FORCE your FBW in failsafe mode EVEN IF RC IS NOT LOST: Consider the consequences.
-
+  // OUTBACK: JURY REQUEST FLIGHT TERMINATION
   int crash = 0;
-  if (commands[COMMAND_FORCECRASH] >= 8000)
-  {
+  if (commands[COMMAND_FORCECRASH] >= 8000) {
     set_failsafe_mode();
     crash = 1;
   }
 
 #endif
 #ifdef ACTUATORS
-  if (fbw_new_actuators > 0)
-  {
+  if (fbw_new_actuators > 0) {
     pprz_t trimmed_commands[COMMANDS_NB];
     int i;
-    for(i = 0; i < COMMANDS_NB; i++) trimmed_commands[i] = commands[i];
+    for (i = 0; i < COMMANDS_NB; i++) { trimmed_commands[i] = commands[i]; }
 
-    #ifdef COMMAND_ROLL
-    trimmed_commands[COMMAND_ROLL] += ChopAbs(command_roll_trim, MAX_PPRZ/10);
-    #endif
-    #ifdef COMMAND_PITCH
-    trimmed_commands[COMMAND_PITCH] += ChopAbs(command_pitch_trim, MAX_PPRZ/10);
-    #endif
-    #ifdef COMMAND_YAW
+#ifdef COMMAND_ROLL
+    trimmed_commands[COMMAND_ROLL] += ChopAbs(command_roll_trim, MAX_PPRZ / 10);
+#endif
+#ifdef COMMAND_PITCH
+    trimmed_commands[COMMAND_PITCH] += ChopAbs(command_pitch_trim, MAX_PPRZ / 10);
+#endif
+#ifdef COMMAND_YAW
     trimmed_commands[COMMAND_YAW] += ChopAbs(command_yaw_trim, MAX_PPRZ);
-    #endif
+#endif
 
     SetActuatorsFromCommands(trimmed_commands, autopilot_mode);
     fbw_new_actuators = 0;
-    #if OUTBACK_CHALLENGE_VERY_DANGEROUS_RULE_AP_CAN_FORCE_FAILSAFE
-    if (crash == 1)
-    {
-      for (;;) {}
+#if OUTBACK_CHALLENGE_VERY_DANGEROUS_RULE_AP_CAN_FORCE_FAILSAFE
+    if (crash == 1) {
+      for (;;) {
+#if FBW_DATALINK
+        fbw_datalink_event();
+#endif
+      }
     }
-    #endif
+#endif
 
   }
 #endif
@@ -270,18 +299,30 @@ void event_task_fbw( void) {
 #endif /* MCU_SPI_LINK */
 #endif /* INTER_MCU */
 
+#ifdef FBW_DATALINK
+  fbw_datalink_event();
+#endif
 }
 
 
 /************* PERIODIC ******************************************************/
-void periodic_task_fbw( void ) {
+void periodic_task_fbw(void)
+{
+
+#ifdef FBW_DATALINK
+  fbw_datalink_periodic();
+#endif
 
 #ifdef RADIO_CONTROL
   radio_control_periodic_task();
   if (fbw_mode == FBW_MODE_MANUAL && radio_control.status == RC_REALLY_LOST) {
-#ifdef OUTBACK_CHALLENGE_DANGEROUS_RULE_RC_LOST_NO_AP
+#if OUTBACK_CHALLENGE_DANGEROUS_RULE_RC_LOST_NO_AP
 #warning WARNING DANGER: OUTBACK_CHALLENGE RULE RC_LOST_NO_AP defined. If you loose RC you will NOT go to automatically go to AUTO2 Anymore!!
-set_failsafe_mode();
+    set_failsafe_mode();
+#if OUTBACK_CHALLENGE_DANGEROUS_RULE_RC_LOST_NO_AP_IRREVERSIBLE
+#warning WARNING DANGER: OUTBACK_CHALLENGE_DANGEROUS_RULE_RC_LOST_NO_AP_IRREVERSIBLE defined. If you ever temporarly lost RC while in manual, you will failsafe forever even if RC is restored
+    commands[COMMAND_FORCECRASH] = 9600;
+#endif
 #else
     fbw_mode = FBW_MODE_AUTO;
 #endif
@@ -290,8 +331,7 @@ set_failsafe_mode();
 
 #ifdef INTER_MCU
   inter_mcu_periodic_task();
-  if (fbw_mode == FBW_MODE_AUTO && !ap_ok)
-  {
+  if (fbw_mode == FBW_MODE_AUTO && !ap_ok) {
     set_failsafe_mode();
   }
 #endif
@@ -301,20 +341,28 @@ set_failsafe_mode();
   link_mcu_periodic_task();
 #endif
 
+#ifdef MCU_CAN_LINK
+  inter_mcu_fill_fbw_state();
+  link_mcu_periodic_task();
+#endif
+
 #if PERIODIC_TELEMETRY
-  periodic_telemetry_send_Fbw();
+  periodic_telemetry_send_Fbw(&(DefaultChannel).trans_tx, &(DefaultDevice).device);
 #endif
 
 }
 
-void handle_periodic_tasks_fbw(void) {
+void handle_periodic_tasks_fbw(void)
+{
 
-  if (sys_time_check_and_ack_timer(fbw_periodic_tid))
+  if (sys_time_check_and_ack_timer(fbw_periodic_tid)) {
     periodic_task_fbw();
+  }
 
 #if !(DISABLE_ELECTRICAL)
-  if (sys_time_check_and_ack_timer(electrical_tid))
+  if (sys_time_check_and_ack_timer(electrical_tid)) {
     electrical_periodic();
+  }
 #endif
 
 }

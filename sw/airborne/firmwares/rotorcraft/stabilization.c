@@ -27,11 +27,9 @@
 
 int32_t stabilization_cmd[COMMANDS_NB];
 
-void stabilization_init(void) {
-#ifndef STABILIZATION_SKIP_RATE
-  stabilization_none_init();
-  stabilization_rate_init();
-#endif
-  stabilization_attitude_init();
+void stabilization_init(void)
+{
+  for (uint8_t i = 0; i < COMMANDS_NB; i++) {
+    stabilization_cmd[i] = 0;
+  }
 }
-

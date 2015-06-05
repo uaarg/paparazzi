@@ -29,16 +29,29 @@
  * have the same channel assignments.
  */
 
+#define SPEKTRUM_NB_CHANNEL 12
 
 #ifndef RADIO_CONTROL_NB_CHANNEL
 #define RADIO_CONTROL_NB_CHANNEL 12
 #endif
 
+#if RADIO_CONTROL_NB_CHANNEL > 12
+#error "RADIO_CONTROL_NB_CHANNEL mustn't be higher than 12."
+#endif
 
+/* default channel assignments */
+#ifndef RADIO_THROTTLE
 #define RADIO_THROTTLE   0
+#endif
+#ifndef RADIO_ROLL
 #define RADIO_ROLL       1
+#endif
+#ifndef RADIO_PITCH
 #define RADIO_PITCH      2
+#endif
+#ifndef RADIO_YAW
 #define RADIO_YAW        3
+#endif
 #define RADIO_GEAR       4
 #define RADIO_FLAP       5
 #define RADIO_AUX1       5

@@ -43,21 +43,6 @@
 #include "state.h"
 #include "led.h"
 
-#ifdef ImuScaleGyro
-#undef ImuScaleGyro
-#endif
-#define ImuScaleGyro(_imu) {}
-
-#ifdef ImuScaleAccel
-#undef ImuScaleAccel
-#endif
-#define ImuScaleAccel(_imu) {}
-
-#ifdef ImuScaleMag
-#undef ImuScaleMag
-#endif
-#define ImuScaleMag(_imu) {}
-
 #define GX3_MAX_PAYLOAD 128
 #define GX3_MSG_LEN 67
 #define GX3_HEADER 0xC8
@@ -122,10 +107,5 @@ static inline void ImuEvent(void (* _gyro_handler)(void), void (* _accel_handler
     ahrs_impl.gx3_packet.msg_available = FALSE;
   }
 }
-
-#ifdef AHRS_UPDATE_FW_ESTIMATOR
-extern float ins_roll_neutral;
-extern float ins_pitch_neutral;
-#endif
 
 #endif /* AHRS_GX3_H*/

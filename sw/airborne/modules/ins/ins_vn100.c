@@ -76,13 +76,14 @@ uint32_t ins_baud;
 uint8_t ins_init_status;
 
 // parsing function
-static inline void parse_ins_msg( void );
+static inline void parse_ins_msg(void);
 
 /* spi transaction */
 struct spi_transaction vn100_trans;
 
 /* init vn100 */
-void vn100_init( void ) {
+void vn100_init(void)
+{
 
   //ins_roll_neutral = INS_ROLL_NEUTRAL_DEFAULT;
   //ins_pitch_neutral = INS_PITCH_NEUTRAL_DEFAULT;
@@ -93,8 +94,8 @@ void vn100_init( void ) {
   vn100_trans.cpha = SPICphaEdge2;
   vn100_trans.dss = SPIDss8bit;
   vn100_trans.select = SPISelectUnselect;
-  vn100_trans.output_buf = (uint8_t*)&last_send_packet;
-  vn100_trans.input_buf = (uint8_t*)&last_received_packet;
+  vn100_trans.output_buf = (uint8_t *)&last_send_packet;
+  vn100_trans.input_buf = (uint8_t *)&last_received_packet;
   vn100_trans.status = SPITransDone;
 
   ins_ador = VN100_ADOR;
@@ -105,24 +106,25 @@ void vn100_init( void ) {
 
 }
 
-static inline bool_t ins_configure( void ) {
+static inline bool_t ins_configure(void)
+{
   // nothing to receive during conf
   vn100_trans.input_length = 0;
 
   switch (ins_init_status) {
     case INS_VN100_SET_BAUD :
       last_send_packet.RegID = VN100_REG_SBAUD;
-      vn100_trans.output_length = 4+VN100_REG_SBAUD_SIZE;
+      vn100_trans.output_length = 4 + VN100_REG_SBAUD_SIZE;
       ins_init_status++;
       break;
     case INS_VN100_SET_ADOR :
       last_send_packet.RegID = VN100_REG_ADOR;
-      vn100_trans.output_length = 4+VN100_REG_ADOR_SIZE;
+      vn100_trans.output_length = 4 + VN100_REG_ADOR_SIZE;
       ins_init_status++;
       break;
     case INS_VN100_SET_ADOF :
       last_send_packet.RegID = VN100_REG_ADOF;
-      vn100_trans.output_length = 4+VN100_REG_ADOF_SIZE;
+      vn100_trans.output_length = 4 + VN100_REG_ADOF_SIZE;
       ins_init_status++;
       break;
     case INS_VN100_READY :
@@ -130,12 +132,13 @@ static inline bool_t ins_configure( void ) {
   }
   last_send_packet.CmdID = VN100_CmdID_WriteRegister;
 
-  spi_submit(&(VN100_SPI_DEV),&vn100_trans);
+  spi_submit(&(VN100_SPI_DEV), &vn100_trans);
 
   return FALSE;
 }
 
-void vn100_periodic_task( void ) {
+void vn100_periodic_task(void)
+{
 
   // only send config or request when last transaction is done
   if (vn100_trans.status != SPITransDone) { return; }
@@ -147,14 +150,15 @@ void vn100_periodic_task( void ) {
     last_send_packet.RegID = VN100_REG_YMR;
     // Set IO length
     vn100_trans.output_length = 2; // Only 2 ?
-    vn100_trans.input_length = 4+VN100_REG_YMR_SIZE;
+    vn100_trans.input_length = 4 + VN100_REG_YMR_SIZE;
     // submit
-    spi_submit(&(VN100_SPI_DEV),&vn100_trans);
+    spi_submit(&(VN100_SPI_DEV), &vn100_trans);
   }
 
 }
 
-void vn100_event_task( void ) {
+void vn100_event_task(void)
+{
   if (vn100_trans.status == SPITransSuccess) {
     parse_ins_msg();
 #ifndef INS_VN100_READ_ONLY
@@ -178,7 +182,8 @@ void vn100_event_task( void ) {
   }
 }
 
-static inline void parse_ins_msg( void ) {
+static inline void parse_ins_msg(void)
+{
   if (last_received_packet.ErrID != VN100_Error_None) {
     //TODO send error
     return;
@@ -205,14 +210,14 @@ static inline void parse_ins_msg( void ) {
       ins_quat.qx = last_received_packet.Data[1].Float;
       ins_quat.qy = last_received_packet.Data[2].Float;
       ins_quat.qz = last_received_packet.Data[3].Float;
-      FLOAT_EULERS_OF_QUAT(ins_eulers, ins_quat);
+      float_eulers_of_quat(&ins_eulers, &ins_quat);
       break;
     case VN100_REG_QTM :
       ins_quat.qi = last_received_packet.Data[0].Float;
       ins_quat.qx = last_received_packet.Data[1].Float;
       ins_quat.qy = last_received_packet.Data[2].Float;
       ins_quat.qz = last_received_packet.Data[3].Float;
-      FLOAT_EULERS_OF_QUAT(ins_eulers, ins_quat);
+      float_eulers_of_quat(&ins_eulers, &ins_quat);
       ins_mag.x = last_received_packet.Data[4].Float;
       ins_mag.y = last_received_packet.Data[5].Float;
       ins_mag.z = last_received_packet.Data[6].Float;
@@ -222,7 +227,7 @@ static inline void parse_ins_msg( void ) {
       ins_quat.qx = last_received_packet.Data[1].Float;
       ins_quat.qy = last_received_packet.Data[2].Float;
       ins_quat.qz = last_received_packet.Data[3].Float;
-      FLOAT_EULERS_OF_QUAT(ins_eulers, ins_quat);
+      float_eulers_of_quat(&ins_eulers, &ins_quat);
       ins_accel.x = last_received_packet.Data[4].Float;
       ins_accel.y = last_received_packet.Data[5].Float;
       ins_accel.z = last_received_packet.Data[6].Float;
@@ -232,7 +237,7 @@ static inline void parse_ins_msg( void ) {
       ins_quat.qx = last_received_packet.Data[1].Float;
       ins_quat.qy = last_received_packet.Data[2].Float;
       ins_quat.qz = last_received_packet.Data[3].Float;
-      FLOAT_EULERS_OF_QUAT(ins_eulers, ins_quat);
+      float_eulers_of_quat(&ins_eulers, &ins_quat);
       ins_rates.p = last_received_packet.Data[4].Float;
       ins_rates.q = last_received_packet.Data[5].Float;
       ins_rates.r = last_received_packet.Data[6].Float;
@@ -242,7 +247,7 @@ static inline void parse_ins_msg( void ) {
       ins_quat.qx = last_received_packet.Data[1].Float;
       ins_quat.qy = last_received_packet.Data[2].Float;
       ins_quat.qz = last_received_packet.Data[3].Float;
-      FLOAT_EULERS_OF_QUAT(ins_eulers, ins_quat);
+      float_eulers_of_quat(&ins_eulers, &ins_quat);
       ins_mag.x = last_received_packet.Data[4].Float;
       ins_mag.y = last_received_packet.Data[5].Float;
       ins_mag.z = last_received_packet.Data[6].Float;
@@ -255,7 +260,7 @@ static inline void parse_ins_msg( void ) {
       ins_quat.qx = last_received_packet.Data[1].Float;
       ins_quat.qy = last_received_packet.Data[2].Float;
       ins_quat.qz = last_received_packet.Data[3].Float;
-      FLOAT_EULERS_OF_QUAT(ins_eulers, ins_quat);
+      float_eulers_of_quat(&ins_eulers, &ins_quat);
       ins_accel.x = last_received_packet.Data[4].Float;
       ins_accel.y = last_received_packet.Data[5].Float;
       ins_accel.z = last_received_packet.Data[6].Float;
@@ -268,7 +273,7 @@ static inline void parse_ins_msg( void ) {
       ins_quat.qx = last_received_packet.Data[1].Float;
       ins_quat.qy = last_received_packet.Data[2].Float;
       ins_quat.qz = last_received_packet.Data[3].Float;
-      FLOAT_EULERS_OF_QUAT(ins_eulers, ins_quat);
+      float_eulers_of_quat(&ins_eulers, &ins_quat);
       ins_mag.x = last_received_packet.Data[4].Float;
       ins_mag.y = last_received_packet.Data[5].Float;
       ins_mag.z = last_received_packet.Data[6].Float;
@@ -303,12 +308,13 @@ static inline void parse_ins_msg( void ) {
 #include "messages.h"
 #include "subsystems/datalink/downlink.h"
 
-extern void vn100_report_task( void ) {
+extern void vn100_report_task(void)
+{
   DOWNLINK_SEND_AHRS_LKF(DefaultChannel, DefaultDevice,
-      &ins_eulers.phi, &ins_eulers.theta, &ins_eulers.psi,
-      &ins_quat.qi, &ins_quat.qx, &ins_quat.qy, &ins_quat.qz,
-      &ins_rates.p, &ins_rates.q, &ins_rates.r,
-      &ins_accel.x, &ins_accel.y, &ins_accel.z,
-      &ins_mag.x, &ins_mag.y, &ins_mag.z);
+                         &ins_eulers.phi, &ins_eulers.theta, &ins_eulers.psi,
+                         &ins_quat.qi, &ins_quat.qx, &ins_quat.qy, &ins_quat.qz,
+                         &ins_rates.p, &ins_rates.q, &ins_rates.r,
+                         &ins_accel.x, &ins_accel.y, &ins_accel.z,
+                         &ins_mag.x, &ins_mag.y, &ins_mag.z);
 }
 

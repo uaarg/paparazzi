@@ -31,17 +31,6 @@
  */
 #include "subsystems/ahrs/ahrs_gx3.h"
 
-#ifdef AHRS_UPDATE_FW_ESTIMATOR
-// remotely settable
-#ifndef INS_ROLL_NEUTRAL_DEFAULT
-#define INS_ROLL_NEUTRAL_DEFAULT 0
-#endif
-#ifndef INS_PITCH_NEUTRAL_DEFAULT
-#define INS_PITCH_NEUTRAL_DEFAULT 0
-#endif
-float ins_roll_neutral = INS_ROLL_NEUTRAL_DEFAULT;
-float ins_pitch_neutral = INS_PITCH_NEUTRAL_DEFAULT;
-#endif
 
 #define GX3_CHKSM(_ubx_payload) (uint16_t)((uint16_t)(*((uint8_t*)_ubx_payload+66+1))|(uint16_t)(*((uint8_t*)_ubx_payload+66+0))<<8)
 
@@ -94,8 +83,8 @@ void ahrs_align(void) {
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
-static send_gx3(void) {
-  DOWNLINK_SEND_GX3_INFO(DefaultChannel, DefaultDevice,
+static send_gx3(struct transport_tx *trans, struct link_device *dev) {
+  pprz_msg_send_GX3_INFO(trans, dev, AC_ID,
       &ahrs_impl.gx3_freq,
       &ahrs_impl.gx3_packet.chksm_error,
       &ahrs_impl.gx3_packet.hdr_error,
@@ -266,29 +255,26 @@ void gx3_packet_read_message(void) {
   // Attitude
   struct FloatRMat ltp_to_body_rmat;
   FLOAT_RMAT_COMP(ltp_to_body_rmat, ahrs_impl.gx3_rmat, *body_to_imu_rmat);
-#ifdef AHRS_UPDATE_FW_ESTIMATOR // fixedwing
-  struct FloatEulers ltp_to_body_eulers;
-  FLOAT_EULERS_OF_RMAT(ltp_to_body_eulers, ltp_to_body_rmat);
-  ltp_to_body_eulers.phi -= ins_roll_neutral;
-  ltp_to_body_eulers.theta -= ins_pitch_neutral;
+
 #if AHRS_USE_GPS_HEADING && USE_GPS
+  struct FloatEulers ltp_to_body_eulers;
+  float_eulers_of_rmat(&ltp_to_body_eulers, &ltp_to_body_rmat);
   float course_f = (float)DegOfRad(gps.course / 1e7);
   if (course_f > 180.0) {
     course_f -= 360.0;
   }
   ltp_to_body_eulers.psi = (float)RadOfDeg(course_f);
-#endif
   stateSetNedToBodyEulers_f(&ltp_to_body_eulers);
-#else
-#ifdef IMU_MAG_OFFSET //rotorcraft
+#else // !AHRS_USE_GPS_HEADING
+#ifdef IMU_MAG_OFFSET
   struct FloatEulers ltp_to_body_eulers;
-  FLOAT_EULERS_OF_RMAT(ltp_to_body_eulers, ltp_to_body_rmat);
+  float_eulers_of_rmat(&ltp_to_body_eulers, &ltp_to_body_rmat);
   ltp_to_body_eulers.psi -= ahrs_impl.mag_offset;
   stateSetNedToBodyEulers_f(&ltp_to_body_eulers);
 #else
   stateSetNedToBodyRMat_f(&ltp_to_body_rmat);
-#endif
-#endif
+#endif // IMU_MAG_OFFSET
+#endif // !AHRS_USE_GPS_HEADING
 }
 
 
@@ -349,3 +335,7 @@ void ahrs_aligner_run(void) {
 void ahrs_aligner_init(void) {
 }
 
+/* no scaling */
+void imu_scale_gyro(struct Imu* _imu __attribute__((unused))) {}
+void imu_scale_accel(struct Imu* _imu __attribute__((unused))) {}
+void imu_scale_mag(struct Imu* _imu __attribute__((unused))) {}

@@ -23,7 +23,7 @@ demo2.ARCHDIR = $(ARCH)
 demo2.CFLAGS += -DBOARD_CONFIG=\"conf_demo.h\"
 demo2.srcs = main_demo2.c
 
-demo2.CFLAGS += -DPERIODIC_FREQUENCY='100.' -DUSE_SYS_TIME
+demo2.CFLAGS += -DPERIODIC_FREQUENCY='100.'
 demo2.srcs += mcu_periph/sys_time.c $(SRC_ARCH)/mcu_periph/sys_time_arch.c
 
 demo2.CFLAGS += -DUSE_LED
@@ -36,7 +36,7 @@ demo3.ARCHDIR = $(ARCH)
 demo3.CFLAGS += -DBOARD_CONFIG=\"conf_demo.h\"
 demo3.srcs = main_demo3.c
 
-demo3.CFLAGS += -DPERIODIC_FREQUENCY='10.' -DUSE_SYS_TIME
+demo3.CFLAGS += -DPERIODIC_FREQUENCY='10.'
 demo3.srcs += mcu_periph/sys_time.c $(SRC_ARCH)/mcu_periph/sys_time_arch.c
 
 demo3.CFLAGS += -DUSE_LED
@@ -55,7 +55,7 @@ demo4.ARCHDIR = $(ARCH)
 demo4.CFLAGS += -DBOARD_CONFIG=\"conf_demo.h\"
 demo4.srcs = main_demo4.c
 
-demo4.CFLAGS += -DPERIODIC_FREQUENCY='100.' -DUSE_SYS_TIME
+demo4.CFLAGS += -DPERIODIC_FREQUENCY='100.'
 demo4.srcs += mcu_periph/sys_time.c $(SRC_ARCH)/mcu_periph/sys_time_arch.c
 
 demo4.CFLAGS += -DUSE_LED
@@ -65,7 +65,7 @@ demo4.srcs += $(SRC_ARCH)/armVIC.c
 demo4.CFLAGS += -DUSE_UART0 -DUART0_BAUD=B38400
 demo4.srcs += $(SRC_ARCH)/mcu_periph/uart_arch.c
 
-demo4.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=UART0
+demo4.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=uart0
 demo4.srcs += subsystems/datalink/downlink.c subsystems/datalink/pprz_transport.c
 
 #
@@ -78,7 +78,7 @@ demo5.ARCHDIR = $(ARCH)
 demo5.CFLAGS += -DBOARD_CONFIG=\"conf_demo.h\"
 demo5.srcs = main_demo5.c
 
-demo5.CFLAGS += -DPERIODIC_FREQUENCY='100.' -DUSE_SYS_TIME
+demo5.CFLAGS += -DPERIODIC_FREQUENCY='100.'
 demo5.srcs += mcu_periph/sys_time.c $(SRC_ARCH)/mcu_periph/sys_time_arch.c
 
 demo5.CFLAGS += -DUSE_LED
@@ -88,7 +88,7 @@ demo5.srcs += $(SRC_ARCH)/armVIC.c
 demo5.CFLAGS += -DUSE_UART0 -DUART0_BAUD=B38400
 demo5.srcs += $(SRC_ARCH)/mcu_periph/uart_arch.c
 
-demo5.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=UART0
+demo5.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=uart0
 demo5.srcs += subsystems/datalink/downlink.c subsystems/datalink/pprz_transport.c
 
 demo5.CFLAGS += -DDATALINK=PPRZ -DPPRZ_UART=UART0
@@ -114,7 +114,7 @@ demo6.CFLAGS += -DUSE_USB_SERIAL
 demo6.srcs += $(SRC_ARCH)/lpcusb/usbhw_lpc.c $(SRC_ARCH)/lpcusb/usbcontrol.c $(SRC_ARCH)/lpcusb/usbstdreq.c $(SRC_ARCH)/lpcusb/usbinit.c
 demo6.srcs += $(SRC_ARCH)/usb_ser_hw.c
 
-demo6.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=UsbS
+demo6.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=usb_serial
 demo6.srcs += subsystems/datalink/downlink.c subsystems/datalink/pprz_transport.c
 
 //demo6.CFLAGS += -DDATALINK=PPRZ -DPPRZ_UART=UART0
@@ -137,7 +137,7 @@ test_spk.CFLAGS += -DUSE_LED
 test_spk.srcs += $(SRC_ARCH)/armVIC.c
 
 test_spk.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DUSE_USB_SERIAL
-test_spk.CFLAGS += -DDOWNLINK_DEVICE=UsbS -DPPRZ_UART=UsbS -DDATALINK=PPRZ
+test_spk.CFLAGS += -DDOWNLINK_DEVICE=usb_serial -DPPRZ_UART=UsbS -DDATALINK=PPRZ
 test_spk.srcs += subsystems/datalink/downlink.c $(SRC_ARCH)/usb_ser_hw.c subsystems/datalink/pprz_transport.c
 test_spk.srcs += $(SRC_ARCH)/lpcusb/usbhw_lpc.c $(SRC_ARCH)/lpcusb/usbcontrol.c
 test_spk.srcs += $(SRC_ARCH)/lpcusb/usbstdreq.c $(SRC_ARCH)/lpcusb/usbinit.c

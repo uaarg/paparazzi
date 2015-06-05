@@ -58,6 +58,7 @@ twog_1.0 + aspirin + ETS baro + ETS speed
       <define name="BARO_ETS_SYNC_SEND"/>
     </load>
     <load name="baro_sim.xml"/>
+    <load name="air_data.xml"/>
     <load name="digital_cam.xml">
       <define name="DC_SHUTTER_GPIO" value="GPIOB,GPIO22"/><!-- 18:aux 22:camsw-->
     </load>
@@ -244,7 +245,7 @@ twog_1.0 + aspirin + ETS baro + ETS speed
 
   <section name="DIGITAL_CAMERA" prefix="DC_">
     <define name="AUTOSHOOT_QUARTERSEC_PERIOD" value="12" unit="quarter_second"/>
-    <define name="AUTOSHOOT_METER_GRID" value="50" unit="meter"/>
+    <define name="AUTOSHOOT_DISTANCE_INTERVAL" value="50" unit="meter"/>
   </section>
 
   <section name="FAILSAFE" prefix="FAILSAFE_">

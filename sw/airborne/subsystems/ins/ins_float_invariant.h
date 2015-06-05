@@ -41,7 +41,7 @@ struct inv_state  {
   struct FloatRates bias; ///< Estimated gyro biases
   struct NedCoor_f speed; ///< Estimates speed
   struct NedCoor_f pos;   ///< Estimates position
-  float hb;		            ///< Estimates barometers bias
+  float hb;               ///< Estimates barometers bias
   float as;               ///< Estimated accelerometer sensitivity
 //float cs;               ///< Estimated magnetic sensitivity
 };
@@ -109,12 +109,13 @@ struct InsFloatInv {
   struct inv_gains gains;             ///< tuning gains
 
   bool_t reset;                       ///< flag to request reset/reinit the filter
+
+  struct FloatVect3 mag_h;
 };
 
 extern struct InsFloatInv ins_impl;
 
-extern float ins_roll_neutral;
-extern float ins_pitch_neutral;
+#define ahrs_impl ins_impl
 
 #endif /* INS_FLOAT_INVARIANT_H */
 

@@ -19,17 +19,17 @@
  * the Free Software Foundation, 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- /**
- * @file imu_um6.h
- *
- * Driver for CH Robotics UM6 IMU/AHRS subsystem
- *
- * Takes care of configuration of the IMU, communication and parsing
- * the received packets. See UM6 datasheet for configuration options.
- * Should be used with ahrs_extern_euler AHRS subsystem.
- *
- * @author Michal Podhradsky <michal.podhradsky@aggiemail.usu.edu>
- */
+/**
+* @file imu_um6.h
+*
+* Driver for CH Robotics UM6 IMU/AHRS subsystem
+*
+* Takes care of configuration of the IMU, communication and parsing
+* the received packets. See UM6 datasheet for configuration options.
+* Should be used with ahrs_extern_euler AHRS subsystem.
+*
+* @author Michal Podhradsky <michal.podhradsky@aggiemail.usu.edu>
+*/
 #ifndef IMU_UM6_H
 #define IMU_UM6_H
 
@@ -43,21 +43,6 @@
 #define UM6Link(_x) _UM6Link(UM6_LINK, _x)
 
 #define UM6Buffer() UM6Link(ChAvailable())
-
-#ifdef ImuScaleGyro
-#undef ImuScaleGyro
-#endif
-#define ImuScaleGyro(_imu) {}
-
-#ifdef ImuScaleAccel
-#undef ImuScaleAccel
-#endif
-#define ImuScaleAccel(_imu) {}
-
-#ifdef ImuScaleMag
-#undef ImuScaleMag
-#endif
-#define ImuScaleMag(_imu) {}
 
 #define IMU_UM6_BUFFER_LENGTH 32
 #define IMU_UM6_DATA_OFFSET 5
@@ -138,7 +123,8 @@ enum UM6Status {
   }
 
 #define ImuEvent(_gyro_handler, _accel_handler, _mag_handler) { \
-  imu_um6_event(_gyro_handler, _accel_handler, _mag_handler); \
-}
+    imu_um6_event(_gyro_handler, _accel_handler, _mag_handler); \
+  }
+
 
 #endif /* IMU_UM6_H*/

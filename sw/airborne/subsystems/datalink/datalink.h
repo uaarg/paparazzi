@@ -45,8 +45,8 @@
 /** Datalink kinds */
 #define PPRZ 1
 #define XBEE 2
-#define UDP 3
-#define SUPERBITRF 4
+#define SUPERBITRF 3
+#define W5100 4
 
 EXTERN bool_t dl_msg_available;
 /** Flag provided to control calls to ::dl_parse_msg. NOT used in this module*/
@@ -54,18 +54,18 @@ EXTERN bool_t dl_msg_available;
 EXTERN uint16_t datalink_time;
 
 #define MSG_SIZE 128
-EXTERN uint8_t dl_buffer[MSG_SIZE]  __attribute__ ((aligned));
+EXTERN uint8_t dl_buffer[MSG_SIZE]  __attribute__((aligned));
 
 EXTERN void dl_parse_msg(void);
 /** Should be called when chars are available in dl_buffer */
 
 /** Check for new message and parse */
 #define DlCheckAndParse() {   \
-  if (dl_msg_available) {      \
-    dl_parse_msg();            \
-    dl_msg_available = FALSE;  \
-  }                            \
-}
+    if (dl_msg_available) {      \
+      dl_parse_msg();            \
+      dl_msg_available = FALSE;  \
+    }                            \
+  }
 
 #if defined DATALINK && DATALINK == PPRZ
 
@@ -84,14 +84,7 @@ EXTERN void dl_parse_msg(void);
 #elif defined DATALINK && DATALINK == W5100
 
 #define DatalinkEvent() {                       \
-    W5100CheckAndParse(W5100, w5100_tp);        \
-    DlCheckAndParse();                          \
-  }
-
-#elif defined DATALINK && DATALINK == UDP
-
-#define DatalinkEvent() {                       \
-    UdpCheckAndParse();                         \
+    W5100CheckAndParse(W5100, pprz_tp);         \
     DlCheckAndParse();                          \
   }
 

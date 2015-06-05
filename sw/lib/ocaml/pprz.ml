@@ -146,7 +146,7 @@ let rec value = fun t v ->
     | Scalar "uint32" -> Int64 (Int64.of_string v)
     | Scalar ("uint64" | "int64") -> Int64 (Int64.of_string v)
     | Scalar ("float" | "double") -> Float (float_of_string v)
-    | Scalar "string" -> String v
+    | ArrayType "char" | FixedArrayType ("char", _) | Scalar "string" -> String v
     | Scalar "char" -> Char v.[0]
     | ArrayType t' ->
         Array (Array.map (value (Scalar t')) (Array.of_list (split_array v)))
@@ -162,16 +162,35 @@ let rec string_of_value = function
   | Int64 x -> Int64.to_string x
   | Char c -> String.make 1 c
   | String s -> s
-  | Array a -> "|"^(String.concat separator (Array.to_list (Array.map string_of_value a)))^"|"
+  | Array a ->
+      let l = (Array.to_list (Array.map string_of_value a)) in
+      match a.(0) with
+      | Char _ -> "\""^(String.concat "" l)^"\""
+      | _ -> String.concat separator l
 
 
 let magic = fun x -> (Obj.magic x:('a,'b,'c) Pervasives.format)
 
-
-let formatted_string_of_value = fun format v ->
+(* FIXME temporary solution, the complete formatted_string_of_value function
+   causes a segfault in server and GCS *)
+let string_of_value_format = fun format v ->
   match v with
-      Float x -> sprintf (magic format) x
-    | v -> string_of_value v
+    Float x -> sprintf (magic format) x
+  | v -> string_of_value v
+
+let rec formatted_string_of_value = fun format v ->
+  match v with
+    | Int x -> sprintf (magic format) x
+    | Float x -> sprintf (magic format) x
+    | Int32 x -> sprintf (magic format) x
+    | Int64 x -> sprintf (magic format) x
+    | Char x -> sprintf (magic format) x
+    | String x -> sprintf (magic format) x
+    | Array a ->
+        let l = (Array.to_list (Array.map (formatted_string_of_value format) a)) in
+        match a.(0) with
+        | Char _ -> "\""^(String.concat "" l)^"\""
+        | _ -> String.concat separator l
 
 
 let sizeof = fun f ->
@@ -334,9 +353,11 @@ let parse_class = fun xml_class ->
         with
             Xml.No_attribute("link") -> None
       in
+      (* only keep a "field" nodes *)
+      let xml_children = List.filter (fun f -> Xml.tag f = "field") (Xml.children xml_msg) in
       let msg = {
         name = name;
-        fields = List.map field_of_xml (Xml.children xml_msg);
+        fields = List.map field_of_xml xml_children;
         link = link
       } in
       let id = int_of_string (ExtXml.attrib xml_msg "id") in
@@ -400,8 +421,8 @@ let rec sprint_value = fun buf i _type v ->
       sprint_int8 buf i x; sizeof _type
     | Scalar "float", Float f -> sprint_float buf i f; sizeof _type
     | Scalar "double", Float f -> sprint_double buf i f; sizeof _type
-    | Scalar ("int32"|"uint32"), Int32 x -> sprint_int32 buf i x; sizeof _type
-    | Scalar ("int64"|"uint64"), Int64 x -> sprint_int64 buf i x; sizeof _type
+    | Scalar "int32", Int32 x -> sprint_int32 buf i x; sizeof _type
+    | Scalar ("int64"|"uint64"|"uint32"), Int64 x -> sprint_int64 buf i x; sizeof _type
     | Scalar "int16", Int x -> sprint_int16 buf i x; sizeof _type
     | Scalar ("int32" | "uint32"), Int value ->
       assert (_type <> Scalar "uint32" || value >= 0);
@@ -515,7 +536,7 @@ module PprzTransportBase(SubType:TRANSPORT_TYPE) = struct
   let checksum = fun msg ->
     let l = String.length msg in
     let ck_a, ck_b = compute_checksum msg in
-    Debug.call 'T' (fun f -> fprintf f "Pprz cs: %d %d\n" ck_a (Char.code msg.[l-2]));
+    Debug.call 'T' (fun f -> fprintf f "Pprz cs: %d %d | %d %d\n" ck_a (Char.code msg.[l-2]) ck_b (Char.code msg.[l-1]));
     ck_a = Char.code msg.[l-2] && ck_b = Char.code msg.[l-1]
 
   let payload = fun msg ->
@@ -670,15 +691,15 @@ module MessagesOfXml(Class:CLASS_Xml) = struct
 
 
   let space = Str.regexp "[ \t]+"
-  let array_sep = Str.regexp "|"
+  let array_sep = Str.regexp "[\"|]" (* also search for old separator '|' for backward compatibility *)
   let values_of_string = fun s ->
     (* split arguments and arrays *)
     let array_split = Str.full_split array_sep s in
     let rec loop = fun fields ->
       match fields with
       | [] -> []
-      | (Str.Delim "|")::((Str.Text l)::[Str.Delim "|"]) -> [l]
-      | (Str.Delim "|")::((Str.Text l)::((Str.Delim "|")::xs)) -> [l] @ (loop xs)
+      | (Str.Delim "\"")::((Str.Text l)::[Str.Delim "\""]) | (Str.Delim "|")::((Str.Text l)::[Str.Delim "|"]) -> [l]
+      | (Str.Delim "\"")::((Str.Text l)::((Str.Delim "\"")::xs)) | (Str.Delim "|")::((Str.Text l)::((Str.Delim "|")::xs)) -> [l] @ (loop xs)
       | [Str.Text x] -> Str.split space x
       | (Str.Text x)::xs -> (Str.split space x) @ (loop xs)
       | (Str.Delim _)::_ -> failwith "Pprz.values_of_string: incorrect array delimiter"
@@ -712,7 +733,7 @@ module MessagesOfXml(Class:CLASS_Xml) = struct
          try List.assoc field_name values with
              Not_found ->
                default_value field._type in
-       formatted_string_of_value field.fformat v)
+       string_of_value_format field.fformat v)
      msg.fields)
 
   let message_send = fun ?timestamp ?link_id sender msg_name values ->

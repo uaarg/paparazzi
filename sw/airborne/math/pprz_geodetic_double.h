@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2011 The Paparazzi Team
+ * Copyright (C) 2008-2014 The Paparazzi Team
  *
  * This file is part of paparazzi.
  *
@@ -16,14 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with paparazzi; see the file COPYING.  If not, see
  * <http://www.gnu.org/licenses/>.
- *
  */
 
 /**
  * @file pprz_geodetic_double.h
- *   @brief Paparazzi double-precision floating point math for geodetic calculations.
+ * @brief Paparazzi double-precision floating point math for geodetic calculations.
  *
- *   This is the more detailed description of this file.
  *
  */
 
@@ -54,8 +52,8 @@ struct EcefCoor_d {
  * @brief vector in Latitude, Longitude and Altitude
  */
 struct LlaCoor_d {
-  double lon; ///< in radians
   double lat; ///< in radians
+  double lon; ///< in radians
   double alt; ///< in meters above WGS84 reference ellipsoid
 };
 
@@ -95,29 +93,29 @@ struct UtmCoor_d {
 struct LtpDef_d {
   struct EcefCoor_d  ecef; ///< origin of local frame in ECEF
   struct LlaCoor_d   lla; ///< origin of local frame in LLA
-  struct DoubleMat33 ltp_of_ecef; ///< rotation from ECEF to local frame
+  struct DoubleRMat ltp_of_ecef; ///< rotation from ECEF to local frame
   double hmsl; ///< height in meters above mean sea level
 };
 
-extern void lla_of_utm_d(struct LlaCoor_d* out, struct UtmCoor_d* in);
-extern void ltp_def_from_ecef_d(struct LtpDef_d* def, struct EcefCoor_d* ecef);
-extern void lla_of_ecef_d(struct LlaCoor_d* out, struct EcefCoor_d* in);
-extern void ecef_of_lla_d(struct EcefCoor_d* out, struct LlaCoor_d* in);
+extern void lla_of_utm_d(struct LlaCoor_d *out, struct UtmCoor_d *in);
+extern void ltp_def_from_ecef_d(struct LtpDef_d *def, struct EcefCoor_d *ecef);
+extern void lla_of_ecef_d(struct LlaCoor_d *out, struct EcefCoor_d *in);
+extern void ecef_of_lla_d(struct EcefCoor_d *out, struct LlaCoor_d *in);
 
-extern void enu_of_ecef_point_d(struct EnuCoor_d* ned, struct LtpDef_d* def, struct EcefCoor_d* ecef);
-extern void ned_of_ecef_point_d(struct NedCoor_d* ned, struct LtpDef_d* def, struct EcefCoor_d* ecef);
+extern void enu_of_ecef_point_d(struct EnuCoor_d *ned, struct LtpDef_d *def, struct EcefCoor_d *ecef);
+extern void ned_of_ecef_point_d(struct NedCoor_d *ned, struct LtpDef_d *def, struct EcefCoor_d *ecef);
 
-extern void enu_of_ecef_vect_d(struct EnuCoor_d* ned, struct LtpDef_d* def, struct EcefCoor_d* ecef);
-extern void ned_of_ecef_vect_d(struct NedCoor_d* ned, struct LtpDef_d* def, struct EcefCoor_d* ecef);
+extern void enu_of_ecef_vect_d(struct EnuCoor_d *ned, struct LtpDef_d *def, struct EcefCoor_d *ecef);
+extern void ned_of_ecef_vect_d(struct NedCoor_d *ned, struct LtpDef_d *def, struct EcefCoor_d *ecef);
 
-extern void ecef_of_enu_point_d(struct EcefCoor_d* ecef, struct LtpDef_d* def, struct EnuCoor_d* enu);
-extern void ecef_of_ned_point_d(struct EcefCoor_d* ecef, struct LtpDef_d* def, struct NedCoor_d* ned);
+extern void ecef_of_enu_point_d(struct EcefCoor_d *ecef, struct LtpDef_d *def, struct EnuCoor_d *enu);
+extern void ecef_of_ned_point_d(struct EcefCoor_d *ecef, struct LtpDef_d *def, struct NedCoor_d *ned);
 
-extern void ecef_of_enu_vect_d(struct EcefCoor_d* ecef, struct LtpDef_d* def, struct EnuCoor_d* enu);
-extern void ecef_of_ned_vect_d(struct EcefCoor_d* ecef, struct LtpDef_d* def, struct NedCoor_d* ned);
+extern void ecef_of_enu_vect_d(struct EcefCoor_d *ecef, struct LtpDef_d *def, struct EnuCoor_d *enu);
+extern void ecef_of_ned_vect_d(struct EcefCoor_d *ecef, struct LtpDef_d *def, struct NedCoor_d *ned);
 
-extern void enu_of_lla_point_d(struct EnuCoor_d* enu, struct LtpDef_d* def, struct LlaCoor_d* lla);
-extern void ned_of_lla_point_d(struct NedCoor_d* ned, struct LtpDef_d* def, struct LlaCoor_d* lla);
+extern void enu_of_lla_point_d(struct EnuCoor_d *enu, struct LtpDef_d *def, struct LlaCoor_d *lla);
+extern void ned_of_lla_point_d(struct NedCoor_d *ned, struct LtpDef_d *def, struct LlaCoor_d *lla);
 
 extern double gc_of_gd_lat_d(double gd_lat, double hmsl);
 

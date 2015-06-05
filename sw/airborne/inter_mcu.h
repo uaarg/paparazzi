@@ -1,5 +1,4 @@
-/*  $Id$
- *
+/*
  * Copyright (C) 2003-2005  Pascal Brisset, Antoine Drouin
  *
  * This file is part of paparazzi.
@@ -15,19 +14,20 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with paparazzi; see the file COPYING.  If not, write to
- * the Free Software Foundation, 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- *
+ * along with paparazzi; see the file COPYING.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
-/** \brief Communication between fbw and ap processes
+/**
+ * @file inter_mcu.h
+ * Communication between fbw and ap processes.
+ *
  * This unit contains the data structure used to communicate between the
  * "fly by wire" process and the "autopilot" process. It must be linked once in a
- * monoprocessor architecture, twice in a twin-processors (the historical
- * Atmel AVRs mega8-mega128 one) architecture. In the latter case, the
- * inter-mcu communication process (e.g. SPI) must fill and read these data structures.
-*/
+ * monoprocessor architecture, twice in a twin-processors architecture.
+ * In the latter case, the inter-mcu communication process (e.g. SPI) must fill and
+ * read these data structures.
+ */
 
 #ifndef INTER_MCU_H
 #define INTER_MCU_H
@@ -45,14 +45,6 @@
 #include "subsystems/electrical.h"
 #include "firmwares/fixedwing/main_fbw.h"
 
-#ifndef SINGLE_MCU
-// If radio_control defines
-#ifdef RADIO_CONTROL_NB_CHANNEL
-#undef RADIO_CONTROL_NB_CHANNEL
-#endif
-#include "generated/radio.h"
-#define RADIO_CONTROL_NB_CHANNEL RADIO_CTL_NB
-#endif
 
 /** Data structure shared by fbw and ap processes */
 struct fbw_state {
@@ -83,8 +75,8 @@ struct ap_state {
 #define MASK_FBW_CHANGED 0xf
 
 
-extern struct fbw_state* fbw_state;
-extern struct ap_state*  ap_state;
+extern struct fbw_state *fbw_state;
+extern struct ap_state  *ap_state;
 
 extern volatile bool_t inter_mcu_received_fbw;
 extern volatile bool_t inter_mcu_received_ap;
@@ -98,7 +90,8 @@ extern bool_t ap_ok;
 #define AP_STALLED_TIME        30  // 500ms with a 60Hz timer
 
 
-static inline void inter_mcu_init(void) {
+static inline void inter_mcu_init(void)
+{
   fbw_state->status = 0;
   fbw_state->nb_err = 0;
 
@@ -107,19 +100,22 @@ static inline void inter_mcu_init(void) {
 
 
 /* Prepare data to be sent to mcu0 */
-static inline void inter_mcu_fill_fbw_state (void) {
+static inline void inter_mcu_fill_fbw_state(void)
+{
   uint8_t status = 0;
 
 #ifdef RADIO_CONTROL
   uint8_t i;
-  for(i = 0; i < RADIO_CONTROL_NB_CHANNEL; i++)
+  for (i = 0; i < RADIO_CONTROL_NB_CHANNEL; i++) {
     fbw_state->channels[i] = radio_control.values[i];
+  }
 
   fbw_state->ppm_cpt = radio_control.frame_rate;
 
   status = (radio_control.status == RC_OK ? _BV(STATUS_RADIO_OK) : 0);
   status |= (radio_control.status == RC_REALLY_LOST ? _BV(STATUS_RADIO_REALLY_LOST) : 0);
-  status |= (radio_control.status == RC_OK ? _BV(AVERAGED_CHANNELS_SENT) : 0); // Any valid frame contains averaged channels
+  status |= (radio_control.status == RC_OK ? _BV(AVERAGED_CHANNELS_SENT) :
+             0); // Any valid frame contains averaged channels
 #endif // RADIO_CONTROL
 
   status |= (fbw_mode == FBW_MODE_AUTO ? _BV(STATUS_MODE_AUTO) : 0);
@@ -136,13 +132,15 @@ static inline void inter_mcu_fill_fbw_state (void) {
 }
 
 /** Prepares date for next comm with AP. Set ::ap_ok to TRUE */
-static inline void inter_mcu_event_task( void) {
+static inline void inter_mcu_event_task(void)
+{
   time_since_last_ap = 0;
   ap_ok = TRUE;
 }
 
 /** Monitors AP. Set ::ap_ok to false if AP is down for a long time. */
-static inline void inter_mcu_periodic_task(void) {
+static inline void inter_mcu_periodic_task(void)
+{
   if (time_since_last_ap >= AP_STALLED_TIME) {
     ap_ok = FALSE;
 #ifdef SINGLE_MCU
@@ -150,8 +148,9 @@ static inline void inter_mcu_periodic_task(void) {
     inter_mcu_fill_fbw_state();
 #endif
 
-  } else
+  } else {
     time_since_last_ap++;
+  }
 }
 
 #endif /* FBW */

@@ -41,10 +41,6 @@
 #include "subsystems/datalink/downlink.h"
 
 
-#if !defined(SENSOR_SYNC_SEND) && !defined(USE_BARO_BMP)
-#warning set SENSOR_SYNC_SEND to use baro_bmp
-#endif
-
 #ifndef BMP_I2C_DEV
 #define BMP_I2C_DEV i2c0
 #endif
@@ -60,7 +56,8 @@ float baro_bmp_r;
 float baro_bmp_sigma2;
 int32_t baro_bmp_alt;
 
-void baro_bmp_init(void) {
+void baro_bmp_init(void)
+{
 
   bmp085_init(&baro_bmp, &BMP_I2C_DEV, BMP085_SLAVE_ADDR);
 
@@ -70,16 +67,19 @@ void baro_bmp_init(void) {
 
 }
 
-void baro_bmp_periodic(void) {
+void baro_bmp_periodic(void)
+{
 
-  if (baro_bmp.initialized)
+  if (baro_bmp.initialized) {
     bmp085_periodic(&baro_bmp);
-  else
+  } else {
     bmp085_read_eeprom_calib(&baro_bmp);
+  }
 
 }
 
-void baro_bmp_event(void) {
+void baro_bmp_event(void)
+{
 
   bmp085_event(&baro_bmp);
 
@@ -91,6 +91,8 @@ void baro_bmp_event(void) {
 
     float pressure = (float)baro_bmp.pressure;
     AbiSendMsgBARO_ABS(BARO_BMP_SENDER_ID, &pressure);
+    float temp = baro_bmp.temperature / 10.0f;
+    AbiSendMsgTEMPERATURE(BARO_BOARD_SENDER_ID, &temp);
     baro_bmp.data_available = FALSE;
 
 #ifdef SENSOR_SYNC_SEND
@@ -99,9 +101,9 @@ void baro_bmp_event(void) {
                              &baro_bmp.temperature);
 #else
     RunOnceEvery(10, DOWNLINK_SEND_BMP_STATUS(DefaultChannel, DefaultDevice,
-                                              &baro_bmp.up, &baro_bmp.ut,
-                                              &baro_bmp.pressure,
-                                              &baro_bmp.temperature));
+                 &baro_bmp.up, &baro_bmp.ut,
+                 &baro_bmp.pressure,
+                 &baro_bmp.temperature));
 #endif
   }
 }

@@ -83,6 +83,8 @@ let convert_value_with_code_unit_coef_of_xml = function xml ->
   (* if unit attribute is not specified don't even attempt to convert the units *)
   let u = try Xml.attrib xml "unit" with _ -> failwith "Unit conversion error" in
   let cu = ExtXml.attrib_or_default xml "code_unit" "" in
+  (* if unit equals code unit, don't convert as that would always result in a float *)
+  if u = cu then failwith "Not converting";
   (* default value for code_unit is rad[/s] when unit is deg[/s] *)
   let conv = try (Pprz.scale_of_units u cu) with
     | Pprz.Unit_conversion_error s -> prerr_endline (sprintf "Unit conversion error: %s" s); flush stderr; exit 1
@@ -317,7 +319,7 @@ let _ =
   and md5sum = Sys.argv.(3) in
   try
     let xml = start_and_begin xml_file h_name in
-    Xml2h.warning ("AIRFRAME MODEL: "^ ac_name);
+    (* Xml2h.warning ("AIRFRAME MODEL: "^ ac_name); *)
     define_string "AIRFRAME_NAME" ac_name;
     define "AC_ID" ac_id;
     define "MD5SUM" (sprintf "((uint8_t*)\"%s\")" (hex_to_bin md5sum));

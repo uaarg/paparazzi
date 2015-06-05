@@ -49,7 +49,6 @@ PERIODIC_FREQUENCY ?= 512
 COMMON_TEST_CFLAGS  = -I$(SRC_BOARD) -DBOARD_CONFIG=$(BOARD_CFG)
 COMMON_TEST_CFLAGS += -DPERIPHERALS_AUTO_INIT
 COMMON_TEST_SRCS    = mcu.c $(SRC_ARCH)/mcu_arch.c
-COMMON_TEST_CFLAGS += -DUSE_SYS_TIME
 ifneq ($(SYS_TIME_LED),none)
   COMMON_TEST_CFLAGS += -DSYS_TIME_LED=$(SYS_TIME_LED)
 endif
@@ -65,14 +64,13 @@ COMMON_TEST_SRCS += $(SRC_ARCH)/led_hw.c
 COMMON_TEST_SRCS += $(SRC_ARCH)/mcu_periph/gpio_arch.c
 endif
 
+COMMON_TELEMETRY_MODEM_PORT_LOWER=$(shell echo $(MODEM_PORT) | tr A-Z a-z)
 COMMON_TELEMETRY_CFLAGS  = -DUSE_$(MODEM_PORT) -D$(MODEM_PORT)_BAUD=$(MODEM_BAUD)
-COMMON_TELEMETRY_CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=$(MODEM_PORT)
-COMMON_TELEMETRY_CFLAGS += -DDefaultPeriodic='&telemetry_Main'
+COMMON_TELEMETRY_CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=pprz_tp -DDOWNLINK_DEVICE=$(COMMON_TELEMETRY_MODEM_PORT_LOWER)
 COMMON_TELEMETRY_CFLAGS += -DDATALINK=PPRZ  -DPPRZ_UART=$(MODEM_PORT)
 COMMON_TELEMETRY_SRCS    = mcu_periph/uart.c
 COMMON_TELEMETRY_SRCS   += $(SRC_ARCH)/mcu_periph/uart_arch.c
 COMMON_TELEMETRY_SRCS   += subsystems/datalink/downlink.c subsystems/datalink/pprz_transport.c
-COMMON_TELEMETRY_SRCS   += subsystems/datalink/telemetry.c
 
 #COMMON_TEST_SRCS   += math/pprz_trig_int.c
 
@@ -332,7 +330,28 @@ test_imu.CFLAGS += $(COMMON_TELEMETRY_CFLAGS)
 test_imu.srcs   += $(COMMON_TELEMETRY_SRCS)
 test_imu.srcs   += mcu_periph/i2c.c $(SRC_ARCH)/mcu_periph/i2c_arch.c
 test_imu.srcs   += test/subsystems/test_imu.c
-test_imu.srcs   += math/pprz_trig_int.c
+test_imu.srcs   += math/pprz_geodetic_int.c math/pprz_geodetic_float.c math/pprz_geodetic_double.c math/pprz_trig_int.c math/pprz_orientation_conversion.c math/pprz_algebra_int.c math/pprz_algebra_float.c math/pprz_algebra_double.c
+
+
+#
+# test_ahrs
+#
+# add imu and ahrs subsystems to test_ahrs target!
+#
+# configuration
+#   SYS_TIME_LED
+#   MODEM_PORT
+#   MODEM_BAUD
+#
+test_ahrs.ARCHDIR = $(ARCH)
+test_ahrs.CFLAGS += $(COMMON_TEST_CFLAGS)
+test_ahrs.srcs   += $(COMMON_TEST_SRCS)
+test_ahrs.CFLAGS += $(COMMON_TELEMETRY_CFLAGS)
+test_ahrs.srcs   += $(COMMON_TELEMETRY_SRCS)
+test_ahrs.srcs   += mcu_periph/i2c.c $(SRC_ARCH)/mcu_periph/i2c_arch.c
+test_ahrs.srcs   += test/subsystems/test_ahrs.c
+test_ahrs.srcs   += state.c
+test_ahrs.srcs   += math/pprz_geodetic_int.c math/pprz_geodetic_float.c math/pprz_geodetic_double.c math/pprz_trig_int.c math/pprz_orientation_conversion.c math/pprz_algebra_int.c math/pprz_algebra_float.c math/pprz_algebra_double.c
 
 
 #

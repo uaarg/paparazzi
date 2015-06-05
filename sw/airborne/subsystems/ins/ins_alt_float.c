@@ -32,6 +32,7 @@
 #include <math.h>
 
 #include "state.h"
+#include "mcu_periph/sys_time.h"
 #include "subsystems/gps.h"
 #include "firmwares/fixedwing/nav.h"
 
@@ -71,9 +72,10 @@ static void baro_cb(uint8_t sender_id, const float *pressure);
 
 static void alt_kalman_reset(void);
 static void alt_kalman_init(void);
-static void alt_kalman(float);
+static void alt_kalman(float z_meas, float dt);
 
-void ins_init(void) {
+void ins_init(void)
+{
 
   struct UtmCoor_f utm0 = { nav_utm_north0, nav_utm_east0, ground_alt, nav_utm_zone0 };
   stateSetLocalUtmOrigin_f(&utm0);
@@ -91,20 +93,22 @@ void ins_init(void) {
 #endif
   ins_impl.reset_alt_ref = FALSE;
 
-  alt_kalman(0.0f);
+  // why do we have this here?
+  alt_kalman(0.0f, 0.1);
 
   ins.status = INS_RUNNING;
 }
 
 
 /** Reset the geographic reference to the current GPS fix */
-void ins_reset_local_origin(void) {
+void ins_reset_local_origin(void)
+{
   struct UtmCoor_f utm;
 #ifdef GPS_USE_LATLONG
   /* Recompute UTM coordinates in this zone */
   struct LlaCoor_f lla;
   LLA_FLOAT_OF_BFP(lla, gps.lla_pos);
-  utm.zone = (gps.lla_pos.lon/1e7 + 180) / 6 + 1;
+  utm.zone = (gps.lla_pos.lon / 1e7 + 180) / 6 + 1;
   utm_of_lla_f(&utm, &lla);
 #else
   utm.zone = gps.utm_pos.zone;
@@ -112,7 +116,7 @@ void ins_reset_local_origin(void) {
   utm.north = gps.utm_pos.north / 100.0f;
 #endif
   // ground_alt
-  utm.alt = gps.hmsl  /1000.0f;
+  utm.alt = gps.hmsl  / 1000.0f;
 
   // reset state UTM ref
   stateSetLocalUtmOrigin_f(&utm);
@@ -121,7 +125,8 @@ void ins_reset_local_origin(void) {
   ins_impl.reset_alt_ref = TRUE;
 }
 
-void ins_reset_altitude_ref(void) {
+void ins_reset_altitude_ref(void)
+{
   struct UtmCoor_f utm = state.utm_origin_f;
   // ground_alt
   utm.alt = gps.hmsl / 1000.0f;
@@ -133,7 +138,19 @@ void ins_reset_altitude_ref(void) {
 
 
 #if USE_BAROMETER
-static void baro_cb(uint8_t __attribute__((unused)) sender_id, const float *pressure) {
+static void baro_cb(uint8_t __attribute__((unused)) sender_id, const float *pressure)
+{
+  // timestamp in usec when last callback was received
+  static uint32_t last_ts = 0;
+  // current timestamp
+  uint32_t now_ts = get_sys_time_usec();
+  // dt between this and last callback in seconds
+  float dt = (float)(now_ts - last_ts) / 1e6;
+  last_ts = now_ts;
+
+  // bound dt (assume baro freq 1Hz-500Hz
+  Bound(dt, 0.002, 1.0)
+
   if (!ins_impl.baro_initialized) {
     ins_impl.qfe = *pressure;
     ins_impl.baro_initialized = TRUE;
@@ -144,11 +161,10 @@ static void baro_cb(uint8_t __attribute__((unused)) sender_id, const float *pres
     ins_impl.alt_dot = 0.0f;
     ins_impl.qfe = *pressure;
     alt_kalman_reset();
-  }
-  else { /* not realigning, so normal update with baro measurement */
+  } else { /* not realigning, so normal update with baro measurement */
     ins_impl.baro_alt = ground_alt + pprz_isa_height_of_pressure(*pressure, ins_impl.qfe);
     /* run the filter */
-    alt_kalman(ins_impl.baro_alt);
+    alt_kalman(ins_impl.baro_alt, dt);
     /* set new altitude, just copy old horizontal position */
     struct UtmCoor_f utm;
     UTM_COPY(utm, *stateGetPositionUtm_f());
@@ -163,7 +179,8 @@ static void baro_cb(uint8_t __attribute__((unused)) sender_id, const float *pres
 #endif
 
 
-void ins_update_gps(void) {
+void ins_update_gps(void)
+{
 #if USE_GPS
   struct UtmCoor_f utm;
   utm.east = gps.utm_pos.east / 100.0f;
@@ -171,15 +188,29 @@ void ins_update_gps(void) {
   utm.zone = nav_utm_zone0;
 
 #if !USE_BAROMETER
+#ifdef GPS_DT
+  const float dt = GPS_DT;
+#else
+  // timestamp in usec when last callback was received
+  static uint32_t last_ts = 0;
+  // current timestamp
+  uint32_t now_ts = get_sys_time_usec();
+  // dt between this and last callback in seconds
+  float dt = (float)(now_ts - last_ts) / 1e6;
+  last_ts = now_ts;
+
+  // bound dt (assume GPS freq between 0.5Hz and 50Hz)
+  Bound(dt, 0.02, 2)
+#endif
+
   float falt = gps.hmsl / 1000.0f;
   if (ins_impl.reset_alt_ref) {
     ins_impl.reset_alt_ref = FALSE;
     ins_impl.alt = falt;
     ins_impl.alt_dot = 0.0f;
     alt_kalman_reset();
-  }
-  else {
-    alt_kalman(falt);
+  } else {
+    alt_kalman(falt, dt);
     ins_impl.alt_dot = -gps.ned_vel.z / 100.0f;
   }
 #endif
@@ -199,66 +230,55 @@ void ins_update_gps(void) {
 }
 
 
-#ifndef GPS_DT
-#define GPS_DT 0.25
-#endif
 #define GPS_SIGMA2 1.
 #define GPS_R 2.
 
 static float p[2][2];
 
-static void alt_kalman_reset(void) {
+static void alt_kalman_reset(void)
+{
   p[0][0] = 1.0f;
   p[0][1] = 0.0f;
   p[1][0] = 0.0f;
   p[1][1] = 1.0f;
 }
 
-static void alt_kalman_init(void) {
+static void alt_kalman_init(void)
+{
   alt_kalman_reset();
 }
 
-static void alt_kalman(float z_meas) {
-  float DT = GPS_DT;
+static void alt_kalman(float z_meas, float dt)
+{
   float R = GPS_R;
   float SIGMA2 = GPS_SIGMA2;
 
 #if USE_BAROMETER
 #ifdef SITL
-  // stupid hack for nps, we need to get rid of all these DTs
-#ifndef BARO_SIM_DT
-#define BARO_SIM_DT (1./50.)
-#endif
-  DT = BARO_SIM_DT;
   R = 0.5;
   SIGMA2 = 0.1;
 #elif USE_BARO_MS5534A
   if (alt_baro_enabled) {
-    DT = 0.1;
     R = baro_MS5534A_r;
     SIGMA2 = baro_MS5534A_sigma2;
   }
 #elif USE_BARO_ETS
   if (baro_ets_enabled) {
-    DT = BARO_ETS_DT;
     R = baro_ets_r;
     SIGMA2 = baro_ets_sigma2;
   }
 #elif USE_BARO_MS5611
   if (baro_ms5611_enabled) {
-    DT = BARO_MS5611_DT;
     R = baro_ms5611_r;
     SIGMA2 = baro_ms5611_sigma2;
   }
 #elif USE_BARO_AMSYS
   if (baro_amsys_enabled) {
-    DT = BARO_AMSYS_DT;
     R = baro_amsys_r;
     SIGMA2 = baro_amsys_sigma2;
   }
 #elif USE_BARO_BMP
   if (baro_bmp_enabled) {
-    DT = BARO_BMP_DT;
     R = baro_bmp_r;
     SIGMA2 = baro_bmp_sigma2;
   }
@@ -266,18 +286,18 @@ static void alt_kalman(float z_meas) {
 #endif // USE_BAROMETER
 
   float q[2][2];
-  q[0][0] = DT*DT*DT*DT/4.;
-  q[0][1] = DT*DT*DT/2.;
-  q[1][0] = DT*DT*DT/2.;
-  q[1][1] = DT*DT;
+  q[0][0] = dt * dt * dt * dt / 4.;
+  q[0][1] = dt * dt * dt / 2.;
+  q[1][0] = dt * dt * dt / 2.;
+  q[1][1] = dt * dt;
 
 
   /* predict */
-  ins_impl.alt += ins_impl.alt_dot * DT;
-  p[0][0] = p[0][0]+p[1][0]*DT+DT*(p[0][1]+p[1][1]*DT) + SIGMA2*q[0][0];
-  p[0][1] = p[0][1]+p[1][1]*DT + SIGMA2*q[0][1];
-  p[1][0] = p[1][0]+p[1][1]*DT + SIGMA2*q[1][0];
-  p[1][1] = p[1][1] + SIGMA2*q[1][1];
+  ins_impl.alt += ins_impl.alt_dot * dt;
+  p[0][0] = p[0][0] + p[1][0] * dt + dt * (p[0][1] + p[1][1] * dt) + SIGMA2 * q[0][0];
+  p[0][1] = p[0][1] + p[1][1] * dt + SIGMA2 * q[0][1];
+  p[1][0] = p[1][0] + p[1][1] * dt + SIGMA2 * q[1][0];
+  p[1][1] = p[1][1] + SIGMA2 * q[1][1];
 
   /* error estimate */
   float e = p[0][0] + R;
@@ -291,14 +311,14 @@ static void alt_kalman(float z_meas) {
     ins_impl.alt += k_0 * e;
     ins_impl.alt_dot += k_1 * e;
 
-    p[1][0] = -p[0][0]*k_1+p[1][0];
-    p[1][1] = -p[0][1]*k_1+p[1][1];
-    p[0][0] = p[0][0] * (1-k_0);
-    p[0][1] = p[0][1] * (1-k_0);
+    p[1][0] = -p[0][0] * k_1 + p[1][0];
+    p[1][1] = -p[0][1] * k_1 + p[1][1];
+    p[0][0] = p[0][0] * (1 - k_0);
+    p[0][1] = p[0][1] * (1 - k_0);
   }
 
 #ifdef DEBUG_ALT_KALMAN
-  DOWNLINK_SEND_ALT_KALMAN(DefaultChannel,DefaultDevice,&(p[0][0]),&(p[0][1]),&(p[1][0]), &(p[1][1]));
+  DOWNLINK_SEND_ALT_KALMAN(DefaultChannel, DefaultDevice, &(p[0][0]), &(p[0][1]), &(p[1][0]), &(p[1][1]));
 #endif
 }
 

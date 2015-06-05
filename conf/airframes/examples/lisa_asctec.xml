@@ -165,7 +165,6 @@
 
  <section name="SIMULATOR" prefix="NPS_">
    <define name="ACTUATOR_NAMES"  value="{&quot;front_motor&quot;, &quot;back_motor&quot;, &quot;right_motor&quot;, &quot;left_motor&quot;}"/>
-   <define name="JSBSIM_INIT" value="&quot;reset00&quot;"/>
    <define name="JSBSIM_MODEL" value="&quot;simple_quad&quot;"/>
    <define name="SENSORS_PARAMS" value="&quot;nps_sensors_params_default.h&quot;"/>
  </section>
@@ -176,13 +175,9 @@
   <firmware name="rotorcraft">
     <target name="ap" board="lisa_l_1.1">
 <!--      <define name="ACTUATORS_START_DELAY" value="1"/> -->
-      <subsystem name="radio_control" type="spektrum"/>
       <subsystem name="motor_mixing"/>
       <subsystem name="actuators"     type="asctec_v2"/>
       <subsystem name="telemetry"     type="transparent"/>
-      <define name="RADIO_MODE" value="RADIO_AUX2"/>
-      <define name="RADIO_KILL_SWITCH" value="RADIO_GEAR"/>
-      <define name="RADIO_CONTROL_SPEKTRUM_SIGNS" value="\{1,1,-1,1,-1,-1,-1,1,1,1,1,1\}"/>
       <define name="USE_I2C_ACTUATORS_REBOOT_HACK"/>
     </target>
     <target name="nps" board="pc">
@@ -191,6 +186,12 @@
       <subsystem name="motor_mixing"/>
       <subsystem name="actuators"     type="mkk"/>
     </target>
+
+    <subsystem name="radio_control" type="spektrum">
+      <define name="RADIO_MODE" value="RADIO_AUX2"/>
+      <define name="RADIO_KILL_SWITCH" value="RADIO_GEAR"/>
+      <define name="RADIO_CONTROL_SPEKTRUM_SIGNS" value="\{1,1,-1,1,-1,-1,-1,1,1,1,1,1\}"/>
+    </subsystem>
 
     <subsystem name="imu"           type="b2_v1.1"/>
     <subsystem name="gps"           type="ublox"/>

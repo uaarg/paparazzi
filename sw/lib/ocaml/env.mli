@@ -35,18 +35,39 @@ val icon_file : string
 (** PNG paparazzi logo icon (48 x 48, 8-bit/color RGBA, non-interlaced) *)
 
 val icon_mes_file : string
-(** PNG paparazzi logo icon (48 x 48, 8-bit/color RGBA, non-interlaced) *)
+(** PNG paparazzi logo icon for messages (48 x 48, 8-bit/color RGBA, non-interlaced) *)
 
 val icon_gcs_file : string
-(** PNG paparazzi logo icon (48 x 48, 8-bit/color RGBA, non-interlaced) *)
+(** PNG paparazzi logo icon for GCS (48 x 48, 8-bit/color RGBA, non-interlaced) *)
 
 val icon_rep_file : string
-(** PNG paparazzi logo icon (48 x 48, 8-bit/color RGBA, non-interlaced) *)
+(** PNG paparazzi logo icon for replay (48 x 48, 8-bit/color RGBA, non-interlaced) *)
+
+val icon_rtp_file : string
+(** PNG paparazzi logo icon for RT plotter (48 x 48, 8-bit/color RGBA, non-interlaced) *)
+
+val icon_log_file : string
+(** PNG paparazzi logo icon for log plotter (48 x 48, 8-bit/color RGBA, non-interlaced) *)
+
+val icon_sim_file : string
+(** PNG paparazzi logo icon for simulator (48 x 48, 8-bit/color RGBA, non-interlaced) *)
 
 val gconf_file : string
 (** XML preferences file à la gconf *)
 
 val gcs_icons_path : string
+
+(* Default targets for modules *)
+val default_module_targets : string
+
+val filter_absolute_path : string -> string
+(** remove absolute path paparazzi_home/conf if it exists
+ *  returns a relative path *)
+
+val filter_settings : string -> string
+(** filter settings (a string separted by white spaces)
+ *  and keep the ones without brackets
+ *  (return a string of filtered name separate by white spaces) *)
 
 val expand_ac_xml : ?raise_exception:bool -> Xml.xml -> Xml.xml
 (** Expands a conf.xml aircraft entry, adding the XML configuration files

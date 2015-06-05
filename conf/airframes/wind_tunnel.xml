@@ -14,7 +14,7 @@ ap.ARCHDIR = $(ARCH)
 ap.CFLAGS += -DBOARD_CONFIG=\"conf_demo.h\" -I$(WIND_TUNNEL)
 ap.srcs = $(WIND_TUNNEL)/main.c
 
-ap.CFLAGS += -DPERIODIC_FREQUENCY='10.' -DUSE_SYS_TIME
+ap.CFLAGS += -DPERIODIC_FREQUENCY='10.'
 ap.srcs += mcu_periph/sys_time.c $(SRC_ARCH)/mcu_periph/sys_time_arch.c
 
 ap.CFLAGS += -DUSE_LED
@@ -24,7 +24,7 @@ ap.srcs += $(SRC_ARCH)/armVIC.c
 ap.CFLAGS += -DUSE_UART0 -DUART0_BAUD=B38400
 ap.srcs += $(SRC_ARCH)/mcu_periph/uart_arch.c
 
-ap.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=UART0
+ap.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=uart0
 ap.srcs += subsystems/datalink/downlink.c subsystems/datalink/pprz_transport.c
 
 ap.CFLAGS += -DDATALINK=PPRZ -DPPRZ_UART=UART0
@@ -44,7 +44,7 @@ mb.ARCHDIR = $(ARCH)
 mb.CFLAGS += -DBOARD_CONFIG=\"conf_demo.h\" -I$(WIND_TUNNEL) -I$(MB)
 mb.srcs = $(WIND_TUNNEL)/main_mb.c
 
-mb.CFLAGS += -DPERIODIC_FREQUENCY='100.' -DUSE_SYS_TIME
+mb.CFLAGS += -DPERIODIC_FREQUENCY='100.'
 mb.srcs += mcu_periph/sys_time.c $(SRC_ARCH)/mcu_periph/sys_time_arch.c
 
 mb.CFLAGS += -DUSE_LED
@@ -54,7 +54,7 @@ mb.srcs += $(SRC_ARCH)/armVIC.c
 mb.CFLAGS += -DUSE_UART0 -DUART0_BAUD=B38400
 mb.srcs += $(SRC_ARCH)/mcu_periph/uart_arch.c
 
-mb.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=UART0
+mb.CFLAGS += -DDOWNLINK -DDOWNLINK_TRANSPORT=PprzTransport -DDOWNLINK_DEVICE=uart0
 mb.srcs += subsystems/datalink/downlink.c subsystems/datalink/pprz_transport.c
 
 mb.CFLAGS += -DDATALINK=PPRZ -DPPRZ_UART=UART0

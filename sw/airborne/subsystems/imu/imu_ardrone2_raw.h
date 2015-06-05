@@ -27,25 +27,9 @@
 #ifndef IMU_ARDRONE2_RAW_H_
 #define IMU_ARDRONE2_RAW_H_
 
-#include "subsystems/imu.h"
 #include "generated/airframe.h"
 #include "navdata.h"
 
-#if !defined IMU_MAG_X_SIGN & !defined IMU_MAG_Y_SIGN & !defined IMU_MAG_Z_SIGN
-#define IMU_MAG_X_SIGN  1
-#define IMU_MAG_Y_SIGN  1
-#define IMU_MAG_Z_SIGN  1
-#endif
-#if !defined IMU_GYRO_P_SIGN & !defined IMU_GYRO_Q_SIGN & !defined IMU_GYRO_R_SIGN
-#define IMU_GYRO_P_SIGN   1
-#define IMU_GYRO_Q_SIGN   1
-#define IMU_GYRO_R_SIGN   1
-#endif
-#if !defined IMU_ACCEL_X_SIGN & !defined IMU_ACCEL_Y_SIGN & !defined IMU_ACCEL_Z_SIGN
-#define IMU_ACCEL_X_SIGN  1
-#define IMU_ACCEL_Y_SIGN  1
-#define IMU_ACCEL_Z_SIGN  1
-#endif
 
 /** default gyro sensitivy and neutral from the datasheet
  * MPU with 2000 deg/s
@@ -60,11 +44,6 @@
 #define IMU_GYRO_R_SENS 4.359
 #define IMU_GYRO_R_SENS_NUM 4359
 #define IMU_GYRO_R_SENS_DEN 1000
-#endif
-#if !defined IMU_GYRO_P_NEUTRAL & !defined IMU_GYRO_Q_NEUTRAL & !defined IMU_GYRO_R_NEUTRAL
-#define IMU_GYRO_P_NEUTRAL 0
-#define IMU_GYRO_Q_NEUTRAL 0
-#define IMU_GYRO_R_NEUTRAL 0
 #endif
 
 /** default accel sensitivy from the datasheet
@@ -100,35 +79,30 @@
 #define IMU_MAG_Z_SENS_DEN 1
 #endif
 
-#if !defined IMU_MAG_X_NEUTRAL & !defined IMU_MAG_Y_NEUTRAL & !defined IMU_MAG_Z_NEUTRAL
-#define IMU_MAG_X_NEUTRAL 0
-#define IMU_MAG_Y_NEUTRAL 0
-#define IMU_MAG_Z_NEUTRAL 0
-#endif
+/*
+ * we include imh.h after the definitions of the neutrals
+ */
+#include "subsystems/imu.h"
 
-
-
-void navdata_event(void);
-
-static inline void imu_ardrone2_event ( void (* _gyro_handler)(void), void (* _accel_handler)(void), void (* _mag_handler)(void))
+static inline void imu_ardrone2_event(void (* _gyro_handler)(void), void (* _accel_handler)(void),
+                                      void (* _mag_handler)(void))
 {
   navdata_update();
   //checks if the navboard has a new dataset ready
   if (navdata_imu_available == TRUE) {
     navdata_imu_available = FALSE;
     RATES_ASSIGN(imu.gyro_unscaled, navdata.vx, -navdata.vy, -navdata.vz);
-    VECT3_ASSIGN(imu.accel_unscaled, navdata.ax, 4096-navdata.ay, 4096-navdata.az);
+    VECT3_ASSIGN(imu.accel_unscaled, navdata.ax, 4096 - navdata.ay, 4096 - navdata.az);
     VECT3_ASSIGN(imu.mag_unscaled, -navdata.mx, -navdata.my, -navdata.mz);
 
     _gyro_handler();
     _accel_handler();
     _mag_handler();
   }
-  navdata_event();
 }
 
 #define ImuEvent(_gyro_handler, _accel_handler, _mag_handler) {  \
     imu_ardrone2_event(_gyro_handler, _accel_handler, _mag_handler); \
-}
+  }
 
 #endif /* IMU_ARDRONE2_RAW_H_ */

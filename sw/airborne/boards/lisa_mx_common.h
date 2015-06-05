@@ -179,7 +179,7 @@
 #define SPEKTRUM_UART5_RCC RCC_UART5
 #define SPEKTRUM_UART5_BANK GPIOD
 #define SPEKTRUM_UART5_PIN GPIO2
-#define SPEKTRUM_UART5_AF GPIO_AF7
+#define SPEKTRUM_UART5_AF GPIO_AF8
 #define SPEKTRUM_UART5_IRQ NVIC_UART5_IRQ
 #define SPEKTRUM_UART5_ISR uart5_isr
 #define SPEKTRUM_UART5_DEV UART5
@@ -364,16 +364,16 @@
 #define USE_PWM6 1
 
 #if USE_SERVOS_7AND8
-  #if USE_I2C1
-    #error "You cannot USE_SERVOS_7AND8 and USE_I2C1 at the same time"
-  #else
-    #define ACTUATORS_PWM_NB 8
-    #define USE_PWM7 1
-    #define USE_PWM8 1
-    #define PWM_USE_TIM4 1
-  #endif
+#if USE_I2C1
+#error "You cannot USE_SERVOS_7AND8 and USE_I2C1 at the same time"
 #else
-  #define ACTUATORS_PWM_NB 6
+#define ACTUATORS_PWM_NB 8
+#define USE_PWM7 1
+#define USE_PWM8 1
+#define PWM_USE_TIM4 1
+#endif
+#else
+#define ACTUATORS_PWM_NB 6
 #endif
 
 // Servo numbering on LisaM silkscreen/docs starts with 1

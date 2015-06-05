@@ -12,18 +12,18 @@
 
   <firmware name="rotorcraft">
     <target name="ap" board="navstik_1.0">
-      <subsystem name="radio_control" type="spektrum"/>
       <configure name="ACTUATORS_ASCTEC_V2_I2C_DEV" value="i2c3"/>
-      <define name="RADIO_KILL_SWITCH" value="RADIO_GEAR"/>
-      <define name="RADIO_MODE" value="RADIO_AUX1"/>
       <define name="ACTUATORS_START_DELAY" value="1"/>
     </target>
 
     <target name="nps" board="pc">
       <subsystem name="fdm" type="jsbsim"/>
-      <subsystem name="radio_control" type="ppm"/>
     </target>
 
+    <subsystem name="radio_control" type="spektrum">
+      <define name="RADIO_KILL_SWITCH" value="RADIO_GEAR"/>
+      <define name="RADIO_MODE" value="RADIO_AUX1"/>
+    </subsystem>
     <subsystem name="motor_mixing"/>
     <subsystem name="actuators"     type="asctec_v2"/>
     <subsystem name="telemetry"     type="xbee_api"/>
@@ -44,7 +44,11 @@
 
   <modules>
     <load name="gps_ubx_ucenter.xml"/>
-    <!-- load name="airspeed_ms45xx.xml"/ -->
+    <load name="airspeed_ms45xx_i2c.xml">
+      <define name="MS45XX_I2C_DEV" value="i2c3"/>
+      <define name="USE_I2C3"/>
+    </load>
+    <load name="direct_memory_logger.xml"/>
   </modules>
 
   <servos driver="Asctec_v2">
@@ -191,7 +195,6 @@
 
   <section name="SIMULATOR" prefix="NPS_">
     <define name="ACTUATOR_NAMES" value="{&quot;ne_motor&quot;, &quot;se_motor&quot;, &quot;sw_motor&quot;, &quot;nw_motor&quot;}"/>
-    <define name="JSBSIM_INIT" value="&quot;reset00&quot;"/>
     <define name="JSBSIM_MODEL" value="&quot;simple_x_quad&quot;"/>
     <define name="SENSORS_PARAMS" value="&quot;nps_sensors_params_default.h&quot;"/>
   </section>

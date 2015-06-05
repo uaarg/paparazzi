@@ -49,8 +49,8 @@ unsigned char buffer[4096]; //Packet buffer
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
-static void send_ahrs_ad2(void) {
-  DOWNLINK_SEND_AHRS_ARDRONE2(DefaultChannel, DefaultDevice,
+static void send_ahrs_ad2(struct transport_tx *trans, struct link_device *dev) {
+  pprz_msg_send_AHRS_ARDRONE2(trans, dev, AC_ID,
       &ahrs_impl.state,
       &ahrs_impl.control_state,
       &ahrs_impl.eulers.phi,
@@ -100,7 +100,7 @@ static void dump(const void *_b, size_t s) {
 }
 #endif
 
-void ahrs_propagate(void) {
+void ahrs_propagate(float dt __attribute__((unused))) {
   int l;
 
   //Recieve the main packet

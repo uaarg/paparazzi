@@ -24,6 +24,9 @@
 
 #include "std.h"
 
+/* in case you want to override RADIO_CONTROL_NB_CHANNEL */
+#include "generated/airframe.h"
+
 /**
  * Architecture dependant code
  */
@@ -38,10 +41,15 @@ extern void ppm_arch_init(void);
 #include "generated/radio.h"
 
 /**
- * Define number of channels
- * Using generated code radio.h
+ * Default number of channels to actually use.
  */
+#ifndef RADIO_CONTROL_NB_CHANNEL
 #define RADIO_CONTROL_NB_CHANNEL RADIO_CTL_NB
+#endif
+
+#if RADIO_CONTROL_NB_CHANNEL > RADIO_CTL_NB
+#error "RADIO_CONTROL_NB_CHANNEL mustn't be higher than number of channels in radio file."
+#endif
 
 /**
  *  ppm pulse type : futaba is falling edge clocked whereas JR is rising edge
@@ -49,82 +57,25 @@ extern void ppm_arch_init(void);
 #define PPM_PULSE_TYPE_POSITIVE 0
 #define PPM_PULSE_TYPE_NEGATIVE 1
 
-extern uint16_t ppm_pulses[ RADIO_CONTROL_NB_CHANNEL ];
+extern uint16_t ppm_pulses[RADIO_CTL_NB];
 extern volatile bool_t ppm_frame_available;
 
 /**
- * Event macro with handler callback
- * PPM frame are normalize using the IIR filter
+ * RC event function with handler callback.
+ * PPM frames are normalized using the IIR filter.
  */
-#define RadioControlEvent(_received_frame_handler) {  \
-  if (ppm_frame_available) {                          \
-    radio_control.frame_cpt++;                        \
-    radio_control.time_since_last_frame = 0;          \
-    if (radio_control.radio_ok_cpt > 0) {             \
-      radio_control.radio_ok_cpt--;                   \
-    } else {                                          \
-      radio_control.status = RC_OK;                   \
-      NormalizePpmIIR(ppm_pulses,radio_control);      \
-      _received_frame_handler();                      \
-    }                                                 \
-    ppm_frame_available = FALSE;                      \
-  }                                                   \
-}
+extern void radio_control_impl_event(void (* _received_frame_handler)(void));
+
+#define RadioControlEvent(_received_frame_handler) radio_control_impl_event(_received_frame_handler)
+
 
 /**
- * State machine for decoding ppm frames
- */
-extern uint8_t  ppm_cur_pulse;
-extern uint32_t ppm_last_pulse_time;
-extern bool_t   ppm_data_valid;
-
-/**
- * RssiValid test macro.
- * This macro has to be defined to test the validity of ppm frame
- * from an other source (ex: GPIO).
- * By default, always true.
- */
-#ifndef RssiValid
-#define RssiValid() TRUE
-#endif
-
-/**
+ * Decode a PPM frame.
  * A valid ppm frame:
  * - synchro blank
  * - correct number of channels
  * - synchro blank
  */
-#define DecodePpmFrame(_ppm_time) {                         \
-  uint32_t length = _ppm_time - ppm_last_pulse_time;        \
-  ppm_last_pulse_time = _ppm_time;                          \
-                                                            \
-  if (ppm_cur_pulse == PPM_NB_CHANNEL) {                    \
-    if (length > RC_PPM_TICKS_OF_USEC(PPM_SYNC_MIN_LEN) &&  \
-        length < RC_PPM_TICKS_OF_USEC(PPM_SYNC_MAX_LEN)) {  \
-      if (ppm_data_valid && RssiValid()) {                  \
-        ppm_frame_available = TRUE;                         \
-        ppm_data_valid = FALSE;                             \
-      }                                                     \
-      ppm_cur_pulse = 0;                                    \
-    }                                                       \
-    else {                                                  \
-      ppm_data_valid = FALSE;                               \
-    }                                                       \
-  }                                                         \
-  else {                                                    \
-    if (length > RC_PPM_TICKS_OF_USEC(PPM_DATA_MIN_LEN) &&  \
-        length < RC_PPM_TICKS_OF_USEC(PPM_DATA_MAX_LEN)) {  \
-      ppm_pulses[ppm_cur_pulse] = length;                   \
-      ppm_cur_pulse++;                                      \
-      if (ppm_cur_pulse == PPM_NB_CHANNEL) {                \
-        ppm_data_valid = TRUE;                              \
-      }                                                     \
-    }                                                       \
-    else {                                                  \
-      ppm_cur_pulse = PPM_NB_CHANNEL;                       \
-      ppm_data_valid = FALSE;                               \
-    }                                                       \
-  }                                                         \
-}
+extern void ppm_decode_frame(uint32_t ppm_time);
 
 #endif /* RC_PPM_H */

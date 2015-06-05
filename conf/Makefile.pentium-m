@@ -55,7 +55,7 @@ CFLAGS += -m32
 CFLAGS += -Wstrict-prototypes -Wmissing-declarations
 CFLAGS += -Wmissing-prototypes -Wnested-externs
 CFLAGS += $(CSTANDARD)
-CFLAGS += $($(TARGET).CFLAGS) $(LOCAL_CFLAGS)
+CFLAGS += $($(TARGET).CFLAGS) $(USER_CFLAGS)
 
 #Additional libraries.
 MATH_LIB = -lm
@@ -76,7 +76,7 @@ $(OBJDIR):
 elf: $(OBJDIR)/$(TARGET).elf
 
 # Program the device.
-load upload program: $(OBJDIR)/$(TARGET).elf
+upload program: $(OBJDIR)/$(TARGET).elf
 ifdef USER
 	ssh $(USER)@$(HOST) "sudo mount -o remount,rw /"
 	scp $(OBJDIR)/$(TARGET).elf $(USER)@$(HOST):$(TARGET_DIR)

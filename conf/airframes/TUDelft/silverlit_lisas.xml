@@ -29,7 +29,6 @@ Lisa/S v1.0 board (http://wiki.paparazziuav.org/wiki/Lisa/S)
       <configure name="AHRS_PROPAGATE_FREQUENCY" value="120"/>
       <configure name="PERIODIC_FREQUENCY" value="120"/>  <!-- 120 seams to be the max of the barometer -->
 
-      <define name="AUTOPILOT_DISABLE_AHRS_KILL"/>  <!-- NEW -->
     </target>
     <target name="sim" board="pc"/>
     <target name="nps" board="pc">
@@ -134,7 +133,6 @@ Lisa/S v1.0 board (http://wiki.paparazziuav.org/wiki/Lisa/S)
 
  <section name="SIMULATOR" prefix="NPS_">
    <define name="ACTUATOR_NAMES" value="{&quot;front_motor&quot;, &quot;back_motor&quot;, &quot;right_motor&quot;, &quot;left_motor&quot;}"/>
-   <define name="JSBSIM_INIT" value="&quot;reset00&quot;"/>
    <define name="JSBSIM_MODEL" value="&quot;simple_quad&quot;"/>
    <define name="SENSORS_PARAMS" value="&quot;nps_sensors_params_default.h&quot;"/>
  </section>

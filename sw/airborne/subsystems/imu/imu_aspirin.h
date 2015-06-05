@@ -36,7 +36,7 @@
 #include "peripherals/hmc58xx.h"
 #include "peripherals/adxl345_spi.h"
 
-/* include default aspirin sensitivity/channel definitions */
+/* include default aspirin sensitivity definitions */
 #include "subsystems/imu/imu_aspirin_defaults.h"
 
 struct ImuAspirin {
@@ -60,7 +60,8 @@ extern void imu_aspirin_arch_init(void);
 #endif
 
 
-static inline void ImuEvent(void (* _gyro_handler)(void), void (* _accel_handler)(void), void (* _mag_handler)(void)) {
+static inline void ImuEvent(void (* _gyro_handler)(void), void (* _accel_handler)(void), void (* _mag_handler)(void))
+{
   imu_aspirin_event();
   if (imu_aspirin.gyro_valid) {
     imu_aspirin.gyro_valid = FALSE;

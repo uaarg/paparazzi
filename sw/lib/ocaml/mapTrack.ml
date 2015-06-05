@@ -53,7 +53,7 @@ type desired =
   | DesiredCircle of LL.geographic*float*GnoCanvas.ellipse
   | DesiredSegment of LL.geographic*LL.geographic*GnoCanvas.line
 
-class track = fun ?(name="Noname") ?(icon="fixedwing") ?(size = 500) ?(color="red") (geomap:MapCanvas.widget) ->
+class track = fun ?(name="Noname") ?(icon="fixedwing") ?(size = 500) ?(color="red") (ac_id:string) (geomap:MapCanvas.widget) ->
   let group = GnoCanvas.group geomap#canvas#root in
   let empty = ({LL.posn_lat=0.; LL.posn_long=0.},  GnoCanvas.line group) in
   let v_empty = ({LL.posn_lat=0.; LL.posn_long=0.},  0.0) in
@@ -118,6 +118,7 @@ object (self)
   val mutable desired_track = NoDesired
   val zone = GnoCanvas.rect group
   val mutable ac_cam_cover = GnoCanvas.rect ~fill_color:"grey" ~props:[`WIDTH_PIXELS 1 ; `FILL_STIPPLE (Gdk.Bitmap.create_from_data ~width:2 ~height:2 "\002\001")] cam
+  val mutable event_cb = None
   method color = color
   method set_color c = color <- c
   method track = track
@@ -214,7 +215,7 @@ object (self)
     (** draws the circular path to be followed by the aircraft in circle mode *)
   method draw_circle = fun en radius ->
     let create = fun () ->
-      desired_track <- DesiredCircle (en, radius, geomap#circle ~color:"green" en radius) in
+      desired_track <- DesiredCircle (en, radius, geomap#circle ~color:"#00ff00" en radius) in
     match desired_track with
         DesiredCircle (c, r, circle) ->
           if c <> en || r <> radius then begin
@@ -230,7 +231,7 @@ object (self)
     (** draws the linear path to be followed by the aircraft between two waypoints *)
   method draw_segment = fun en1 en2 ->
     let create = fun () ->
-      desired_track <- DesiredSegment (en1, en2, geomap#segment ~fill_color:"green" en1 en2) in
+      desired_track <- DesiredSegment (en1, en2, geomap#segment ~fill_color:"#00ff00" en1 en2) in
     match desired_track with
         DesiredCircle (c, r, circle) ->
           circle#destroy ();
@@ -328,6 +329,27 @@ object (self)
     segments <- a
 
   method size = Array.length segments
+
+  method event (ev : GnoCanvas.item_event) =
+    begin
+      match ev with
+        | `BUTTON_PRESS ev ->
+          begin
+            match GdkEvent.Button.button ev with
+              | 1 ->
+                  begin
+                    match event_cb with
+                    | Some cb -> cb ac_id
+                    | None -> ()
+                  end
+              | _ -> ()
+          end
+        | _ -> ()
+    end;
+    true
+  initializer ignore(aircraft#connect#event self#event)
+
+  method set_event_cb = fun (cb: string -> unit) -> event_cb <- Some cb
 
   initializer
     ignore(geomap#zoom_adj#connect#value_changed

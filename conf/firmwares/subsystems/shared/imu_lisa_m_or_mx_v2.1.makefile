@@ -55,7 +55,7 @@ include $(CFG_SHARED)/spi_master.makefile
 IMU_ASPIRIN_2_CFLAGS += -DASPIRIN_2_SPI_SLAVE_IDX=SPI_SLAVE2
 IMU_ASPIRIN_2_CFLAGS += -DASPIRIN_2_SPI_DEV=spi2
 
-IMU_ASPIRIN_2_CFLAGS += -DUSE_SPI1 -DLISA_M_OR_MX_21
+IMU_ASPIRIN_2_CFLAGS += -DUSE_SPI2 -DLISA_M_OR_MX_21
 # Slave select configuration
 # SLAVE2 is on PB12 (NSS) (MPU600 CS)
 IMU_ASPIRIN_2_CFLAGS += -DUSE_SPI_SLAVE2
@@ -68,6 +68,9 @@ ap.srcs   += $(IMU_ASPIRIN_2_SRCS)
 
 test_imu.CFLAGS += $(IMU_ASPIRIN_2_CFLAGS)
 test_imu.srcs   += $(IMU_ASPIRIN_2_SRCS)
+
+test_ahrs.CFLAGS += $(IMU_ASPIRIN_2_CFLAGS)
+test_ahrs.srcs   += $(IMU_ASPIRIN_2_SRCS)
 
 #
 # NPS simulator
