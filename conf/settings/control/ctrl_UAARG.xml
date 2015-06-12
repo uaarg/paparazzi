@@ -70,7 +70,36 @@
         <dl_setting MAX="500" MIN="50" STEP="5" VAR="nav_survey_shift"/>
       </dl_settings>
 
+<dl_settings name="airspeed">
 
+
+<!-- Comment this for working sim-->
+
+<!--        <dl_setting MAX="25" MIN="2" STEP="0.5" VAR="v_ctl_auto_airspeed_setpoint" param="V_CTL_AUTO_AIRSPEED_SETPOINT"/>
+        <dl_setting MAX="1" MIN="0.00" STEP="0.005" VAR="v_ctl_auto_airspeed_pgain"  param="V_CTL_AUTO_AIRSPEED_PGAIN"/>
+        <dl_setting MAX="1" MIN="0.0" STEP="0.005" VAR="v_ctl_auto_airspeed_igain"  param="V_CTL_AUTO_AIRSPEED_IGAIN"/>
+-->
+
+	<dl_setting MAX="1" MIN="0.00" STEP="0.005" VAR="v_ctl_auto_pitch_pgain"  param="V_CTL_AUTO_PITCH_PGAIN"/>
+        <dl_setting MAX="1" MIN="0.0" STEP="0.005" VAR="v_ctl_auto_pitch_igain"  param="V_CTL_AUTO_PITCH_IGAIN"/>
+
+
+
+        <dl_setting MAX="25" MIN="2" STEP="0.5" VAR="v_ctl_auto_groundspeed_setpoint"  param="V_CTL_AUTO_GROUNDSPEED_SETPOINT"/>
+        <dl_setting MAX="1" MIN="0.00" STEP="0.005" VAR="v_ctl_auto_groundspeed_pgain"  param="V_CTL_AUTO_GROUNDSPEED_PGAIN"/>
+        <dl_setting MAX="1" MIN="0.0" STEP="0.005" VAR="v_ctl_auto_groundspeed_igain"  param="V_CTL_AUTO_GROUNDSPEED_IGAIN"/>
+
+
+
+</dl_settings>
+
+<!--comment body2imu for working sim-->
+    <!-- dl_settings NAME="body2imu">
+      <dl_setting MAX="90" MIN="-90" STEP="0.5" VAR="imu.body_to_imu.eulers_f.phi" shortname="b2i phi" module="subsystems/imu" param="IMU_BODY_TO_IMU_PHI" unit="rad" alt_unit="deg" handler="SetBodyToImuPhi"/>
+      <dl_setting MAX="90" MIN="-90" STEP="0.5" VAR="imu.body_to_imu.eulers_f.theta" shortname="b2i theta" module="subsystems/imu" param="IMU_BODY_TO_IMU_THETA" unit="rad" alt_unit="deg" handler="SetBodyToImuTheta"/>
+      <dl_setting MAX="180" MIN="-180" STEP="0.5" VAR="imu.body_to_imu.eulers_f.psi" shortname="b2i psi" module="subsystems/imu" param="IMU_BODY_TO_IMU_PSI" unit="rad" alt_unit="deg" handler="SetBodyToImuPsi"/>
+      <dl_setting MAX="1" MIN="0" STEP="1" VAR="imu.b2i_set_current" values="FALSE|TRUE" shortname="b2i cur roll/pitch" module="subsystems/imu" handler="SetBodyToImuCurrent"/>
+    </dl_settings-->
 
       <dl_settings name="Miscelaneous">
 <dl_setting MAX="2500" MIN="-2500" STEP="50" VAR="h_ctl_aileron_of_throttle" shortname="ail_of_thr"/>

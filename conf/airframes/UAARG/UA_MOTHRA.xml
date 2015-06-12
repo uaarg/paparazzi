@@ -12,7 +12,7 @@
       <define name="USE_ADC"/>
       <define name="USE_ADC_2"/> 
       <define name="USE_I2C2" />
-      <define name="MEASURE_AIRSPEED"/> <!-- change from MEASURE <=> USE --> 
+      <define name="USE_AIRSPEED"/> <!-- change from MEASURE <=> USE --> 
 
     </target>
 
@@ -78,16 +78,16 @@
   <servos><!--the servos the outpilot autoputs commands output to-->
     <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="5"/>
     <servo name="DROP" max="2000" neutral="1500" min="1000" no="0"/>
-    <servo name="ELEVATOR" max="1000" neutral="1346" min="2000" no="3"/> 
-    <servo name="AILERON_RIGHT" max="1800" neutral="1424" min="1200" no="2"/>
-    <servo name="AILERON_LEFT" max="1800" neutral="1420" min="1200" no="1"/>
-    <servo name="RUDDER" max="2000" neutral="1531" min="1000" no="4"/>
+    <servo name="ELEVATOR" max="1000" neutral="1359" min="2000" no="3"/> 
+    <servo name="AILERON_RIGHT" max="1800" neutral="1396" min="1200" no="2"/>
+    <servo name="AILERON_LEFT" max="1800" neutral="1400" min="1200" no="1"/>
+    <servo name="RUDDER" max="2000" neutral="1444" min="1000" no="4"/>
   </servos>
   
   
   <command_laws> <!--How the commands relate to servo movement-->
-    <set value="@ROLL+.5*(@BRAKE)" servo="AILERON_LEFT"/>
-    <set value="@ROLL-.5*(@BRAKE)" servo="AILERON_RIGHT"/>
+    <set value="@ROLL-.6*(@BRAKE)" servo="AILERON_LEFT"/>
+    <set value="@ROLL+.6*(@BRAKE)" servo="AILERON_RIGHT"/>
     <set value="@THROTTLE" servo="THROTTLE"/>
     <set value="@PITCH" servo="ELEVATOR"/>
     <set value="@YAW" servo="RUDDER"/>
@@ -135,12 +135,13 @@
    
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
-    <define name="MAG_X_NEUTRAL" value="-409"/>
-    <define name="MAG_Y_NEUTRAL" value="456"/>
-    <define name="MAG_Z_NEUTRAL" value="-179"/>
-    <define name="MAG_X_SENS" value="3.14136903846" integer="16"/>
-    <define name="MAG_Y_SENS" value="3.12887917183" integer="16"/>
-    <define name="MAG_Z_SENS" value="3.71160530419" integer="16"/>
+
+<define name="MAG_X_NEUTRAL" value="-415"/>
+<define name="MAG_Y_NEUTRAL" value="814"/>
+<define name="MAG_Z_NEUTRAL" value="223"/>
+<define name="MAG_X_SENS" value="2.76789774165" integer="16"/>
+<define name="MAG_Y_SENS" value="3.15959835097" integer="16"/>
+<define name="MAG_Z_SENS" value="2.63119798642" integer="16"/>
 
 
 
@@ -148,9 +149,10 @@
     <!-- Current draw magnetic field calibration-->
     <!--Please note that if you dont have any experience in Paparazzi and are not looking online you can enable current calibration raw data from a module. look below at modules and uncomment the module.-->
 
-    <define name= "MAG_X_CURRENT_COEF" value="-0.00121326189766"/>
-    <define name= "MAG_Y_CURRENT_COEF" value="-0.000160888423654"/>
-    <define name= "MAG_Z_CURRENT_COEF" value="0.00453504917956"/>
+<define name= "MAG_X_CURRENT_COEF" value="0.00320590964876"/>
+<define name= "MAG_Y_CURRENT_COEF" value="-0.00177605577317"/>
+<define name= "MAG_Z_CURRENT_COEF" value="0.000959756979821"/>
+
 
     
   </section>
@@ -170,9 +172,9 @@
 
 <!-- Local magnetic field vector Bremner Field-->
 
-    <define name="H_X" value="0.24375"/>
-    <define name="H_Y" value="0.0635875"/>
-    <define name="H_Z" value="0.967751"/>
+    <define name="H_X" value="0.244216"/>
+    <define name="H_Y" value="0.0640397"/>
+    <define name="H_Z" value="0.967604"/>
 
 
   </section>
@@ -242,8 +244,8 @@
     
     <!--<define name="AILERON_OF_THROTTLE" value="0.0"/> --> <!-- as RPM of Prop increases more aileron may be need to obtain steady flight. Use this gain to adjust that--> <!-- commented out as it has been incorporated into command laws.-->
 
-    <define name="COURSE_PGAIN" value="1.37"/> <!-- used to be 57.3 deg. when a new heading is given to paparazzi the change the roll by this much-->
-    <define name="COURSE_DGAIN" value="17.1" unit="deg"/>
+    <define name="COURSE_PGAIN" value="1.47"/> <!-- used to be 57.3 deg. when a new heading is given to paparazzi the change the roll by this much-->
+    <define name="COURSE_DGAIN" value=".8"/>
 
 
     <define name="ROLL_MAX_SETPOINT" value="34.4920593063" unit="deg"/> <!-- these are the max and min values the plane can roll and pitch when in auto -->
@@ -291,26 +293,26 @@
     <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/> <!-- max climb setting -->
     
 
-    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.10" unit="%/(m/s)"/> <!-- rate at which to increase throttle on climb error-->
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.09" unit="%/(m/s)"/> <!-- rate at which to increase throttle on climb error-->
 
     <define name="AUTO_THROTTLE_PGAIN" value="0.01"/> <!-- rate at which to change speed based on climb-->
     <define name="AUTO_THROTTLE_IGAIN" value="0.1"/> <!-- additional increase in rate dependant on time that speed is not ideal. Example if the speed required is 15m/s and the current speed is 12m/s and has been for 3s. then throttle setting = value+(15-12)(Pgain)+3*igain.-->
 
-    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.09"/><!-- how much to change pitch based on climb error -->
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.13"/><!-- how much to change pitch based on climb error -->
 
     
-    <!--airspeed tuning 
-    <define name="AUTO_AIRSPEED_SETPOINT" value="13.0"  unit="m/s" /> - SETPOINT values may need to be adjusted to suit your aircraft --
-    <define name="AUTO_AIRSPEED_PGAIN"    value="0.060" />
-    <define name="AUTO_AIRSPEED_IGAIN"    value="0.050" /> 
- 
-    <define name="AUTO_GROUNDSPEED_SETPOINT" value="7.0"  unit="m/s" /> < SETPOINT values may need to be adjusted to suit your aircraft 
-    <define name="AUTO_GROUNDSPEED_PGAIN"    value="0.75" />
-    <define name="AUTO_GROUNDSPEED_IGAIN"    value="0.25" />
-
+    <!--airspeed tuning -->
+  <define name="AUTO_AIRSPEED_SETPOINT" value="22.1" unit="m/s"/>
+    <define name="AUTO_AIRSPEED_PGAIN" value="0.054"/>
+    <define name="AUTO_AIRSPEED_IGAIN" value="0.022"/>
+    <define name="AUTO_GROUNDSPEED_SETPOINT" value="15.6" unit="m/s"/>
+    <define name="AUTO_GROUNDSPEED_PGAIN" value="0.479"/>
+    <define name="AUTO_GROUNDSPEED_IGAIN" value="0.25"/>
+    <define name="AUTO_PITCH_PGAIN" value="0.125"/>
+    <define name="AUTO_PITCH_IGAIN" value="0.025"/>
     <define name="AUTO_PITCH_MAX_PITCH" value="RadOfDeg(25)"/>
-    <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-20)"/>
--->
+    <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-25)"/>
+  
   </section>
 
 
@@ -351,7 +353,7 @@
       <define name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/> 
 
     </load>
-    <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
+    <load name="send_imu_mag_current.xml"/> <!-- uncomment this line to measure IMU current Calibration--> 
  </modules>
   
 </airframe>
