@@ -66,5 +66,14 @@
          <circle radius="-27" wp="Tight_Circle"/>
       </while>
    </block>
+
+   <block group="testing" name="CW_OAXIS_TIGHT_CIRCLE">
+      <go wp="ALT_TEST_1"/>
+      <go wp="ALT_TEST_2"/> 
+      <go wp="ALT_TEST_3"/>
+      <deroute block="Standby"/>
+      
+   </block>
+
   </blocks>
 </procedure>
