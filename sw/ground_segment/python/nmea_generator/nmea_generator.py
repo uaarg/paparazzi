@@ -1,10 +1,24 @@
+#!/usr/bin/env python
+
+# This file is part of paparazzi.
+
+# paparazzi is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# paparazzi is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with paparazzi; see the file COPYING.  If not, write to
+# the Free Software Foundation, 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+
 """This program listens to ivy messages from the plane and output's
 nmea data on the specified port. It's not fully implemented yet."""
-
-"""GPGGA Formatting completed by Andrew Jowsey
-http://aprs.gids.nl/nmea/#gga"""
-
-"""Ivy bus and class initialising completed by Cameron Lee"""
 
 from __future__ import print_function
 import logging
@@ -16,6 +30,8 @@ import utm
 import time
 from datetime import datetime, timedelta
 #import serial
+
+GROUNDALT=135.636
 
 PPRZ_HOME = os.getenv("PAPARAZZI_HOME")
 sys.path.append(PPRZ_HOME + "/sw/lib/python")
@@ -114,7 +130,10 @@ class Runner:
             GPSFix=0
 
         #Find Altitude
-        alt=message.data['alt']
+        alt=((int(message.data['alt'])/1000)-GROUNDALT)
+
+        if alt<0:
+            alt = 0
 
         ###### TIME ###########################################################################################
         timeNow=datetime.now()
@@ -138,7 +157,7 @@ class Runner:
         timeNow_string="%s%s%s.%s" % (timeNow_string_h,timeNow_string_m,timeNow_string_s,timeNow_string_ms)
 
         ############### ADD CHECK SUM ############################################################################
-        line = 'GPGGA,'+ timeNow_string+','+DMS_Lat+','+a+','+DMS_Long+','+A+','+str(GPSFix)+','+'5'+','+','+str(25)+','+'M'+','+','+','+',0000'
+        line = 'GPGGA,'+ timeNow_string+','+DMS_Lat+','+a+','+DMS_Long+','+A+','+str(GPSFix)+','+'5'+','+','+str(25)+','+str(alt)+','+','+','+',0000'
         calc_cksum=0
         for s in line:
             calc_cksum^=ord(s)
@@ -147,6 +166,7 @@ class Runner:
         ############### COMPILE AND SEND ############################################################################
         line='$'+line+calc_cksum+'\n'
         print("Nmea message sent:", file=sys.stderr)
+        print(str(alt), file=sys.stderr)
         print(line, file=sys.stderr)
         #outgoing.write(line) Pyserial
         #outgoing.close() Pyserial
