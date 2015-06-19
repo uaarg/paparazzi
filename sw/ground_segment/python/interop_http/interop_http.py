@@ -29,9 +29,15 @@ from ivy.std_api import *
 import utm
 import time
 from datetime import datetime, timedelta
-#import serial
+import httplib, urllib    #html python modules
 
-GROUNDALT=135.636
+#Constants
+LOGIN_PATH = "/api/login"
+TELEM_PATH = "/api/interop/uas_telemetry"
+SERVER_INFO_PATH = "/api/interop/server_info"
+USERNAME = 'testuser'
+PASSWORD = 'testpass'
+
 
 PPRZ_HOME = os.getenv("PAPARAZZI_HOME")
 sys.path.append(PPRZ_HOME + "/sw/lib/python")
@@ -62,6 +68,22 @@ class Runner:
 
     def initIvy(self):
         # initialising the bus
+        #Connect
+        conn = httplib.HTTPConnection("localhost", 8080)
+        #Login Creds
+        headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
+        params = urllib.urlencode({'username': USERNAME, 'password': PASSWORD })
+        #Send Message
+        conn.request("POST", LOGIN_PATH , params, headers)
+        #Server Response
+        response = conn.getresponse()
+        print(response.read() + '\n', file=sys.stderr)
+        self.message_name = "GPS"
+        #Saving Login Cookie Credentials
+        setcookie = response.getheader("Set-Cookie")
+        contenttype = response.getheader("Content-type")
+        headers = {"Accept": "text/plain", "Cookie" : setcookie, "Content-type" : "application/x-www-form-urlencoded"}
+
         IvyInit("Nmea_Generator",   # application name for Ivy
                 "READY",            # ready message
                 0,                  # main loop is local (ie. using IvyMainloop)
@@ -72,11 +94,12 @@ class Runner:
         # starting the bus
         logging.getLogger('Ivy').setLevel(logging.WARN)
         IvyStart("")
+        First_Message = True
         IvyBindMsg(self.onIvyMessage, "^([^ ]+) %s (.*)$" % (self.message_name,))
 
 
     def onIvyMessage(self, agent, *larg):
-        #outgoing=serial.Serial(SERIAL_PORT,4800) Pyserial
+
         message = GPSMessage(*larg)
 
         ######CORDINATES########################################################################################
@@ -89,39 +112,11 @@ class Runner:
         GPSLat=GPS[0] 
         GPSlong=GPS[1]
 
-        #Determine N or S for NMEA
-        if GPSLat>=0:
-            a="N"
-        elif GPSLat<0:
-            a="S"
-        
-        #Determine W or E for NMEA
-        if GPSlong>=0:
-            A="E"
-        elif GPSlong<0:
-            A="W"
+        print(GPSLat, file=sys.stderr)
+        print("GPSLat" + '\n', file=sys.stderr)
+        print(GPSlong, file=sys.stderr)
+        print("GPSLat" + '\n', file=sys.stderr)
 
-        #GPSLat to degrees and decimal minutes
-        d = int(abs(GPSLat))
-        md = abs(abs(GPSLat) - d) * 60
-        m = float(md)
-        DMS_Lat=""
-        if d<10:
-            DMS_Lat="0%d%.2f" % (d,m)
-        else: 
-            DMS_Lat="%d%.2f" % (d,m)
-
-        #GPSlong to degrees and decimal minutes
-        d = int(abs(GPSlong))
-        md = abs(abs(GPSlong) - d) * 60
-        m = float(md)
-        DMS_Long=""
-        if d>99:
-            DMS_Long="%d%.2f" % (d,m)
-        elif d<10:
-            DMS_Long="00%d%.2f" % (d,m)
-        else: 
-            DMS_Long="0%d%.2f" % (d,m)
 
         #If GPS mode is 3, there is a GPS fix
         if message.data['mode']=="3":
@@ -129,11 +124,8 @@ class Runner:
         else:
             GPSFix=0
 
-        #Find Altitude
-        alt=((int(message.data['alt'])/1000)-GROUNDALT)
-
-        if alt<0:
-            alt = 0
+        #Find Altitude in Meters
+        alt=(int(message.data['alt'])/1000)
 
         ###### TIME ###########################################################################################
         timeNow=datetime.now()
@@ -156,20 +148,15 @@ class Runner:
         timeNow_string_ms='000'
         timeNow_string="%s%s%s.%s" % (timeNow_string_h,timeNow_string_m,timeNow_string_s,timeNow_string_ms)
 
-        ############### ADD CHECK SUM ############################################################################
-        line = 'GPGGA,'+ timeNow_string+','+DMS_Lat+','+a+','+DMS_Long+','+A+','+str(GPSFix)+','+'5'+','+','+str(25)+','+str(alt)+','+','+','+',0000'
-        calc_cksum=0
-        for s in line:
-            calc_cksum^=ord(s)
-        calc_cksum = '*' + str(hex(calc_cksum))[2:4].upper()
+        #Posting
+        if GPSFix == 1:
+            params = urllib.urlencode({'latitude': 10, 'longitude': 10, 'altitude_msl': 10, 'uas_heading': 10})
+            conn.request("POST", TELEM_PATH, params, headers)
+            response = conn.getresponse()
+            
 
-        ############### COMPILE AND SEND ############################################################################
-        line='$'+line+calc_cksum+'\n'
-        print("Nmea message sent:", file=sys.stderr)
-        print(str(alt), file=sys.stderr)
-        print(line, file=sys.stderr)
-        #outgoing.write(line) Pyserial
-        #outgoing.close() Pyserial
+            #print response.status, response.reason
+            #print response.read()
         
 
 
