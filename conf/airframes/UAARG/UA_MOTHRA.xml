@@ -16,7 +16,7 @@
       <define name="USE_ADC"/>
       <define name="USE_ADC_2"/> 
       <define name="USE_I2C2" />
-      <define name="USE_AIRSPEED"/> <!-- change from MEASURE <=> USE --> 
+      <define name="MEASURE_AIRSPEED"/> <!-- change from MEASURE <=> USE --> 
 
     </target>
 
@@ -42,7 +42,7 @@
       <configure name="MODEM_BAUD" value="B57600"/>
     </subsystem>
     <subsystem name="imu" type="lisa_mx_v2.1"/>
-    <subsystem name="navigation"/>
+    <subsystem name="navigation" />
     <subsystem name="control"/>
     <subsystem name="ahrs" type="float_cmpl_quat">
       <configure name="USE_MAGNETOMETER" value="TRUE"/>
@@ -216,7 +216,7 @@
 
   <section name="MISC">
     <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
-    <define name="CARROT" value="3." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
+    <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
     <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="100."/>
   </section>
@@ -249,19 +249,21 @@
     
     <!--<define name="AILERON_OF_THROTTLE" value="0.0"/> --> <!-- as RPM of Prop increases more aileron may be need to obtain steady flight. Use this gain to adjust that--> <!-- commented out as it has been incorporated into command laws.-->
 
-    <define name="COURSE_PGAIN" value="1.40"/> <!-- used to be 57.3 deg. when a new heading is given to paparazzi the change the roll by this much-->
-    <define name="COURSE_DGAIN" value="1.2"/>
+    <define name="COURSE_PGAIN" value="1.37"/> <!-- used to be 57.3 deg. when a new heading is given to paparazzi the change the roll by this much-->
+    <define name="COURSE_DGAIN" value="17.1" unit="deg"/>
+
 
 
     <define name="ROLL_MAX_SETPOINT" value="34.4920593063" unit="deg"/> <!-- these are the max and min values the plane can roll and pitch when in auto -->
-    <define name="PITCH_MAX_SETPOINT" value="26" unit="deg"/>
-    <define name="PITCH_MIN_SETPOINT" value="-12" unit="deg"/>
+    <define name="PITCH_MAX_SETPOINT" value="30" unit="deg"/>
+    <define name="PITCH_MIN_SETPOINT" value="-10" unit="deg"/>
+
 
 
     <define name="PITCH_PGAIN" value="18513"/><!-- the rate at which paparazzi will change the pitch  -->
     <define name="PITCH_DGAIN" value="1.5"/> <!-- the rate at which paparazzi couteracts pgain -->
 
-    <define name="ROLL_ATTITUDE_GAIN" value="22083"/> <!--same idea as pitch pgain but for roll.--> <!--ROLL_PGAIN is still valid but paparazzi recommends using this one-->
+    <define name="ROLL_ATTITUDE_GAIN" value="21698"/> <!--same idea as pitch pgain but for roll.--> <!--ROLL_PGAIN is still valid but paparazzi recommends using this one-->
     <define name="ROLL_RATE_GAIN" value="1500"/> <!-- thinking this is probably some sort of gain that maintains flight with no Roll. So for example when flying straight and level and the wind rolls the plane, this will correct it. Maybe.-->
 <!--most likely doesn't work as it uses a gyro and we have not defined one-->
 
@@ -293,31 +295,32 @@
     <define name="AUTO_THROTTLE_DASH_TRIM" value="2492"/> <!--elevator trim when on max cruise throttle setting to maintain altitude-->
 
 
-    <define name="ALTITUDE_PGAIN" value="0.07"/><!--the rate at which paparazzi will change the altitude-->
+     <define name="ALTITUDE_PGAIN" value="0.06"/><!--the rate at which paparazzi will change the altitude-->
     
     <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/> <!-- max climb setting -->
     
 
-    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.3" unit="%/(m/s)"/> <!-- rate at which to increase throttle on climb error-->
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.10" unit="%/(m/s)"/> <!-- rate at which to increase throttle on climb error-->
 
-    <define name="AUTO_THROTTLE_PGAIN" value="0.012"/> <!-- rate at which to change speed based on climb-->
-    <define name="AUTO_THROTTLE_IGAIN" value="0.11"/> <!-- additional increase in rate dependant on time that speed is not ideal. Example if the speed required is 15m/s and the current speed is 12m/s and has been for 3s. then throttle setting = value+(15-12)(Pgain)+3*igain.-->
+    <define name="AUTO_THROTTLE_PGAIN" value="0.01"/> <!-- rate at which to change speed based on climb-->
+    <define name="AUTO_THROTTLE_IGAIN" value="0.10"/> <!-- additional increase in rate dependant on time that speed is not ideal. Example if the speed required is 15m/s and the current speed is 12m/s and has been for 3s. then throttle setting = value+(15-12)(Pgain)+3*igain.-->
 
-    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.13"/><!-- how much to change pitch based on climb error -->
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.09"/><!-- how much to change pitch based on climb error -->
 
     
-    <!--airspeed tuning -->
-  <define name="AUTO_AIRSPEED_SETPOINT" value="22.1" unit="m/s"/>
-    <define name="AUTO_AIRSPEED_PGAIN" value="0.048"/>
-    <define name="AUTO_AIRSPEED_IGAIN" value="0.022"/>
-    <define name="AUTO_GROUNDSPEED_SETPOINT" value="15.6" unit="m/s"/>
-    <define name="AUTO_GROUNDSPEED_PGAIN" value="0.408"/>
-    <define name="AUTO_GROUNDSPEED_IGAIN" value="0.235"/>
-    <define name="AUTO_PITCH_PGAIN" value="0.089"/>
-    <define name="AUTO_PITCH_IGAIN" value="0.025"/>
-    <define name="AUTO_PITCH_MAX_PITCH" value="RadOfDeg(23)"/>
-    <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-25)"/>
-  
+    <!--airspeed tuning 
+    <define name="AUTO_AIRSPEED_SETPOINT" value="13.0"  unit="m/s" /> SETPOINT values may need to be adjusted to suit your aircraft 
+    <define name="AUTO_AIRSPEED_PGAIN"    value="0.060" />
+    <define name="AUTO_AIRSPEED_IGAIN"    value="0.050" /> 
+ 
+    <define name="AUTO_GROUNDSPEED_SETPOINT" value="7.0"  unit="m/s" /> SeTPOINT values may need to be adjusted to suit your aircraft 
+    <define name="AUTO_GROUNDSPEED_PGAIN"    value="0.75" />
+    <define name="AUTO_GROUNDSPEED_IGAIN"    value="0.25" />
+
+    <define name="AUTO_PITCH_MAX_PITCH" value="RadOfDeg(25)"/>
+    <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-20)"/>
+--->
+
   </section>
 
 
@@ -353,6 +356,7 @@
 
   <modules>
     <load name="geo_mag.xml"/>
+
     <load name="airspeed_ets.xml">
       <define name="AIRSPEED_ETS_SYNC_SEND"/>
       <define name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/> 
