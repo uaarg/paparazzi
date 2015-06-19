@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="660" ground_alt="605" lat0="53.63836" lon0="-113.28607" max_dist_from_home="1000" name="Bremner_Simple" qfu="270" security_height="25">
+<flight_plan alt="710" ground_alt="605" lat0="53.63836" lon0="-113.28607" max_dist_from_home="1000" name="Bremner_Simple" qfu="270" security_height="25">
   <header>
 
 </header>
