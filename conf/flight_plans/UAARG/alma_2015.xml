@@ -68,7 +68,7 @@
   </sectors>
 
   <includes>
-    <include name="Failsafe" procedure="failsafe_can.xml">
+    <include name="Failsafe" procedure="failsafe_comp.xml">
       <with from="Standby" to="Standby"/>
     </include>
   </includes>

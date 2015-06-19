@@ -7,7 +7,7 @@
     #include "subsystems/radio_control.h"
     #include "subsystems/commands.h"
 
-    #define datalink_standby 10
+    #define datalink_standby 20
     #define datalink_termination 120
     #define rc_ok 0
   </header>

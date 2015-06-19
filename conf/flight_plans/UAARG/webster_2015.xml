@@ -1,0 +1,138 @@
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+
+<flight_plan alt="112" ground_alt="12" lat0="38.1449296" lon0="-76.4278886" max_dist_from_home="1250" name="Webster_2015" qfu="270" security_height="25">
+  <header>
+
+</header>
+  <waypoints>
+    <waypoint name="HOME" x="-110.8" y="-270.6"/>
+    <waypoint name="STDBY" x="86.2" y="-200"/>
+    <waypoint name="1" x="48.3" y="82.0"/>
+    <waypoint name="CLIMB" x="165.5" y="11.4"/>
+    <waypoint height="60.96" lat="38.1428139" lon="-76.4333806" name="wp1"/>
+    <waypoint height="60.96" lat="38.1412083" lon="-76.4319139" name="wp2"/>
+    <waypoint height="152.4" lat="38.1414722" lon="-76.4264833" name="wp3"/>
+    <waypoint height="121.92" lat="38.1436944" lon="-76.4232611" name="wp4"/>
+    <waypoint height="91.44" lat="38.1425278" lon="-76.4278833" name="wp5"/>
+    <waypoint height="60.96" lat="38.1445194" lon="-76.4290528" name="wp6"/>
+    <waypoint lat="38.1462694" lon="-76.4281639" name="_1oparea"/>
+    <waypoint lat="38.1516250" lon="-76.4266833" name="_2oparea"/>
+    <waypoint lat="38.1518889" lon="-76.4314667" name="_3oparea"/>
+    <waypoint lat="38.1505944" lon="-76.4353611" name="_4oparea"/>
+    <waypoint lat="38.1475667" lon="-76.4323417" name="_5oparea"/>
+    <waypoint lat="38.1446667" lon="-76.4329472" name="_6oparea"/>
+    <waypoint lat="38.1432556" lon="-76.4347667" name="_7oparea"/>
+    <waypoint lat="38.1404639" lon="-76.4326361" name="_8oparea"/>
+    <waypoint lat="38.1407194" lon="-76.4260139" name="_9oparea"/>
+    <waypoint lat="38.1437611" lon="-76.4212056" name="_10oparea"/>
+    <waypoint lat="38.1473472" lon="-76.4232111" name="_11oparea"/>
+    <waypoint lat="38.1461306" lon="-76.4266528" name="_12oparea"/>
+    <waypoint lat="38.1501694" lon="-76.4338222" name="_1sa"/>
+    <waypoint lat="38.1478583" lon="-76.4315222" name="_2sa"/>
+    <waypoint lat="38.1434389" lon="-76.4321472" name="_3sa"/>
+    <waypoint lat="38.1449250" lon="-76.4279222" name="_4sa"/>
+    <waypoint lat="38.1460472" lon="-76.4290472" name="_5sa"/>
+    <waypoint lat="38.1508000" lon="-76.4294056" name="_6sa"/>
+    <waypoint lat="38.1510500" lon="-76.4313861" name="_7sa"/>
+    <waypoint name="swp1" x="-157.3" y="615.0"/>
+    <waypoint name="swp2" x="-167.3" y="-32.8"/>
+    <waypoint name="swp3" x="-238.9" y="638.0"/>
+    <waypoint name="swp4" x="-310.1" y="-76.9"/>
+    <waypoint name="swp5" x="-359.5" y="618.1"/>
+    <waypoint name="swp6" x="-450.8" y="551.5"/>
+    <waypoint name="LKN" x="240.2" y="-202.5"/>
+    <waypoint name="SRIC" x="181.8" y="-89.9"/>
+    <waypoint name="OAT" x="413.7" y="53.5"/>
+  </waypoints>
+  <sectors>
+    <sector color="red" name="Operation_Area">
+      <corner name="_1oparea"/>
+      <corner name="_2oparea"/>
+      <corner name="_3oparea"/>
+      <corner name="_4oparea"/>
+      <corner name="_5oparea"/>
+      <corner name="_6oparea"/>
+      <corner name="_7oparea"/>
+      <corner name="_8oparea"/>
+      <corner name="_9oparea"/>
+      <corner name="_10oparea"/>
+      <corner name="_11oparea"/>
+      <corner name="_12oparea"/>
+    </sector>
+    <sector color="blue" name="Search_Area">
+      <corner name="_1sa"/>
+      <corner name="_2sa"/>
+      <corner name="_3sa"/>
+      <corner name="_4sa"/>
+      <corner name="_5sa"/>
+      <corner name="_6sa"/>
+      <corner name="_7sa"/>
+    </sector>
+  </sectors>
+  <includes>
+    <include name="Failsafe" procedure="failsafe_comp.xml">
+      <with from="Standby" to="Standby"/>
+    </include>
+  </includes>
+  <blocks>
+    <block name="Wait GPS">
+      <while cond="!GpsFixValid()"/>
+      <set value="1" var="kill_throttle"/>
+    </block>
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <call fun="NavSetGroundReferenceHere()"/>
+    </block>
+    <block name="Holding point">
+      <set value="1" var="kill_throttle"/>
+      <attitude roll="0" throttle="0" vmode="throttle"/>
+    </block>
+    <block group="home" key="t" name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png">
+      <exception cond="GetPosAlt() > GetAltRef()+25" deroute="Standby"/>
+      <set value="0" var="kill_throttle"/>
+      <set value="0" var="autopilot_flight_time"/>
+      <go from="HOME" pitch="15" throttle="1.0" vmode="throttle" wp="CLIMB"/>
+    </block>
+    <block group="home" key="Ctrl+a" name="Standby" strip_button="Standby" strip_icon="home.png">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+    <block name="WP_HOME">
+      <circle radius="nav_radius" wp="HOME"/>
+    </block>
+    <block name="General_flight">
+      <path wpts=" swp4, wp1, wp2, wp3, wp4, wp5, wp6" approaching_time="3"/>
+      <deroute block="Search_Sweep"/>
+    </block>
+    <block name="Search_Sweep">
+      <path wpts="swp1, swp2, swp3, swp4, swp5, swp6" approaching_time="3"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Gowp1">
+      <go wp="wp1"/>
+      <deroute block="Gowp2"/>
+    </block>
+    <block name="Gowp2">
+      <go wp="wp2"/>
+      <deroute block="Gowp3"/>
+    </block>
+    <block name="Gowp3">
+      <go wp="wp3"/>
+      <deroute block="Gowp4"/>
+    </block>
+    <block name="Gowp4">
+      <go wp="wp4"/>
+      <deroute block="Gowp5"/>
+    </block>
+    <block name="Gowp5">
+      <go wp="wp5"/>
+      <deroute block="Gowp6"/>
+    </block>
+    <block name="Gowp6">
+      <go wp="wp6"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="SRIC Flyover">
+      <circle radius="nav_radius" wp="SRIC"/>
+    </block>
+  </blocks>
+</flight_plan>

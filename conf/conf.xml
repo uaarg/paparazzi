@@ -206,8 +206,8 @@
    airframe="airframes/UAARG/UA_MOTHRA.xml"
    radio="radios/UAARG/spektrum.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
-   flight_plan="flight_plans/UAARG/Bremner_Simple.xml"
-   settings="settings/fixedwing_basic.xml settings/control/ctrl_UAARG.xml"
+   flight_plan="flight_plans/UAARG/webster_2015.xml"
+   settings="settings/fixedwing_basic.xml"
    settings_modules=""
    gui_color="blue"
   />
