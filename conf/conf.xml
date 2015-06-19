@@ -70,16 +70,7 @@
    settings=" settings/fixedwing_basic.xml settings/control/ctl_energy.xml settings/estimation/ins_neutrals.xml settings/estimation/ac_char.xml"
    gui_color="#ffffffffffff"
   />
-  <aircraft
-   name="Microjet"
-   ac_id="5"
-   airframe="airframes/examples/microjet.xml"
-   radio="radios/cockpitMM.xml"
-   telemetry="telemetry/default_fixedwing.xml"
-   flight_plan="flight_plans/basic.xml"
-   settings=" settings/fixedwing_basic.xml settings/control/ctl_basic.xml Fsett"
-   gui_color="#6293ba"
-  />
+
   <aircraft
    name="Microjet_LisaM"
    ac_id="4"
@@ -118,16 +109,6 @@
    telemetry="telemetry/default_rotorcraft.xml"
    flight_plan="flight_plans/rotorcraft_basic.xml"
    settings=" settings/rotorcraft_basic.xml settings/control/rotorcraft_guidance.xml settings/control/stabilization_att_int.xml settings/control/stabilization_rate.xml settings/superbitrf.xml"
-   gui_color="white"
-  />
-  <aircraft
-   name="Quad_NavGo"
-   ac_id="151"
-   airframe="airframes/examples/quadrotor_navgo.xml"
-   radio="radios/cockpitSX.xml"
-   telemetry="telemetry/default_rotorcraft.xml"
-   flight_plan="flight_plans/rotorcraft_basic.xml"
-   settings=" settings/rotorcraft_basic.xml settings/control/rotorcraft_guidance.xml settings/control/stabilization_att_int.xml settings/modules/servo_switch.xml"
    gui_color="white"
   />
   <aircraft
@@ -177,7 +158,8 @@
    radio="radios/UAARG/spektrum.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
    flight_plan="flight_plans/UAARG/Bremner_Simple.xml"
-   settings=" settings/fixedwing_basic.xml settings/control/ctrl_UAARG.xml"
+   settings="settings/fixedwing_basic.xml settings/control/ctrl_UAARG.xml"
+   settings_modules=""
    gui_color="blue"
   />
   <aircraft
@@ -187,7 +169,8 @@
    radio="radios/UAARG/spektrum.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
    flight_plan="flight_plans/UAARG/Bremner_Simple.xml"
-   settings=" settings/fixedwing_basic.xml settings/control/ctrl_UAARG.xml"
+   settings="settings/fixedwing_basic.xml settings/control/ctrl_UAARG.xml"
+   settings_modules=""
    gui_color="blue"
   />
   <aircraft
@@ -197,7 +180,8 @@
    radio="radios/UAARG/ppm_encoder.xml"
    telemetry="telemetry/default_fixedwing.xml"
    flight_plan="flight_plans/basic.xml"
-   settings=" settings/fixedwing_basic.xml"
+   settings="settings/fixedwing_basic.xml"
+   settings_modules=""
    gui_color="blue"
   />
   <aircraft
@@ -217,7 +201,8 @@
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
    flight_plan="flight_plans/basic.xml"
-   settings=" settings/fixedwing_basic.xml settings/control/ctl_basic.xml settings/estimation/ins_neutrals.xml"
+   settings="settings/fixedwing_basic.xml settings/control/ctl_basic.xml settings/estimation/ins_neutrals.xml"
+   settings_modules=""
    gui_color="blue"
   />
   <aircraft

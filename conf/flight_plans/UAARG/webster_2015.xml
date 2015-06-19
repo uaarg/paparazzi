@@ -1,20 +1,21 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="112" ground_alt="12" lat0="38.1449296" lon0="-76.4278886" max_dist_from_home="1250" name="Webster_2015" qfu="270" security_height="25">
-  <header>
-
-</header>
+<flight_plan alt="87" ground_alt="12" lat0="38.1449296" lon0="-76.4278886" max_dist_from_home="1250" name="Webster_2015" qfu="270" security_height="25">
   <waypoints>
-    <waypoint name="HOME" x="-110.8" y="-270.6"/>
+    <waypoint lat="38.1448481" lon="-76.4278874" name="HOME"/>
     <waypoint name="STDBY" x="86.2" y="-200"/>
-    <waypoint name="1" x="48.3" y="82.0"/>
     <waypoint name="CLIMB" x="165.5" y="11.4"/>
-    <waypoint height="60.96" lat="38.1428139" lon="-76.4333806" name="wp1"/>
+    <waypoint height="61" lat="38.143493" lon="-76.433329" name="bWP1"/>
+    <waypoint height="60.96" lat="38.142569" lon="-76.433089" name="wp1"/>
     <waypoint height="60.96" lat="38.1412083" lon="-76.4319139" name="wp2"/>
     <waypoint height="152.4" lat="38.1414722" lon="-76.4264833" name="wp3"/>
+    <waypoint height="123" lat="38.143133" lon="-76.423181" name="bWP4"/>
     <waypoint height="121.92" lat="38.1436944" lon="-76.4232611" name="wp4"/>
+    <waypoint lat="38.143799" lon="-76.423018" name="SHADwp4"/>
+    <waypoint height="117" lat="38.143844" lon="-76.423992" name="aWP4"/>
     <waypoint height="91.44" lat="38.1425278" lon="-76.4278833" name="wp5"/>
-    <waypoint height="60.96" lat="38.1445194" lon="-76.4290528" name="wp6"/>
+    <waypoint lat="38.142381" lon="-76.428006" name="SHADwp5"/>
+    <waypoint lat="38.144519" lon="-76.429039" name="wp6"/>
     <waypoint lat="38.1462694" lon="-76.4281639" name="_1oparea"/>
     <waypoint lat="38.1516250" lon="-76.4266833" name="_2oparea"/>
     <waypoint lat="38.1518889" lon="-76.4314667" name="_3oparea"/>
@@ -34,15 +35,30 @@
     <waypoint lat="38.1460472" lon="-76.4290472" name="_5sa"/>
     <waypoint lat="38.1508000" lon="-76.4294056" name="_6sa"/>
     <waypoint lat="38.1510500" lon="-76.4313861" name="_7sa"/>
-    <waypoint name="swp1" x="-157.3" y="615.0"/>
-    <waypoint name="swp2" x="-167.3" y="-32.8"/>
-    <waypoint name="swp3" x="-238.9" y="638.0"/>
-    <waypoint name="swp4" x="-310.1" y="-76.9"/>
-    <waypoint name="swp5" x="-359.5" y="618.1"/>
-    <waypoint name="swp6" x="-450.8" y="551.5"/>
-    <waypoint name="LKN" x="240.2" y="-202.5"/>
+    <waypoint lat="38.150493" lon="-76.429605" name="a"/>
+    <waypoint lat="38.149955" lon="-76.429547" name="b"/>
+    <waypoint name="swp1" x="-106.8" y="661.4"/>
+    <waypoint name="swp2" x="-154.3" y="663.5"/>
+    <waypoint name="swp3" x="-126.9" y="-54.5"/>
+    <waypoint name="swp4" x="-168.5" y="-71.4"/>
+    <waypoint name="swp5" x="-202.9" y="669.4"/>
+    <waypoint name="swp6" x="-257.4" y="673.2"/>
+    <waypoint name="swp7" x="-208.4" y="-104.5"/>
+    <waypoint alt="61.0" name="swp8" x="-237.8" y="-120.1"/>
+    <waypoint name="swp9" x="-313.9" y="673.8"/>
+    <waypoint name="swp10" x="-370.4" y="662.6"/>
+    <waypoint name="swp11" x="-288.2" y="-138.0"/>
+    <waypoint name="swp12" x="-350.6" y="-143.4"/>
+    <waypoint name="swp13" x="-269.6" y="347.2"/>
+    <waypoint name="swp14" x="-398.5" y="559.2"/>
+    <waypoint name="bLKN" x="263.1" y="-15.9"/>
+    <waypoint name="LKN" x="329.7" y="-69.6"/>
+    <waypoint name="aLKN" x="363.4" y="-8.4"/>
     <waypoint name="SRIC" x="181.8" y="-89.9"/>
-    <waypoint name="OAT" x="413.7" y="53.5"/>
+    <waypoint name="bOAT" x="304.6" y="71.5"/>
+    <waypoint name="OAT" x="375.4" y="54.1"/>
+    <waypoint name="aOAT" x="452.1" y="-2.5"/>
+    <waypoint name="REAL_OAT" x="976.2" y="299.9"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Operation_Area">
@@ -59,6 +75,35 @@
       <corner name="_11oparea"/>
       <corner name="_12oparea"/>
     </sector>
+    <sector color="red" name="Operationa">
+      <corner name="_1oparea"/>
+      <corner name="_2oparea"/>
+      <corner name="_3oparea"/>
+      <corner name="_4oparea"/>
+      <corner name="_5oparea"/>
+    </sector>
+    <sector color="red" name="Operationb">
+      <corner name="_1oparea"/>
+      <corner name="_5oparea"/>
+      <corner name="_6oparea"/>
+    </sector>
+    <sector color="red" name="Operationc">
+      <corner name="_6oparea"/>
+      <corner name="_7oparea"/>
+      <corner name="_8oparea"/>
+      <corner name="_9oparea"/>
+      <corner name="_10oparea"/>
+      <corner name="_11oparea"/>
+      <corner name="_12oparea"/>
+    </sector>
+    <sector color="red" name="Operationd">
+      <corner name="_1oparea"/>
+      <corner name="_6oparea"/>
+      <corner name="_12oparea"/>
+    </sector>
+
+
+
     <sector color="blue" name="Search_Area">
       <corner name="_1sa"/>
       <corner name="_2sa"/>
@@ -81,7 +126,6 @@
     </block>
     <block name="Geo init">
       <while cond="LessThan(NavBlockTime(), 10)"/>
-      <call fun="NavSetGroundReferenceHere()"/>
     </block>
     <block name="Holding point">
       <set value="1" var="kill_throttle"/>
@@ -94,22 +138,72 @@
       <go from="HOME" pitch="15" throttle="1.0" vmode="throttle" wp="CLIMB"/>
     </block>
     <block group="home" key="Ctrl+a" name="Standby" strip_button="Standby" strip_icon="home.png">
-      <circle radius="nav_radius" wp="STDBY"/>
+      <circle height="100" radius="nav_radius" wp="STDBY"/>
     </block>
     <block name="WP_HOME">
       <circle radius="nav_radius" wp="HOME"/>
     </block>
     <block name="General_flight">
-      <path wpts=" swp4, wp1, wp2, wp3, wp4, wp5, wp6" approaching_time="3"/>
+      <go approaching_time="3" wp="bWP1"/>
+      <path approaching_time="3" wpts=" bWP1, wp1"/>
+      <path approaching_time="2.25" wpts=" wp1, wp2"/>
+      <path approaching_time="3.25" wpts=" wp2 , wp3"/>
+      <path approaching_time="3" wpts=" wp3, bWP4"/>
+      <path approaching_time="4.5" wpts=" bWP4, SHADwp4"/>
+      <path approaching_time="3" wpts=" SHADwp4, aWP4"/>
+      <path approaching_time="4" wpts=" aWP4, SHADwp5"/>
+      <path approaching_time="3" wpts=" SHADwp5, wp6"/>
       <deroute block="Search_Sweep"/>
     </block>
     <block name="Search_Sweep">
-      <path wpts="swp1, swp2, swp3, swp4, swp5, swp6" approaching_time="3"/>
+      <path approaching_time="4" wpts=" wp6, swp1"/>
+      <path approaching_time="4" wpts=" swp1, swp2"/>
+      <path approaching_time="4" wpts=" swp2 , swp3"/>
+      <path approaching_time="4" wpts=" swp3, swp4"/>
+      <path approaching_time="4" wpts=" swp4, swp5"/>
+      <path approaching_time="4" wpts=" swp5, swp6"/>
+      <path approaching_time="4" wpts=" swp6, swp7"/>
+      <path approaching_time="4" wpts=" swp7, swp8"/>
+      <path approaching_time="4" wpts=" swp8, swp9"/>
+      <path approaching_time="4" wpts=" swp9, swp10"/>
+      <path approaching_time="4" wpts=" swp10, swp11"/>
+      <path approaching_time="4" wpts=" swp11, swp12"/>
+      <path approaching_time="4" wpts=" swp12, swp13"/>
+      <path approaching_time="3" wpts=" swp13, swp14"/>
+      <circle radius="nav_radius" until="stage_time > 45" wp="swp14"/>
+      <go wp="a"/>
+      <circle radius="nav_radius" until="stage_time > 17" wp="b"/>
+      <go approaching_time="3" wp="_4sa"/>
+      <deroute block="LKN Flyover"/>
+    </block>
+    <block name="LKN Flyover">
+      <go approaching_time="0" wp="bLKN"/>
+      <path approaching_time="2" wpts="bLKN, LKN"/>
+      <while cond="TRUE">
+        <circle radius="nav_radius " until="stage_time > 43" wp="LKN"/>
+        <circle radius="nav_radius + 30" until="stage_time > 43+31.4193*5/13" wp="LKN"/>
+      </while>
+      <deroute block="OAT Rising Circle"/>
+    </block>
+    <block name="Go aLKN">
+      <go wp="aLKN"/>
+      <deroute block="OAT Rising Circle"/>
+    </block>
+    <block name="OAT Rising Circle">
+      <go wp="bOAT"/>
+      <while cond="TRUE">
+        <circle height="60+ 00" radius="nav_radius" until="stage_time > 43" wp="OAT"/>
+        <circle height="60+ 50" radius="nav_radius" until="stage_time > 43" wp="OAT"/>
+      </while>
       <deroute block="Standby"/>
     </block>
-    <block name="Gowp1">
-      <go wp="wp1"/>
-      <deroute block="Gowp2"/>
+    <block name="Go aOAT">
+      <go wp="aOAT"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="SRIC">
+      <go wp="SRIC"/>
+      <circle radius="nav_radius" wp="SRIC"/>
     </block>
     <block name="Gowp2">
       <go wp="wp2"/>
@@ -131,8 +225,61 @@
       <go wp="wp6"/>
       <deroute block="Standby"/>
     </block>
-    <block name="SRIC Flyover">
-      <circle radius="nav_radius" wp="SRIC"/>
+    <block name="Go SWP1">
+      <go wp="swp1"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp2">
+      <go wp="swp2"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp3">
+      <go wp="swp3"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp4">
+      <go wp="swp4"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp5">
+      <go wp="swp5"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp6">
+      <go wp="swp6"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp7">
+      <go wp="swp7"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp8">
+      <go wp="swp8"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp9">
+      <go wp="swp9"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp10">
+      <go wp="swp10"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp11">
+      <go wp="swp11"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp12">
+      <go wp="swp12"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp13">
+      <go wp="swp13"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp14">
+      <go wp="swp14"/>
+      <deroute block="Standby"/>
     </block>
   </blocks>
 </flight_plan>

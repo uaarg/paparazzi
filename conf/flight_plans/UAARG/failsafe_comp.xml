@@ -7,19 +7,17 @@
     #include "subsystems/radio_control.h"
     #include "subsystems/commands.h"
 
-    #define datalink_standby 20
-    #define datalink_termination 120
+    #define datalink_standbys 5
+    #define datalink_terminations 120
     #define rc_ok 0
   </header>
 
   <exceptions>
-    <exception cond="(datalink_time > datalink_standby)*(datalink_termination > datalink_time)*(InsideSearch_Area(GetPosX(), GetPosY()))" deroute="Termination_Recovery"/> <!-- Lost Telemetry Link, sends plane to circle WP standby-->
+    <exception cond="(datalink_time > datalink_standbys)*(datalink_terminations > datalink_time)*((InsideOperationc(GetPosX(), GetPosY())))" deroute="Termination_Recovery"/> <!-- Lost Telemetry Link, sends plane to circle WP standby-->
 
-    <exception cond="datalink_time > datalink_termination" deroute="Termination"/> <!-- if the plane the plane has lost the datalink for longer than datalink_termination, the plane will automatically go into sucicide.-->
+    <exception cond="(datalink_time > datalink_terminations)" deroute="Termination"/> <!-- if the plane the plane has lost the datalink for longer than datalink_termination, the plane will automatically go into sucicide.-->
 
-    <exception cond="(!InsideSearch_Area(GetPosX(), GetPosY()))*(datalink_time > datalink_standby) " deroute="Termination">
-        
-    </exception>
+    <!--exception cond="(!InsideOperationa(GetPosX(), GetPosY()))*(!InsideOperationb(GetPosX(), GetPosY()))*(!InsideOperationc(GetPosX(), GetPosY()))*(!InsideOperationd(GetPosX(), GetPosY()))*(datalink_time > datalink_standby)" deroute="Termination" /-->
 
 
     <!-- Add conditions that deroute to suicide in here. Make sure to also add to the exception within suicide.-->
