@@ -8,27 +8,21 @@
     #include "subsystems/commands.h"
 
     #define datalink_standby 20
-    #define datalink_termination 100
-    #define datalink_outside 5
+    #define datalink_termination 120
     #define rc_ok 0
   </header>
 
   <exceptions>
+    <exception cond="(datalink_time > datalink_standby)*(datalink_termination > datalink_time)*(InsideSearch_Area(GetPosX(), GetPosY()))" deroute="Termination_Recovery"/> <!-- Lost Telemetry Link, sends plane to circle WP standby-->
+
+    <exception cond="datalink_time > datalink_termination" deroute="Termination"/> <!-- if the plane the plane has lost the datalink for longer than datalink_termination, the plane will automatically go into sucicide.-->
+
+    <exception cond="(!InsideSearch_Area(GetPosX(), GetPosY()))*(datalink_time > datalink_standby) " deroute="Termination">
+        
+    </exception>
+
 
     <!-- Add conditions that deroute to suicide in here. Make sure to also add to the exception within suicide.-->
-
-
-    <exception cond="(datalink_time > datalink_standby)*(datalink_termination > datalink_time)*((InsideOperation_Area(GetPosX(), GetPosY())))" deroute="Termination_Recovery"/> 
-    <!-- Lost Telemetry Link inside operation area, sends plane to circle WP standby-->
-
-    <exception cond="datalink_time > datalink_termination" deroute="Termination"/>   
-    <!-- if the plane the plane has lost the datalink for longer than datalink_termination, the plane will automatically go into sucicide.-->
-
-   <exception cond="(!InsideOperation_Area(GetPosX(), GetPosY()))*(datalink_time > datalink_standby)" deroute="Termination" /> 
-    <!-- if outside of bounds and lost link longer than datalink_standby, then terminate the flight-->
-
-    <exception cond="(!InsideOperation_Area(GetPosX(), GetPosY()))*(datalink_time > datalink_outside)*(datalink_standby > datalink_time)" deroute="Termination_Recovery" /> 
-    <!--Just flew outside the operation area? This will send the plance back to Standby-->
 
     <!-- End of conditions for suicide -->
   </exceptions>
