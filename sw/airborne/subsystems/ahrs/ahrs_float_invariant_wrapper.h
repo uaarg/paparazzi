@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 Antoine Drouin <poinix@gmail.com>
+ * Copyright (C) 2015 Gautier Hattenberger <gautier.hattenberger@enac.fr>
  *
  * This file is part of paparazzi.
  *
@@ -14,16 +14,25 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with paparazzi; see the file COPYING.  If not, write to
- * the Free Software Foundation, 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- *
+ * along with Paparazzi; see the file COPYING.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @file subsystems/ahrs/ahrs_float_invariant_wrapper.h
+ *
+ * Paparazzi specific wrapper to run INVARIANT ahrs filter.
+ */
 
-#ifndef FMS_PERIODIC_H
-#define FMS_PERIODIC_H
+#ifndef AHRS_FLOAT_INVARIANT_WRAPPER_H
+#define AHRS_FLOAT_INVARIANT_WRAPPER_H
 
-extern int fms_periodic_init(void(*periodic_handler)(int));
+#include "subsystems/ahrs/ahrs_float_invariant.h"
 
-#endif /* FMS_PERIODIC_H */
+#ifndef PRIMARY_AHRS
+#define PRIMARY_AHRS ahrs_float_invariant
+#endif
+
+extern void ahrs_float_invariant_register(void);
+
+#endif /* AHRS_FLOAT_INVARIANT_WRAPPER_H */
