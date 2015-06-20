@@ -61,7 +61,7 @@
     <waypoint name="REAL_OAT" x="976.2" y="299.9"/>
   </waypoints>
   <sectors>
-    <sector color="red" name="Operation_Area">
+    <sector color="red" name="Operation_Area" type="dynamic">
       <corner name="_1oparea"/>
       <corner name="_2oparea"/>
       <corner name="_3oparea"/>
@@ -75,33 +75,6 @@
       <corner name="_11oparea"/>
       <corner name="_12oparea"/>
     </sector>
-    <sector color="red" name="Operationa">
-      <corner name="_1oparea"/>
-      <corner name="_2oparea"/>
-      <corner name="_3oparea"/>
-      <corner name="_4oparea"/>
-      <corner name="_5oparea"/>
-    </sector>
-    <sector color="red" name="Operationb">
-      <corner name="_1oparea"/>
-      <corner name="_5oparea"/>
-      <corner name="_6oparea"/>
-    </sector>
-    <sector color="red" name="Operationc">
-      <corner name="_6oparea"/>
-      <corner name="_7oparea"/>
-      <corner name="_8oparea"/>
-      <corner name="_9oparea"/>
-      <corner name="_10oparea"/>
-      <corner name="_11oparea"/>
-      <corner name="_12oparea"/>
-    </sector>
-    <sector color="red" name="Operationd">
-      <corner name="_1oparea"/>
-      <corner name="_6oparea"/>
-      <corner name="_12oparea"/>
-    </sector>
-
 
 
     <sector color="blue" name="Search_Area">

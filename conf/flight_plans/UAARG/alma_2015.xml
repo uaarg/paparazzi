@@ -53,7 +53,7 @@
 
 
   <sectors>
-    <sector color="red" name="SFOC">
+    <sector color="red" name="Operation_Area">
       <corner name="_1sfoc"/>
       <corner name="_2sfoc"/>
       <corner name="_3sfoc"/>
