@@ -35,12 +35,13 @@ import httplib, urllib    #html python modules
 LOGIN_PATH = "/api/login"
 TELEM_PATH = "/api/interop/uas_telemetry"
 SERVER_INFO_PATH = "/api/interop/server_info"
-USERNAME = 'testuser'
-PASSWORD = 'testpass'
-
+USERNAME = 'uaarg'
+PASSWORD = 'uaarg'
 
 PPRZ_HOME = os.getenv("PAPARAZZI_HOME")
-sys.path.append(PPRZ_HOME + "/sw/lib/python")
+PPRZ_LIB_PYTHON = os.path.join(PPRZ_HOME, "sw/lib/python/pprz_msg")
+sys.path.append(PPRZ_LIB_PYTHON)
+
 import messages_xml_map
 
 class GPSMessage:
@@ -64,30 +65,30 @@ class Runner:
         if self.message_name not in messages_xml_map.message_dictionary['telemetry']:
             raise(Exception("Nmea generator needs the %s message to work." % (self.message_name,)))
 
+        self.conn = httplib.HTTPConnection("localhost", 8080)
         self.initIvy()
 
     def initIvy(self):
         # initialising the bus
         #Connect
-        conn = httplib.HTTPConnection("localhost", 8080)
         #Login Creds
-        headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
+        self.headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
         params = urllib.urlencode({'username': USERNAME, 'password': PASSWORD })
         #Send Message
-        conn.request("POST", LOGIN_PATH , params, headers)
+        self.conn.request("POST", LOGIN_PATH, params, self.headers)
         #Server Response
-        response = conn.getresponse()
+        response = self.conn.getresponse()
         print(response.read() + '\n', file=sys.stderr)
         self.message_name = "GPS"
         #Saving Login Cookie Credentials
         setcookie = response.getheader("Set-Cookie")
         contenttype = response.getheader("Content-type")
-        headers = {"Accept": "text/plain", "Cookie" : setcookie, "Content-type" : "application/x-www-form-urlencoded"}
+        self.headers = {"Accept": "text/plain", "Cookie" : setcookie, "Content-type" : "application/x-www-form-urlencoded"}
 
         IvyInit("Nmea_Generator",   # application name for Ivy
                 "READY",            # ready message
                 0,                  # main loop is local (ie. using IvyMainloop)
-                lambda x,y: y,      # handler called on connection/deconnection
+                lambda x,y: y,      # handler called on self.connection/deself.connection
                 lambda x,y: y       # handler called when a diemessage is received
                 )
 
@@ -109,14 +110,8 @@ class Runner:
         GPS=utm.to_latlon(easting, northing, zone, northern=True)
 
         #Aquire the GPS Lat and Long
-        GPSLat=GPS[0] 
-        GPSlong=GPS[1]
-
-        print(GPSLat, file=sys.stderr)
-        print("GPSLat" + '\n', file=sys.stderr)
-        print(GPSlong, file=sys.stderr)
-        print("GPSLat" + '\n', file=sys.stderr)
-
+        GPSLat=GPS[0]
+        GPSLong=GPS[1]
 
         #If GPS mode is 3, there is a GPS fix
         if message.data['mode']=="3":
@@ -150,14 +145,14 @@ class Runner:
 
         #Posting
         if GPSFix == 1:
-            params = urllib.urlencode({'latitude': 10, 'longitude': 10, 'altitude_msl': 10, 'uas_heading': 10})
-            conn.request("POST", TELEM_PATH, params, headers)
-            response = conn.getresponse()
-            
+            params = urllib.urlencode({'latitude': GPSLat, 'longitude': GPSlong, 'altitude_msl': alt, 'uas_heading': 10})
+            self.conn.request("POST", TELEM_PATH, params, self.headers)
+            response = self.conn.getresponse()
+
 
             #print response.status, response.reason
             #print response.read()
-        
+
 
 
 def main():
@@ -168,7 +163,7 @@ def main():
     args = parser.parse_args()
     global SERIAL_PORT
     SERIAL_PORT = args.device
-    runner = Runner() 
+    runner = Runner()
 
 if __name__ == '__main__':
     main()
