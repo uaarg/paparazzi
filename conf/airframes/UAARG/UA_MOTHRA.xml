@@ -15,6 +15,7 @@
     
       <define name="USE_ADC"/>
       <define name="USE_ADC_2"/> 
+      <define name="USE_I2C1" />
       <define name="USE_I2C2" />
       <define name="MEASURE_AIRSPEED"/> <!-- change from MEASURE <=> USE --> 
 
@@ -57,17 +58,7 @@
     <configure name="FLASH_MODE" value="SWD"/>
     <!--- <configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
 
-    
-
   </firmware>
-
-
-
-
-
-
-
-
 
 <!--The following is the commands sections. This deals with how the control surface relate to movement and rc inpu-->
   <commands> <!--The commands the autopilot board outputs-->
@@ -115,13 +106,7 @@
     <set command="GEAR" value="@GEAR"/>
     <set value="@AUX1" command="BRAKE"/>
   </auto_rc_commands>
-  
-
-
-
-
-
-  
+    
   
   <!--The following are sensor calibrations that need to be performed-->
   <!--Note some calibrations are location specific. These need to be modified when flying at different fields-->
@@ -142,12 +127,12 @@
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
 
-<define name="MAG_X_NEUTRAL" value="-415"/>
-<define name="MAG_Y_NEUTRAL" value="814"/>
-<define name="MAG_Z_NEUTRAL" value="223"/>
-<define name="MAG_X_SENS" value="2.76789774165" integer="16"/>
-<define name="MAG_Y_SENS" value="3.15959835097" integer="16"/>
-<define name="MAG_Z_SENS" value="2.63119798642" integer="16"/>
+    <define name="MAG_X_NEUTRAL" value="-415"/>
+    <define name="MAG_Y_NEUTRAL" value="814"/>
+    <define name="MAG_Z_NEUTRAL" value="223"/>
+    <define name="MAG_X_SENS" value="2.76789774165" integer="16"/>
+    <define name="MAG_Y_SENS" value="3.15959835097" integer="16"/>
+    <define name="MAG_Z_SENS" value="2.63119798642" integer="16"/>
 
 
 
@@ -155,21 +140,11 @@
     <!-- Current draw magnetic field calibration-->
     <!--Please note that if you dont have any experience in Paparazzi and are not looking online you can enable current calibration raw data from a module. look below at modules and uncomment the module.-->
 
-<define name= "MAG_X_CURRENT_COEF" value="0.00320590964876"/>
-<define name= "MAG_Y_CURRENT_COEF" value="-0.00177605577317"/>
-<define name= "MAG_Z_CURRENT_COEF" value="0.000959756979821"/>
-
-
+    <define name= "MAG_X_CURRENT_COEF" value="0.00320590964876"/>
+    <define name= "MAG_Y_CURRENT_COEF" value="-0.00177605577317"/>
+    <define name= "MAG_Z_CURRENT_COEF" value="0.000959756979821"/>
     
   </section>
-
-
-
-
-
-
-
-
   
   <section name="AHRS" prefix="AHRS_"> <!--This is local magnetic field data. Needs to be changed for different fields-->
     <!--CHANGE THIS FOR DIFFERENT LOCATIONS!!-->
@@ -186,8 +161,6 @@
   </section>
 
 
-
-  
   <section name="BAT">
     <!--<define name="MILLIAMP_AT_FULL_THROTTLE" value="3000"/> not needed due to current sensor-->
     <define name="CATASTROPHIC_BAT_LEVEL" value="12.7" unit="V"/>
@@ -204,9 +177,6 @@
     <define name="MilliAmpereOfAdc(adc)" value="0.2489*(80.55*(adc-185))-11232"/>
   </section>
 
-  
-
-
   <section name="FAILSAFE" prefix="FAILSAFE_">
     <define name="DELAY_WITHOUT_GPS" value="2" unit="s"/>
     <define name="DEFAULT_THROTTLE" value="0" unit="%"/>
@@ -214,10 +184,7 @@
     <define name="DEFAULT_PITCH" value="28.6" unit="deg"/>
   </section>
 
-
-
-  <section name="MISC">
-    
+  <section name="MISC">    
     <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
     <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="100."/>
@@ -228,29 +195,19 @@
     <define name="RACE_AIRSPEED" value="25." unit="m/s"/>
     <define name="STALL_AIRSPEED" value="8." unit="m/s"/>
     <define name="AIRSPEED_SETPOINT_SLEW" value="0.2" unit="m/s/s"/> <!--default is 1-->
-     
   </section>
 
 
-
 <!--AUTOPILOT TUNING SECTION-->
-
-
   <section name="INS" prefix="INS_"> <!--These are the angles which are output when the plane is in the "flat" position. Similar to BODY_TO_IMU -->
     <define name="ROLL_NEUTRAL_DEFAULT" value="-2.6" unit="deg"/>
     <define name="PITCH_NEUTRAL_DEFAULT" value="0" unit="deg"/>
   </section>
 
-
-
   <section name="AUTO1" prefix="AUTO1_"><!-- roll and pitch in auto1-->
     <define name="MAX_ROLL" value="40." unit="deg"/>
     <define name="MAX_PITCH" value="35." unit="deg"/>
   </section>
-
-
-
-
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
     
@@ -258,8 +215,6 @@
 
     <define name="COURSE_PGAIN" value="1.37"/> <!-- used to be 57.3 deg. when a new heading is given to paparazzi the change the roll by this much-->
     <define name="COURSE_DGAIN" value=".30" />
-
-
 
     <define name="ROLL_MAX_SETPOINT" value="35" unit="deg"/> <!-- these are the max and min values the plane can roll and pitch when in auto -->
     <define name="PITCH_MAX_SETPOINT" value="30" unit="deg"/>
@@ -282,14 +237,7 @@
     <define name="PITCH_KFFA" value="0."/>
     <define name="PITCH_KFFD" value="0."/>
 
-
-
   </section>
-
-
-
-
-
 
   <section name="VERTICAL CONTROL" prefix="V_CTL_">
     <define name="POWER_CTL_BAT_NOMINAL" value="14.9" unit="V"/>
@@ -314,7 +262,6 @@
     <define name="AUTO_THROTTLE_IGAIN" value="0.10"/> <!-- additional increase in rate dependant on time that speed is not ideal. Example if the speed required is 15m/s and the current speed is 12m/s and has been for 3s. then throttle setting = value+(15-12)(Pgain)+3*igain.-->
 
     <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.09"/><!-- how much to change pitch based on climb error -->
-
     
 
     <!-- energy control 
@@ -348,18 +295,11 @@
 -->
   </section>
 
-
-
   <section name="NAV">
     <define name="DEFAULT_CIRCLE_RADIUS" value="60."/>
     <define name="NAV_PITCH" value="0."/> <!--Not Tuned-->
     <define name="NAV_GLIDE_PITCH_TRIM" value="0"/> <!--Not Tuned-->
   </section>
-
-
-
-
-
 
   <section name="AGGRESSIVE" prefix="AGR_">
     <define name="BLEND_START" value="75"/><!--really high to prevent it-->
@@ -381,6 +321,8 @@
   </section>
 
 
+
+
   <modules>
     <load name="geo_mag.xml"/>
 
@@ -391,7 +333,7 @@
 
     <load name="mag_hmc58xx.xml">
       <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
-      <define name="MAG_HMC58XX_I2C_DEV" value="i2c2"/>
+      <define name="MAG_HMC58XX_I2C_DEV" value="i2c1"/>
     </load>
 
     <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
