@@ -22,7 +22,7 @@
 
     <program name="Link Combiner" command="sw/ground_segment/python/redundant_link/link_combiner.py"/>
 
-    <program name="GCS" command="sw/ground_segment/cockpit/gcs -maps_fill ">
+    <program name="GCS" command="sw/ground_segment/cockpit/gcs -maps_fill -maps_no_http ">
       <arg flag="-b" variable="ivy_bus"/>
     </program>
 
