@@ -123,9 +123,7 @@ $(TARGET).srcs += $(SRC_ARCH)/mcu_periph/i2c_arch.c
 #
 $(TARGET).CFLAGS += -DUSE_ADC
 $(TARGET).srcs   += $(SRC_ARCH)/mcu_periph/adc_arch.c
-ifneq ($(ARCH), linux)
 $(TARGET).srcs   += subsystems/electrical.c
-endif
 
 
 ######################################################################
@@ -137,12 +135,6 @@ endif
 ifeq ($(BOARD), booz)
 ns_CFLAGS += -DUSE_DAC
 ns_srcs   += $(SRC_ARCH)/mcu_periph/dac_arch.c
-else ifeq ($(BOARD)$(BOARD_TYPE), ardronesdk)
-ns_srcs   += $(SRC_BOARD)/electrical_dummy.c
-else ifeq ($(BOARD)$(BOARD_TYPE), ardroneraw)
-ns_srcs   += $(SRC_BOARD)/electrical_raw.c
-else ifeq ($(BOARD), bebop)
-ns_srcs   += $(SRC_BOARD)/electrical.c
 endif
 
 #
@@ -169,7 +161,7 @@ ifeq ($(ARCH), stm32)
 ns_srcs += $(SRC_ARCH)/led_hw.c
 endif
 
-ifeq ($(BOARD)$(BOARD_TYPE), ardroneraw)
+ifeq ($(BOARD), ardrone)
 ns_srcs += $(SRC_BOARD)/gpio_ardrone.c
 endif
 

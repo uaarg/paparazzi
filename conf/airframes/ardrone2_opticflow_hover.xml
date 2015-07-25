@@ -3,19 +3,17 @@
 <airframe name="ardrone2_opticflow">
 
   <firmware name="rotorcraft">
-    <target name="ap" board="ardrone2_raw">
-      <subsystem name="telemetry" type="transparent_udp"/>
-      <subsystem name="radio_control" type="datalink"/>
-    </target>
+    <target name="ap" board="ardrone2"/>
 
     <!--target name="nps" board="pc">
       <subsystem name="fdm" type="jsbsim"/>
-      <subsystem name="radio_control" type="ppm"/>
     </target-->
 
     <define name="USE_SONAR" value="TRUE"/>
 
 	<!-- Subsystem section -->
+    <subsystem name="telemetry" type="transparent_udp"/>
+    <subsystem name="radio_control" type="datalink"/>
     <subsystem name="motor_mixing"/>
     <subsystem name="actuators" type="ardrone2"/>
     <subsystem name="imu" type="ardrone2"/>
@@ -26,6 +24,7 @@
   </firmware>
 
   <modules main_freq="512">
+    <load name="bat_voltage_ardrone2.xml"/>
     <load name="gps_ubx_ucenter.xml"/>
     <load name="send_imu_mag_current.xml"/>
     <load name="logger_file.xml"/>
@@ -50,22 +49,17 @@
     <define name="TRIM_ROLL" value="0"/>
     <define name="TRIM_PITCH" value="0"/>
     <define name="TRIM_YAW" value="0"/>
-    <define name="NB_MOTOR" value="4"/>
-    <define name="SCALE" value="255"/>
 
     <!-- Time cross layout (X), with order NW (CW), NE (CCW), SE (CW), SW (CCW) -->
-    <define name="ROLL_COEF" value="{   256, -256, -256,  256 }"/>
-    <define name="PITCH_COEF" value="{  256,  256, -256, -256 }"/>
-    <define name="YAW_COEF" value="{   -256,  256, -256,  256 }"/>
-    <define name="THRUST_COEF" value="{ 256,  256,  256,  256 }"/>
+    <define name="TYPE" value="QUAD_X"/>
   </section>
 
   <command_laws>
     <call fun="motor_mixing_run(autopilot_motors_on,FALSE,values)"/>
-    <set servo="TOP_LEFT" value="motor_mixing.commands[0]"/>
-    <set servo="TOP_RIGHT" value="motor_mixing.commands[1]"/>
-    <set servo="BOTTOM_RIGHT" value="motor_mixing.commands[2]"/>
-    <set servo="BOTTOM_LEFT" value="motor_mixing.commands[3]"/>
+    <set servo="TOP_LEFT" value="motor_mixing.commands[MOTOR_FRONT_LEFT]"/>
+    <set servo="TOP_RIGHT" value="motor_mixing.commands[MOTOR_FRONT_RIGHT]"/>
+    <set servo="BOTTOM_RIGHT" value="motor_mixing.commands[MOTOR_BACK_RIGHT]"/>
+    <set servo="BOTTOM_LEFT" value="motor_mixing.commands[MOTOR_BACK_LEFT]"/>
   </command_laws>
 
    <section name="VISION" prefix="VISION_">
@@ -171,22 +165,22 @@
     <define name="REF_MAX_RDOT" value="RadOfDeg(4000.)"/>
 
     <!-- feedback -->
-    <define name="PHI_PGAIN" value="592"/>
-    <define name="PHI_DGAIN" value="303"/>
+    <define name="PHI_PGAIN" value="850"/>
+    <define name="PHI_DGAIN" value="425"/>
     <define name="PHI_IGAIN" value="0"/>
 
-    <define name="THETA_PGAIN" value="606"/>
-    <define name="THETA_DGAIN" value="303"/>
+    <define name="THETA_PGAIN" value="850"/>
+    <define name="THETA_DGAIN" value="425"/>
     <define name="THETA_IGAIN" value="0"/>
 
-    <define name="PSI_PGAIN" value="529"/>
-    <define name="PSI_DGAIN" value="353"/>
+    <define name="PSI_PGAIN" value="1000"/>
+    <define name="PSI_DGAIN" value="700"/>
     <define name="PSI_IGAIN" value="0"/>
 
     <!-- feedforward -->
     <define name="PHI_DDGAIN" value="0"/>
     <define name="THETA_DDGAIN" value="0"/>
-    <define name="PSI_DDGAIN" value="52"/>
+    <define name="PSI_DDGAIN" value="100"/>
   </section>
 
   <section name="GUIDANCE_V" prefix="GUIDANCE_V_">

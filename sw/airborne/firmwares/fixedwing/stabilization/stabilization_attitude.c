@@ -63,6 +63,17 @@ float  h_ctl_pitch_pgain;
 float  h_ctl_pitch_dgain;
 pprz_t h_ctl_elevator_setpoint;
 
+/* inner yaw loop parameters */
+#if H_CTL_YAW_LOOP
+float  h_ctl_yaw_rate_setpoint;
+pprz_t h_ctl_rudder_setpoint;
+#endif
+
+/* inner CL loop parameters */
+#if H_CTL_CL_LOOP
+pprz_t h_ctl_flaps_setpoint;
+#endif
+
 #ifdef USE_AOA
 uint8_t h_ctl_pitch_mode;
 #endif
@@ -281,7 +292,8 @@ void h_ctl_course_loop(void)
 #if defined(AGR_CLIMB) && !USE_AIRSPEED
   /** limit navigation during extreme altitude changes */
   if (AGR_BLEND_START > AGR_BLEND_END && AGR_BLEND_END > 0) { /* prevent divide by zero, reversed or negative values */
-    if (v_ctl_auto_throttle_submode == V_CTL_AUTO_THROTTLE_AGRESSIVE || V_CTL_AUTO_THROTTLE_BLENDED) {
+    if (v_ctl_auto_throttle_submode == V_CTL_AUTO_THROTTLE_AGRESSIVE ||
+        v_ctl_auto_throttle_submode == V_CTL_AUTO_THROTTLE_BLENDED) {
       BoundAbs(cmd, h_ctl_roll_max_setpoint); /* bound cmd before NAV_RATIO and again after */
       /* altitude: z-up is positive -> positive error -> too low */
       if (v_ctl_altitude_error > 0) {

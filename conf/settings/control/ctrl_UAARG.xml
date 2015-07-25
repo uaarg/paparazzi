@@ -10,8 +10,8 @@
 <!--
 	 <dl_setting MAX="15" MIN="-15" STEP="0.5" VAR="ins_roll_neutral" shortname="roll_neutral" module="subsystems/ahrs" param="INS_ROLL_NEUTRAL_DEFAULT" unit="rad" alt_unit="deg"/>
       	 <dl_setting MAX="15" MIN="-15" STEP="0.5" VAR="ins_pitch_neutral" shortname="pitch_neutral" param="INS_PITCH_NEUTRAL_DEFAULT" unit="rad" alt_unit="deg"/>
-
 -->
+
 
 
          <dl_setting MAX="25000" MIN="0" STEP="250" VAR="h_ctl_pitch_pgain" shortname="pitch_pgain" param="H_CTL_PITCH_PGAIN"/>
