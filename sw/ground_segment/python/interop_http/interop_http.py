@@ -29,14 +29,15 @@ from ivy.std_api import *
 import utm
 import time
 from datetime import datetime, timedelta
-import httplib, urllib    #html python modules
+import httplib, urllib, json    #html python modules
 
 #Constants
 LOGIN_PATH = "/api/login"
 TELEM_PATH = "/api/interop/uas_telemetry"
+OBST_PATH = "/api/interop/obstacles"
 SERVER_INFO_PATH = "/api/interop/server_info"
-USERNAME = 'uaarg'
-PASSWORD = 'uaarg'
+USERNAME = 'testuser'
+PASSWORD = 'testpass'
 
 PPRZ_HOME = os.getenv("PAPARAZZI_HOME")
 PPRZ_LIB_PYTHON = os.path.join(PPRZ_HOME, "sw/lib/python/pprz_msg")
@@ -59,33 +60,27 @@ class GPSMessage:
 class Runner:
 
     def __init__(self):
-
         self.message_name = "GPS"
-
         if self.message_name not in messages_xml_map.message_dictionary['telemetry']:
             raise(Exception("Nmea generator needs the %s message to work." % (self.message_name,)))
-
-        self.conn = httplib.HTTPConnection("localhost", 8080)
         self.initIvy()
 
     def initIvy(self):
-        # initialising the bus
-        #Connect
+        #HTTP_Connection
+        self.conn = httplib.HTTPConnection("localhost", 8080)
         #Login Creds
         self.headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
         params = urllib.urlencode({'username': USERNAME, 'password': PASSWORD })
-        #Send Message
         self.conn.request("POST", LOGIN_PATH, params, self.headers)
-        #Server Response
         response = self.conn.getresponse()
         print(response.read() + '\n', file=sys.stderr)
-        self.message_name = "GPS"
+
         #Saving Login Cookie Credentials
         setcookie = response.getheader("Set-Cookie")
         contenttype = response.getheader("Content-type")
         self.headers = {"Accept": "text/plain", "Cookie" : setcookie, "Content-type" : "application/x-www-form-urlencoded"}
 
-        IvyInit("Nmea_Generator",   # application name for Ivy
+        IvyInit("Interoperability",   # application name for Ivy
                 "READY",            # ready message
                 0,                  # main loop is local (ie. using IvyMainloop)
                 lambda x,y: y,      # handler called on self.connection/deself.connection
@@ -95,34 +90,58 @@ class Runner:
         # starting the bus
         logging.getLogger('Ivy').setLevel(logging.WARN)
         IvyStart("")
-        First_Message = True
-        IvyBindMsg(self.onIvyMessage, "^([^ ]+) %s (.*)$" % (self.message_name,))
 
+        #Server Functions
+        self.server_information()
+        self.pull_obstacles()
+        IvyBindMsg(self.uas_telemetry_message, "^([^ ]+) %s (.*)$" % (self.message_name,))
 
-    def onIvyMessage(self, agent, *larg):
+    def server_information(self):
+        self.conn.request("GET", SERVER_INFO_PATH,"", self.headers)
+        response = self.conn.getresponse()
+        response_object=json.loads(response.read())     #JSON --> Python Dictionary
+        server_message = response_object['server_info']['message']
+        server_message_time = response_object['server_info']['message_timestamp']
+        server_time = response_object['server_time']
+        print('Server Message: ', file=sys.stderr)
+        print(server_message, file=sys.stderr)
+        print(server_message_time, file=sys.stderr)
 
+    def pull_obstacles(self):
+        self.conn.request("GET", OBST_PATH,"", self.headers)
+        response = self.conn.getresponse()
+        response_object=json.loads(response.read())     #JSON --> Python Dictionary
+        print('Stationary Obstacles: ', file=sys.stderr)
+        print(response_object['stationary_obstacles'], file=sys.stderr)
+        print('Moving Obstacles: ', file=sys.stderr)
+        print(response_object['moving_obstacles'], file=sys.stderr)
+
+    def uas_telemetry_message(self, agent, *larg):
         message = GPSMessage(*larg)
 
-        ######CORDINATES########################################################################################
+        #Check GPS Fix
+        if message.data['mode']=="3": GPSFix=1
+        else: GPSFix=0
+
         northing = float(message.data['utm_north']) / 100
         easting = float(message.data['utm_east']) / 100
         zone = int(message.data['utm_zone'])
-        GPS=utm.to_latlon(easting, northing, zone, northern=True)
 
-        #Aquire the GPS Lat and Long
+        #Lat & Long
+        GPS=utm.to_latlon(easting, northing, zone, northern=True)
         GPSLat=GPS[0]
         GPSLong=GPS[1]
 
-        #If GPS mode is 3, there is a GPS fix
-        if message.data['mode']=="3":
-            GPSFix=1
-        else:
-            GPSFix=0
+        #Altitude (ASL meters)
+        self.alt=(int(message.data['alt'])/1000)
 
-        #Find Altitude in Meters
-        alt=(int(message.data['alt'])/1000)
+        outgoing_message = urllib.urlencode({'latitude': 10, 'longitude': 10, 'altitude_msl': 10, 'uas_heading': 10})
+        self.conn.request("POST", TELEM_PATH, outgoing_message, self.headers)
+        response = self.conn.getresponse()
+        print(response.read() + '\n', file=sys.stderr)
 
-        ###### TIME ###########################################################################################
+
+    def nmea_time_stamp(self): 
         timeNow=datetime.now()
         #HOURS
         if timeNow.hour <10:
@@ -142,17 +161,6 @@ class Runner:
         #MILLASECONDS
         timeNow_string_ms='000'
         timeNow_string="%s%s%s.%s" % (timeNow_string_h,timeNow_string_m,timeNow_string_s,timeNow_string_ms)
-
-        #Posting
-        if GPSFix == 1:
-            params = urllib.urlencode({'latitude': GPSLat, 'longitude': GPSlong, 'altitude_msl': alt, 'uas_heading': 10})
-            self.conn.request("POST", TELEM_PATH, params, self.headers)
-            response = self.conn.getresponse()
-
-
-            #print response.status, response.reason
-            #print response.read()
-
 
 
 def main():
