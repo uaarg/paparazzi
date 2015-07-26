@@ -127,23 +127,24 @@
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
 
-    <define name="MAG_X_NEUTRAL" value="-415"/>
-    <define name="MAG_Y_NEUTRAL" value="814"/>
-    <define name="MAG_Z_NEUTRAL" value="223"/>
-    <define name="MAG_X_SENS" value="2.76789774165" integer="16"/>
-    <define name="MAG_Y_SENS" value="3.15959835097" integer="16"/>
-    <define name="MAG_Z_SENS" value="2.63119798642" integer="16"/>
 
+<define name="MAG_X_NEUTRAL" value="84"/>
+<define name="MAG_Y_NEUTRAL" value="-29"/>
+<define name="MAG_Z_NEUTRAL" value="-64"/>
+<define name="MAG_X_SENS" value="3.33761493564" integer="16"/>
+<define name="MAG_Y_SENS" value="3.29071714463" integer="16"/>
+<define name="MAG_Z_SENS" value="3.85225124095" integer="16"/>
 
 
 
     <!-- Current draw magnetic field calibration-->
     <!--Please note that if you dont have any experience in Paparazzi and are not looking online you can enable current calibration raw data from a module. look below at modules and uncomment the module.-->
 
+<!--
     <define name= "MAG_X_CURRENT_COEF" value="0.00320590964876"/>
     <define name= "MAG_Y_CURRENT_COEF" value="-0.00177605577317"/>
     <define name= "MAG_Z_CURRENT_COEF" value="0.000959756979821"/>
-    
+-->
   </section>
   
   <section name="AHRS" prefix="AHRS_"> <!--This is local magnetic field data. Needs to be changed for different fields-->
@@ -153,11 +154,9 @@
 
 <!-- Local magnetic field vector Bremner Field-->
 
-    <define name="H_X" value="0.244216"/>
-    <define name="H_Y" value="0.0640397"/>
-    <define name="H_Z" value="0.967604"/>
-
-
+    <define name="H_X" value="0.281865"/>
+    <define name="H_Y" value="0.0634601"/>
+    <define name="H_Z" value="0.957353"/>
   </section>
 
 
@@ -330,12 +329,12 @@
       <define name="AIRSPEED_ETS_SYNC_SEND"/>
       <define name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/> 
     </load>
-
+<!--
     <load name="mag_hmc58xx.xml">
       <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
       <define name="MAG_HMC58XX_I2C_DEV" value="i2c1"/>
     </load>
-
+-->
     <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
  </modules>
   

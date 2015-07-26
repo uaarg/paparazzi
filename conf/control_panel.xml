@@ -30,7 +30,6 @@
     </program>
 
     <program name="Messages" command="sw/ground_segment/tmtc/messages">
-      <arg flag="-b" variable="ivy_bus"/>
     </program>
 
     <program name="Messages (Python)" command="sw/ground_segment/python/messages_app/messagesapp.py"/>
