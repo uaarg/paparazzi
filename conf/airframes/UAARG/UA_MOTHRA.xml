@@ -45,9 +45,9 @@
     <subsystem name="imu" type="lisa_mx_v2.1"/>
     <subsystem name="navigation" />
     <subsystem name="control"/>
-    <subsystem name="ahrs" type="float_cmpl_quat">
+    <subsystem name="ahrs" type="int_cmpl_quat">
       <define name="USE_MAGNETOMETER" value="TRUE"/>
-      <configure name="AHRS_USE_GPS_HEADING" value="TRUE"/>
+      <!--configure name="AHRS_USE_GPS_HEADING" value="TRUE"/-->
       <define name="F_PROPAGATE_QUAT"/>
       
     </subsystem>
@@ -56,7 +56,7 @@
   
     <configure name="NO_LUFTBOOT" value="1"/>
     <configure name="FLASH_MODE" value="SWD"/>
-    <!--- <configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
+    <!---<configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
 
   </firmware>
 
@@ -128,12 +128,13 @@
 
 
 
-<define name="MAG_X_NEUTRAL" value="84"/>
-<define name="MAG_Y_NEUTRAL" value="-29"/>
-<define name="MAG_Z_NEUTRAL" value="-64"/>
-<define name="MAG_X_SENS" value="3.33761493564" integer="16"/>
-<define name="MAG_Y_SENS" value="3.29071714463" integer="16"/>
-<define name="MAG_Z_SENS" value="3.85225124095" integer="16"/>
+<define name="MAG_X_NEUTRAL" value="-54"/>
+<define name="MAG_Y_NEUTRAL" value="-94"/>
+<define name="MAG_Z_NEUTRAL" value="69"/>
+<define name="MAG_X_SENS" value="3.04514558766" integer="16"/>
+<define name="MAG_Y_SENS" value="3.16456881858" integer="16"/>
+<define name="MAG_Z_SENS" value="3.55946548535" integer="16"/>
+
 
 
 
@@ -329,12 +330,11 @@
       <define name="AIRSPEED_ETS_SYNC_SEND"/>
       <define name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/> 
     </load>
-<!--
+
     <load name="mag_hmc58xx.xml">
       <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
-      <define name="MAG_HMC58XX_I2C_DEV" value="i2c1"/>
+      <define name="MAG_HMC58XX_I2C_DEV" value="i2c2"/>
     </load>
--->
     <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
  </modules>
   
