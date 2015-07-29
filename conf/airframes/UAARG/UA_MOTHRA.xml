@@ -333,7 +333,7 @@
     </load>
 
     <load name="mag_hmc58xx.xml">
-      <define name="MODULE_HMC58XX_UPDATE_AHRS" value="1"/>
+      <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
       <define name="MAG_HMC58XX_I2C_DEV" value="i2c2"/>
     </load>
     <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
