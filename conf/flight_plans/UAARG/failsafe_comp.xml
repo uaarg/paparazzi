@@ -1,0 +1,63 @@
+<!DOCTYPE procedure SYSTEM "../flight_plan.dtd">
+
+<procedure>
+
+  <header>
+    #include "subsystems/datalink/datalink.h"
+    #include "subsystems/radio_control.h"
+    #include "subsystems/commands.h"
+
+    #define datalink_standby 20
+    #define datalink_termination 100
+    #define datalink_outside 5
+    #define rc_ok 0
+  </header>
+
+  <exceptions>
+
+    <!-- Add conditions that deroute to suicide in here. Make sure to also add to the exception within suicide.-->
+
+
+    <exception cond="(datalink_time > datalink_standby)*(datalink_termination > datalink_time)*((InsideOperation_Area(GetPosX(), GetPosY())))" deroute="Termination_Recovery"/> 
+    <!-- Lost Telemetry Link inside operation area, sends plane to circle WP standby-->
+
+    <exception cond="datalink_time > datalink_termination" deroute="Termination"/>   
+    <!-- if the plane the plane has lost the datalink for longer than datalink_termination, the plane will automatically go into sucicide.-->
+
+   <exception cond="(!InsideOperation_Area(GetPosX(), GetPosY()))*(datalink_time > datalink_standby)" deroute="Termination" /> 
+    <!-- if outside of bounds and lost link longer than datalink_standby, then terminate the flight-->
+
+    <exception cond="(!InsideOperation_Area(GetPosX(), GetPosY()))*(datalink_time > datalink_outside)*(datalink_standby > datalink_time)" deroute="Termination_Recovery" /> 
+    <!--Just flew outside the operation area? This will send the plance back to Standby-->
+
+    <!-- End of conditions for suicide -->
+  </exceptions>
+
+  <blocks>
+
+
+
+    <block name="Absolute_Termination"><!-- for GCS operator to kill the plane. Does not deroute-->
+      <set value="1" var="kill_throttle"/>
+      <attitude climb="2000" height="0" roll="2000" throttle="0" vmode="throttle"/>
+      
+    </block>
+
+    <block name="Termination"><!-- block designed to automatically terminate the plane unless conditions are met-->
+      <set value="1" var="kill_throttle"/>
+      <attitude climb="2000" height="0" roll="2000" throttle="0" vmode="throttle"/>
+      <exception cond="2 > datalink_time" deroute="Termination_Recovery"/>
+      
+    </block>
+
+
+    <block name="Termination_Recovery"><!--Termination recovery block designed to restart motor-->
+      <set value="0" var="kill_throttle"/>
+      <deroute block="Standby"/>
+    </block>
+
+
+
+  </blocks>
+
+</procedure>
