@@ -1,6 +1,7 @@
 <!DOCTYPE airframe SYSTEM "../airframe.dtd">
 <!-- This is the UA_Mothra airframe file. The plane is equipped with a lisa MX, two spectrum satteilte receivers, ubox neo gps, xbee pro telemetry link, a current sensor(.6V at 0 A and 40mV/A scale, a vbat in with an external resistor of 2kohm. Firmware is flashed via black magic probe.-->
 
+
 <airframe name="Mothra">
   <firmware name="fixedwing">
     <target name="ap" board="lisa_mx_2.1">
@@ -8,7 +9,7 @@
      <subsystem name="ins" type="alt_float">
        <define name="USE_BAROMETER" value="TRUE"/>
      </subsystem>
-      <define name="UAARG_MOTHRA"/>
+    
       <define name="USE_ADC"/>
       <define name="USE_ADC_2"/> 
       <define name="USE_I2C1" />
@@ -49,7 +50,6 @@
       <define name="ASPIRIN_2_DISABLE_MAG" value="TRUE" />
       <define name="USE_MAGNETOMETER" value="TRUE"/>
       <define name="AHRS_FC_MAG_ID" value="MAG_HMC58XX_SENDER_ID"/>
-      <define name="AHRS_MAG_OMEGA" value=".9"/> <!--Adjust this for mag/gyro heading mixing-->
     </subsystem>
     
 
@@ -116,9 +116,9 @@
     <!--Then open the messages windows and look at the attitude data-->
     <!--Attitude should be completely 0. -->
     <!--If not take the value given, convert to degrees and subtract from current values-->
-    <define name="BODY_TO_IMU_PHI" value="0." unit="deg"/> 
-    <define name="BODY_TO_IMU_THETA" value="0." unit="deg"/>
-    <define name="BODY_TO_IMU_PSI" value="0." unit="deg"/>
+    <define name="BODY_TO_IMU_PHI" value="90." unit="deg"/> 
+    <define name="BODY_TO_IMU_THETA" value="-90." unit="deg"/>
+    <define name="BODY_TO_IMU_PSI" value="180." unit="deg"/>
 
    
 
@@ -128,18 +128,13 @@
 
 
 
-<define name="MAG_X_NEUTRAL" value="110"/>
-<define name="MAG_Y_NEUTRAL" value="60"/>
-<define name="MAG_Z_NEUTRAL" value="131"/>
-<define name="MAG_X_SENS" value="2.86235549383" integer="16"/>
-<define name="MAG_Y_SENS" value="2.8620188393" integer="16"/>
-<define name="MAG_Z_SENS" value="3.58831830782" integer="16"/>
+<define name="MAG_X_NEUTRAL" value="-54"/>
+<define name="MAG_Y_NEUTRAL" value="-94"/>
+<define name="MAG_Z_NEUTRAL" value="69"/>
+<define name="MAG_X_SENS" value="3.04514558766" integer="16"/>
+<define name="MAG_Y_SENS" value="3.16456881858" integer="16"/>
+<define name="MAG_Z_SENS" value="3.55946548535" integer="16"/>
 
-
-
-    <define name="MAG_X_SIGN" value="1"/>
-    <define name="MAG_Y_SIGN" value="1"/>
-    <define name="MAG_Z_SIGN" value="-1"/>
 
 
 
@@ -159,16 +154,10 @@
     <!--Note a module that automatically updates this value has been added, see below. (geo_mag.xml)-->
 
 <!-- Local magnetic field vector Bremner Field-->
-<!--
-    <define name="H_X" value="0.245955"/>
-    <define name="H_Y" value="0.0646252"/>
-    <define name="H_Z" value="0.967124"/>
--->
-<!-- club room-->
-    <define name="H_X" value=".523"/>
-    <define name="H_Y" value=".256"/>
-    <define name="H_Z" value="0.953"/>
 
+    <define name="H_X" value="0.281865"/>
+    <define name="H_Y" value="0.0634601"/>
+    <define name="H_Z" value="0.957353"/>
   </section>
 
 
@@ -195,50 +184,39 @@
     <define name="DEFAULT_PITCH" value="28.6" unit="deg"/>
   </section>
 
-
-
-  <section name="MISC">
-    <define name="CLIMB_AIRSPEED" value="12." unit="m/s"/>
-    <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
+  <section name="MISC">    
     <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
     <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="100."/>
+
+    <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
+    <define name="CLIMB_AIRSPEED" value="12." unit="m/s"/>
+    <define name="GLIDE_AIRSPEED" value="12." unit="m/s"/>
+    <define name="RACE_AIRSPEED" value="25." unit="m/s"/>
+    <define name="STALL_AIRSPEED" value="8." unit="m/s"/>
+    <define name="AIRSPEED_SETPOINT_SLEW" value="0.2" unit="m/s/s"/> <!--default is 1-->
   </section>
 
 
-
-
-
-
 <!--AUTOPILOT TUNING SECTION-->
-
-
   <section name="INS" prefix="INS_"> <!--These are the angles which are output when the plane is in the "flat" position. Similar to BODY_TO_IMU -->
     <define name="ROLL_NEUTRAL_DEFAULT" value="-2.6" unit="deg"/>
     <define name="PITCH_NEUTRAL_DEFAULT" value="0" unit="deg"/>
   </section>
-
-
 
   <section name="AUTO1" prefix="AUTO1_"><!-- roll and pitch in auto1-->
     <define name="MAX_ROLL" value="40." unit="deg"/>
     <define name="MAX_PITCH" value="35." unit="deg"/>
   </section>
 
-
-
-
-
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
     
     <!--<define name="AILERON_OF_THROTTLE" value="0.0"/> --> <!-- as RPM of Prop increases more aileron may be need to obtain steady flight. Use this gain to adjust that--> <!-- commented out as it has been incorporated into command laws.-->
 
     <define name="COURSE_PGAIN" value="1.37"/> <!-- used to be 57.3 deg. when a new heading is given to paparazzi the change the roll by this much-->
-    <define name="COURSE_DGAIN" value="17.1" unit="deg"/>
+    <define name="COURSE_DGAIN" value=".30" />
 
-
-
-    <define name="ROLL_MAX_SETPOINT" value="34.4920593063" unit="deg"/> <!-- these are the max and min values the plane can roll and pitch when in auto -->
+    <define name="ROLL_MAX_SETPOINT" value="35" unit="deg"/> <!-- these are the max and min values the plane can roll and pitch when in auto -->
     <define name="PITCH_MAX_SETPOINT" value="30" unit="deg"/>
     <define name="PITCH_MIN_SETPOINT" value="-10" unit="deg"/>
 
@@ -247,70 +225,80 @@
     <define name="PITCH_PGAIN" value="18513"/><!-- the rate at which paparazzi will change the pitch  -->
     <define name="PITCH_DGAIN" value="1.5"/> <!-- the rate at which paparazzi couteracts pgain -->
 
+
+<!-- twinstar energyadaptive has there ariframe set at 7400 and 200 for the next two values.-->
     <define name="ROLL_ATTITUDE_GAIN" value="21698"/> <!--same idea as pitch pgain but for roll.--> <!--ROLL_PGAIN is still valid but paparazzi recommends using this one-->
     <define name="ROLL_RATE_GAIN" value="1500"/> <!-- thinking this is probably some sort of gain that maintains flight with no Roll. So for example when flying straight and level and the wind rolls the plane, this will correct it. Maybe.-->
 <!--most likely doesn't work as it uses a gyro and we have not defined one-->
 
-  <define name="ELEVATOR_OF_ROLL" value="3409"/><!--Adjust to maintain altitude on turns-->
+    <define name="ELEVATOR_OF_ROLL" value="3409"/><!--Adjust to maintain altitude on turns-->
 
-  <define name="ROLL_SLEW" value="0.1"/> <!-- not too sure trying playing around with it. -->
+    <define name="PITCH_IGAIN" value="100."/>
+    <define name="PITCH_KFFA" value="0."/>
+    <define name="PITCH_KFFD" value="0."/>
 
   </section>
-
-
-
-
-
 
   <section name="VERTICAL CONTROL" prefix="V_CTL_">
     <define name="POWER_CTL_BAT_NOMINAL" value="14.9" unit="V"/>
 
     <define name="THROTTLE_SLEW_LIMITER" value="1.5" unit="s"/><!-- time it takes to go from 0% throttle to 100% throttle-->
-
-
+    <define name="ALTITUDE_PGAIN" value="0.06"/><!--the rate at which paparazzi will change the altitude-->    
+    <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/> <!-- max climb setting -->
 
     <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.48"/> <!-- nominal cruise throttle %-->
+    
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.10" unit="%/(m/s)"/> <!-- rate at which to increase throttle on climb error-->
+
+
+    <!--comment out the following for energy control-->
     <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.33"/> <!-- minimum cruise throttle setting-->
     <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.85"/> <!-- maximum cruise throttle setting-->
 
-
-
     <define name="AUTO_THROTTLE_LOITER_TRIM" value="3248"/> <!--elevator trim when on min cruise throttle setting to maintain altitude-->
     <define name="AUTO_THROTTLE_DASH_TRIM" value="2492"/> <!--elevator trim when on max cruise throttle setting to maintain altitude-->
-
-
-     <define name="ALTITUDE_PGAIN" value="0.06"/><!--the rate at which paparazzi will change the altitude-->
-    
-    <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/> <!-- max climb setting -->
-    
-
-    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.10" unit="%/(m/s)"/> <!-- rate at which to increase throttle on climb error-->
 
     <define name="AUTO_THROTTLE_PGAIN" value="0.01"/> <!-- rate at which to change speed based on climb-->
     <define name="AUTO_THROTTLE_IGAIN" value="0.10"/> <!-- additional increase in rate dependant on time that speed is not ideal. Example if the speed required is 15m/s and the current speed is 12m/s and has been for 3s. then throttle setting = value+(15-12)(Pgain)+3*igain.-->
 
     <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.09"/><!-- how much to change pitch based on climb error -->
-
     
-    <!--airspeed tuning 
-    <define name="AUTO_AIRSPEED_SETPOINT" value="13.0"  unit="m/s" /> SETPOINT values may need to be adjusted to suit your aircraft 
-    <define name="AUTO_AIRSPEED_PGAIN"    value="0.060" />
-    <define name="AUTO_AIRSPEED_IGAIN"    value="0.050" /> 
- 
-    <define name="AUTO_GROUNDSPEED_SETPOINT" value="7.0"  unit="m/s" /> SeTPOINT values may need to be adjusted to suit your aircraft 
-    <define name="AUTO_GROUNDSPEED_PGAIN"    value="0.75" />
-    <define name="AUTO_GROUNDSPEED_IGAIN"    value="0.25" />
 
-    <define name="AUTO_PITCH_MAX_PITCH" value="RadOfDeg(25)"/>
-    <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-20)"/>
---->
+    <!-- energy control 
+    <define name="ALTITUDE_PGAIN" value="0.1049"/>
 
+    <define name="ALTITUDE_MAX_CLIMB" value="2."/>
+
+
+    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.3"/>
+    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_PITCH" value="0."/> 
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.1" unit="%/(m/s)"/>
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.15"/>
+
+    <define name="AIRSPEED_PGAIN" value="0."/>
+
+    <define name="AUTO_THROTTLE_OF_AIRSPEED_PGAIN" value="0.069"/>
+    <define name="AUTO_THROTTLE_OF_AIRSPEED_IGAIN" value="0.01"/>
+
+    <define name="AUTO_PITCH_OF_AIRSPEED_PGAIN" value="0.01"/>
+    <define name="AUTO_PITCH_OF_AIRSPEED_IGAIN" value="0.003"/>
+    <define name="AUTO_PITCH_OF_AIRSPEED_DGAIN" value="0.03"/>
+
+    <define name="ENERGY_TOT_PGAIN" value="0."/>
+    <define name="ENERGY_TOT_IGAIN" value="0."/>
+    <define name="ENERGY_DIFF_PGAIN" value="0."/>
+    <define name="ENERGY_DIFF_IGAIN" value="0."/>
+
+    <define name="AUTO_GROUNDSPEED_SETPOINT" value="6.0" unit="m/s"/>
+    <define name="AUTO_GROUNDSPEED_PGAIN" value="0.75"/>
+    <define name="AUTO_GROUNDSPEED_IGAIN" value="0.25"/>
+-->
   </section>
-
-
 
   <section name="NAV">
     <define name="DEFAULT_CIRCLE_RADIUS" value="60."/>
+    <define name="NAV_PITCH" value="0."/> <!--Not Tuned-->
+    <define name="NAV_GLIDE_PITCH_TRIM" value="0"/> <!--Not Tuned-->
   </section>
 
   <section name="AGGRESSIVE" prefix="AGR_">
@@ -320,11 +308,11 @@
     <!-- Altitude Error to Blend Aggressive to Regular Climb Modes CANNOT BE ZERO!!-->
     <define name="CLIMB_THROTTLE" value=".85"/>
     <!-- Gaz for Aggressive Climb -->
-    <define name="CLIMB_PITCH" value="0.6"/>
+    <define name="CLIMB_PITCH" value="30" unit="deg"/>
     <!-- Pitch for Aggressive Climb -->
     <define name="DESCENT_THROTTLE" value="0.1"/>
     <!-- Gaz for Aggressive Decent -->
-    <define name="DESCENT_PITCH" value="-0.2" />
+    <define name="DESCENT_PITCH" value="-30" unit="deg" />
     <!-- Pitch for Aggressive Decent -->
     <define name="CLIMB_NAV_RATIO" value="0.8"/>
     <!-- Percent Navigation for Altitude Error Equal to Start Altitude -->
@@ -346,9 +334,6 @@
     <load name="mag_hmc58xx.xml">
       <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
       <configure name="MAG_HMC58XX_I2C_DEV" value="i2c2"/>
-      <define name="HMC58XX_CHAN_X" value="1"/>
-      <define name="HMC58XX_CHAN_Y" value="0"/>
-      <define name="HMC58XX_CHAN_Z" value="2"/>
     </load>
     <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
  </modules>

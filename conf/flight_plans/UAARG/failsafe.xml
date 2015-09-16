@@ -18,6 +18,8 @@
     <exception cond="datalink_time > datalink_termination" deroute="Termination"/> <!-- if the plane the plane has lost the datalink for longer than datalink_termination, the plane will automatically go into sucicide.-->
 
 
+
+
     <!-- Add conditions that deroute to suicide in here. Make sure to also add to the exception within suicide.-->
 
     <!-- End of conditions for suicide -->
@@ -25,7 +27,7 @@
 
   <blocks>
 
-    <block name="Absolute_Termination" strip_button="Terminate" strip_icon="eject.png"><!-- for GCS operator to kill the plane. Does not deroute-->
+    <block name="Absolute_Termination"><!-- for GCS operator to kill the plane. Does not deroute-->
       <set value="1" var="kill_throttle"/>
       <attitude climb="2000" height="0" roll="2000" throttle="0" vmode="throttle"/>
       
@@ -35,10 +37,11 @@
       <set value="1" var="kill_throttle"/>
       <attitude climb="2000" height="0" roll="2000" throttle="0" vmode="throttle"/>
       <exception cond="2 > datalink_time" deroute="Termination_Recovery"/>
+      
     </block>
 
-    <block name="Termination_Recovery" strip_button="Recovery" strip_icon="home_emergency.png"><!--Termination recovery block designed to restart motor-->
 
+    <block name="Termination_Recovery"><!--Termination recovery block designed to restart motor-->
       <set value="0" var="kill_throttle"/>
       <deroute block="Standby"/>
     </block>

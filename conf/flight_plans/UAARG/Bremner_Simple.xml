@@ -10,7 +10,6 @@
     <waypoint name="1" x="100.1" y="70.9"/>
     <waypoint name="2" x="-100.3" y="80.1"/>
     <waypoint name="CLIMB" x="-125.0" y="45.0"/>
-    <waypoint name="MOB" x="-11.5" y="-21.2"/>
     
   </waypoints>
   <includes>
@@ -35,24 +34,15 @@
       <set value="1" var="kill_throttle"/>
       <attitude roll="0" throttle="0" vmode="throttle"/>
     </block>
-     <block name="Takeoff" strip_icon="takeoff.png" strip_button="Takeoff (wp CLIMB)">
+    <block group="home" key="t" name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png">
       <exception cond="GetPosAlt() > GetAltRef()+25" deroute="Standby"/>
       <set value="0" var="kill_throttle"/>
-      <go wp="CLIMB"/>
+      <set value="0" var="autopilot_flight_time"/>
+      <go from="HOME" pitch="15" throttle="1.0" vmode="throttle" wp="CLIMB"/>
     </block>
-    <block name="Standby" strip_button="Standby" strip_icon="home.png">
+    <block group="home" key="Ctrl+a" name="Standby" strip_button="Standby" strip_icon="home.png">
       <circle radius="nav_radius" wp="STDBY"/>
     </block>
-    <block name="MOB" strip_button="Circle around here" strip_icon="mob.png">
-      <call fun="NavSetWaypointHere(WP_MOB)"/>
-      <circle radius="100" wp="MOB"/>
-    </block>
-
-    <block name="Figure 8 around here" strip_button="Figure 8 Here" strip_icon="eight.png">
-	<call fun="NavSetWaypointHere(WP_MOB)"/>      
-	<eight center="MOB" radius="nav_radius" turn_around="2"/>
-    </block>
-
     <block name="WP1">
       <circle radius="nav_radius" wp="1"/>
     </block>
