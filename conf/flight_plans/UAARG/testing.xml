@@ -1,0 +1,124 @@
+<procedure>
+
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint name="ENDURANCE1" x="113.1" y="168.7"/>
+    <waypoint name="ENDURANCE2" x="120.3" y="439.4"/>
+    <waypoint name="ENDURANCE3" x="456.6" y="422.6"/>
+    <waypoint name="ENDURANCE4" x="455.8" y="166.6"/>
+    <waypoint name="Tight_Circle" x="100" y="100"/>
+    <waypoint name="ALT_TEST_1" x="-200" y="35"/>
+    <waypoint alt="860.0" name="ALT_TEST_2" x="0" y="35"/>
+    <waypoint name="ALT_TEST_3" x="200" y="35"/> 
+    <waypoint name="PATHWP1" x="110" y="160"/>
+    <waypoint name="PATHWP2" x="60" y="420"/>
+    <waypoint name="PATHWP3" x="430" y="160"/>
+    <waypoint name="OAXIS_1" x="20" y="40"/>
+    <waypoint name="OAXIS_2" x="30" y="50"/>
+    <waypoint name="OAXIS_3" x="20" y="40"/>
+    <waypoint name="OAXIS_4" x="30" y="50"/>
+  </waypoints>
+
+  <blocks>
+
+   <block group="testing" name="ENDURANCE">
+      <while cond="TRUE">
+         <go wp="ENDURANCE1"/>
+         <go wp="ENDURANCE2"/> 
+         <go wp="ENDURANCE3"/>
+         <go wp="ENDURANCE4"/>
+      </while>
+   </block>
+
+   <block group="testing" name="NAV_Go">
+      <while cond="TRUE">
+         <go from="PATHWP1" wp="PATHWP2" hmode="route" approaching_time="5" />
+         <go from="PATHWP2" wp="PATHWP3" hmode="route" approaching_time="5"/>
+         <go from="PATHWP3" wp="PATHWP1" hmode="route" approaching_time="5"/>
+      </while>
+   </block>
+
+   <block group="testing" name="NAV_PATH_1">
+      <go wp="PATHWP1" approaching_time="1" />
+      <go wp="PATHWP2" approaching_time="1" /> 
+      <go wp="PATHWP3" approaching_time="1" />
+      <deroute block="NAV_PATH_2"/>
+   </block>
+
+   <block group="testing" name="NAV_PATH_2">
+      <go wp="PATHWP1" approaching_time="2" />
+      <go wp="PATHWP2" approaching_time="2" /> 
+      <go wp="PATHWP3" approaching_time="2" />
+      <deroute block="NAV_PATH_3"/>
+   </block>
+   <block group="testing" name="NAV_PATH_3">
+      <go wp="PATHWP1" approaching_time="3" />
+      <go wp="PATHWP2" approaching_time="3" /> 
+      <go wp="PATHWP3" approaching_time="3" />
+      <deroute block="Standby"/>
+   </block>
+
+   <block group="testing" name="ALT_CHANGE">
+      <go wp="ALT_TEST_1"/>
+      <go wp="ALT_TEST_2"/> 
+      <go wp="ALT_TEST_3"/>
+      <deroute block="Standby"/>
+   </block>
+
+   <block group="testing" name="TightCircle_32">
+      <while cond="TRUE">
+         <circle radius="32" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_45">
+      <while cond="TRUE">
+         <circle radius="45" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_27">
+      <while cond="TRUE">
+         <circle radius="27" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_-32">
+      <while cond="TRUE">
+         <circle radius="-32" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_-45">
+      <while cond="TRUE">
+         <circle radius="-45" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="Tight_Circle_-27">
+      <while cond="TRUE">
+         <circle radius="-27" wp="Tight_Circle"/>
+      </while>
+   </block>
+
+   <block group="testing" name="CW_OAXIS">
+      <go wp="OAXIS_1" approaching_time="5" />
+      <go wp="OAXIS_2" approaching_time="0" />
+      <go wp="OAXIS_3" approaching_time="0" />
+      <go wp="OAXIS_4" approaching_time="0" />
+
+      <deroute block="Standby"/>      
+   </block>
+
+    <block group="testing" name="Carrot_1_Standby">
+      <circle radius="nav_radius" wp="STDBY" approaching_time="1" />
+    </block>
+    <block group="testing" name="Carrot_2_Standby">
+      <circle radius="nav_radius" wp="STDBY" approaching_time="2" />
+    </block>
+    <block group="testing" name="Carrot_3_Standby">
+      <circle radius="nav_radius" wp="STDBY" approaching_time="3" />
+    </block>
+
+  </blocks>
+</procedure>
