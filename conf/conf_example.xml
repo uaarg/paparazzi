@@ -297,9 +297,9 @@
    gui_color="blue"
   />
   <aircraft
-   name="setup_lisam2"
-   ac_id="38"
-   airframe="airframes/examples/setup_lisam2.xml"
+   name="setup_elle0"
+   ac_id="17"
+   airframe="airframes/examples/setup_elle0.xml"
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/dummy.xml"
    flight_plan="flight_plans/dummy.xml"
