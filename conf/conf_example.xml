@@ -274,4 +274,15 @@
    settings_modules=""
    gui_color="blue"
   />
+  <aircraft
+   name="Mothra"
+   ac_id="1"
+   airframe="airframes/UAARG/UA_MOTHRA.xml"
+   radio="radios/spektrum.xml"
+   telemetry="telemetry/default_fixedwing_imu.xml"
+   flight_plan="flight_plans/UAARG/Bremner_Simple.xml"
+   settings="settings/fixedwing_basic.xml"
+   settings_modules="modules/geo_mag.xml"
+   gui_color="blue"
+  />
 </conf>
