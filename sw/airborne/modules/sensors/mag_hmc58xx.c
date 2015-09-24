@@ -77,9 +77,9 @@ void mag_hmc58xx_module_event(void)
 
     // set channel order
     struct Int32Vect3 mag = {
-      HMC58XX_CHAN_X_SIGN(int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_X]),
-      HMC58XX_CHAN_Y_SIGN(int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Y]),
-      HMC58XX_CHAN_Z_SIGN(int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Z])
+      (int32_t)(-mag_hmc58xx.data.value[HMC58XX_CHAN_X]),
+      (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Y]),
+      (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Z])
     };
     // unscaled vector
     VECT3_COPY(imu.mag_unscaled, mag);
@@ -100,9 +100,9 @@ void mag_hmc58xx_module_event(void)
 void mag_hmc58xx_report(void)
 {
   struct Int32Vect3 mag = {
-    HMC58XX_CHAN_X_SIGN(int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_X]),
-    HMC58XX_CHAN_Y_SIGN(int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Y]),
-    HMC58XX_CHAN_Z_SIGN(int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Z])
+    (int32_t)(-mag_hmc58xx.data.value[HMC58XX_CHAN_X]),
+    (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Y]),
+    (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Z])
   };
   DOWNLINK_SEND_IMU_MAG_RAW(DefaultChannel, DefaultDevice, &mag.x, &mag.y, &mag.z);
 }
