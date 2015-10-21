@@ -8,7 +8,7 @@
      <subsystem name="ins" type="alt_float">
        <define name="USE_BAROMETER" value="TRUE"/>
      </subsystem>
-    
+      <define name="UAARG_MOTHRA"/>
       <define name="USE_ADC"/>
       <define name="USE_ADC_2"/> 
       <define name="USE_I2C1" />
@@ -116,9 +116,9 @@
     <!--Then open the messages windows and look at the attitude data-->
     <!--Attitude should be completely 0. -->
     <!--If not take the value given, convert to degrees and subtract from current values-->
-    <define name="BODY_TO_IMU_PHI" value="90." unit="deg"/> 
-    <define name="BODY_TO_IMU_THETA" value="-90." unit="deg"/>
-    <define name="BODY_TO_IMU_PSI" value="180." unit="deg"/>
+    <define name="BODY_TO_IMU_PHI" value="0." unit="deg"/> 
+    <define name="BODY_TO_IMU_THETA" value="0." unit="deg"/>
+    <define name="BODY_TO_IMU_PSI" value="0." unit="deg"/>
 
    
 
@@ -128,14 +128,17 @@
 
 
 
-<define name="MAG_X_NEUTRAL" value="-54"/>
-<define name="MAG_Y_NEUTRAL" value="-94"/>
-<define name="MAG_Z_NEUTRAL" value="69"/>
-<define name="MAG_X_SENS" value="3.04514558766" integer="16"/>
-<define name="MAG_Y_SENS" value="3.16456881858" integer="16"/>
-<define name="MAG_Z_SENS" value="3.55946548535" integer="16"/>
+<define name="MAG_X_NEUTRAL" value="-29"/>
+<define name="MAG_Y_NEUTRAL" value="-27"/>
+<define name="MAG_Z_NEUTRAL" value="77"/>
+<define name="MAG_X_SENS" value="3.00589190068" integer="16"/>
+<define name="MAG_Y_SENS" value="3.0680537835" integer="16"/>
+<define name="MAG_Z_SENS" value="3.3081927506" integer="16"/>
 
 
+    <define name="MAG_X_SIGN" value="1"/>
+    <define name="MAG_Y_SIGN" value="1"/>
+    <define name="MAG_Z_SIGN" value="-1"/>
 
 
     <!-- Current draw magnetic field calibration-->
@@ -155,9 +158,9 @@
 
 <!-- Local magnetic field vector Bremner Field-->
 
-    <define name="H_X" value="0.281865"/>
-    <define name="H_Y" value="0.0634601"/>
-    <define name="H_Z" value="0.957353"/>
+    <define name="H_X" value="0.245955"/>
+    <define name="H_Y" value="0.0646252"/>
+    <define name="H_Z" value="0.967124"/>
   </section>
 
 
@@ -334,9 +337,9 @@
     <load name="mag_hmc58xx.xml">
       <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
       <configure name="MAG_HMC58XX_I2C_DEV" value="i2c2"/>
-      <define name="HMC58XX_CHAN_X" value="2"/>
-      <define name="HMC58XX_CHAN_Y" value="1"/>
-      <define name="HMC58XX_CHAN_Z" value="0"/>
+      <define name="HMC58XX_CHAN_X" value="1"/>
+      <define name="HMC58XX_CHAN_Y" value="0"/>
+      <define name="HMC58XX_CHAN_Z" value="2"/>
     </load>
     <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
  </modules>
