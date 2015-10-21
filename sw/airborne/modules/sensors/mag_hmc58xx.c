@@ -94,7 +94,7 @@ void mag_hmc58xx_module_event(void)
 
     // set channel order
     struct Int32Vect3 mag = {
-      (int32_t)(-mag_hmc58xx.data.value[HMC58XX_CHAN_X]),
+      (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_X]),
       (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Y]),
       (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Z])
     };
@@ -126,7 +126,7 @@ void mag_hmc58xx_module_event(void)
 void mag_hmc58xx_report(void)
 {
   struct Int32Vect3 mag = {
-    (int32_t)(-mag_hmc58xx.data.value[HMC58XX_CHAN_X]),
+    (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_X]),
     (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Y]),
     (int32_t)(mag_hmc58xx.data.value[HMC58XX_CHAN_Z])
   };

@@ -141,6 +141,9 @@
     <define name="MAG_Y_SIGN" value="1"/>
     <define name="MAG_Z_SIGN" value="-1"/>
 
+    <define name="MAG_X_SIGN" value="1"/>
+    <define name="MAG_Y_SIGN" value="1"/>
+    <define name="MAG_Z_SIGN" value="-1"/>
 
 
     <!-- Current draw magnetic field calibration-->
