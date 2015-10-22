@@ -128,17 +128,19 @@
 
 
 
-<define name="MAG_X_NEUTRAL" value="-29"/>
-<define name="MAG_Y_NEUTRAL" value="-27"/>
-<define name="MAG_Z_NEUTRAL" value="77"/>
-<define name="MAG_X_SENS" value="3.00589190068" integer="16"/>
-<define name="MAG_Y_SENS" value="3.0680537835" integer="16"/>
-<define name="MAG_Z_SENS" value="3.3081927506" integer="16"/>
+<define name="MAG_X_NEUTRAL" value="110"/>
+<define name="MAG_Y_NEUTRAL" value="60"/>
+<define name="MAG_Z_NEUTRAL" value="131"/>
+<define name="MAG_X_SENS" value="2.86235549383" integer="16"/>
+<define name="MAG_Y_SENS" value="2.8620188393" integer="16"/>
+<define name="MAG_Z_SENS" value="3.58831830782" integer="16"/>
+
 
 
     <define name="MAG_X_SIGN" value="1"/>
     <define name="MAG_Y_SIGN" value="1"/>
     <define name="MAG_Z_SIGN" value="-1"/>
+
 
 
     <!-- Current draw magnetic field calibration-->
@@ -157,10 +159,16 @@
     <!--Note a module that automatically updates this value has been added, see below. (geo_mag.xml)-->
 
 <!-- Local magnetic field vector Bremner Field-->
-
+<!--
     <define name="H_X" value="0.245955"/>
     <define name="H_Y" value="0.0646252"/>
     <define name="H_Z" value="0.967124"/>
+-->
+<!-- club room-->
+    <define name="H_X" value=".523"/>
+    <define name="H_Y" value=".256"/>
+    <define name="H_Z" value="0.953"/>
+
   </section>
 
 
