@@ -198,6 +198,7 @@
 
 
   <section name="MISC">
+    <define name="CLIMB_AIRSPEED" value="12." unit="m/s"/>
     <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
     <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
     <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
