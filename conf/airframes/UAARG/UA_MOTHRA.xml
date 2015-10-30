@@ -35,7 +35,7 @@
     <define name="RC_LOST_MODE" value="PPRZ_MODE_AUTO2"/>
     <define name="AGR_CLIMB"/>
     <define name="LOITER_TRIM"/>
-    <define name="MEASURE_AIRSPEED"/>
+    <define name="USE_AIRSPEED"/>
 
 
 
@@ -47,7 +47,7 @@
     </subsystem>
     <subsystem name="imu" type="lisa_mx_v2.1"/>
     <subsystem name="navigation" />
-    <subsystem name="control" />
+    <subsystem name="control" type="new" />
     <subsystem name="ahrs" type="float_cmpl_quat">
       <define name="ASPIRIN_2_DISABLE_MAG" value="TRUE" />
       <define name="USE_MAGNETOMETER" value="TRUE"/>
@@ -267,6 +267,23 @@
     <define name="AUTO_PITCH_IGAIN" value="0.0"/>
     <define name="AUTO_PITCH_MAX_PITCH" value="RadOfDeg(25)"/>
     <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-25)"/>
+<!-- airspeed -->
+    <define name="AUTO_AIRSPEED_SETPOINT" value="16."/>
+    <define name="AUTO_AIRSPEED_THROTTLE_PGAIN" value="0.1"/>
+    <define name="AUTO_AIRSPEED_THROTTLE_DGAIN" value="0.12"/>
+    <define name="AUTO_AIRSPEED_THROTTLE_IGAIN" value="0.0"/>
+    <define name="AUTO_AIRSPEED_PITCH_PGAIN" value="0.06"/>
+    <define name="AUTO_AIRSPEED_PITCH_DGAIN" value="0.0"/>
+    <define name="AUTO_AIRSPEED_PITCH_IGAIN" value="0.042"/>
+    <define name="AIRSPEED_MAX" value="30"/>
+    <define name="AIRSPEED_MIN" value="10"/>
+
+    <define name="AUTO_GROUNDSPEED_SETPOINT" value="15"/>
+    <define name="AUTO_GROUNDSPEED_PGAIN" value="1."/>
+    <define name="AUTO_GROUNDSPEED_IGAIN" value="0."/>
+
+
+
 
   </section>
 
