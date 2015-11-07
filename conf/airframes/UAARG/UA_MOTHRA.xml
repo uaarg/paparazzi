@@ -11,9 +11,7 @@
 
       <define name="UAARG_MOTHRA"/>
       <define name="USE_ADC"/>
-      <define name="USE_ADC_2"/> 
       <define name="USE_I2C1" />
-      <define name="USE_I2C2" />
 
     </target>
 
@@ -180,7 +178,7 @@
 
 
   <section name="BAT">
-    <!--<define name="MILLIAMP_AT_FULL_THROTTLE" value="3000"/> not needed due to current sensor-->
+    <define name="MILLIAMP_AT_FULL_THROTTLE" value="3000"/>
     <define name="CATASTROPHIC_BAT_LEVEL" value="12.7" unit="V"/>
     <define name="CRITIC_BAT_LEVEL" value="14.7" unit="V"/>
     <define name="LOW_BAT_LEVEL" value="15.1" unit="V"/>
@@ -188,11 +186,12 @@
     <define name="VOLTAGE_ADC_SCALE" value="0.0052047"/> 
     <define name="VOLTAGE_ADC_OFFSET" value="-0.011815"/> 
     <define name="VoltageOfAdc(adc)" value="(VOLTAGE_ADC_SCALE * adc + VOLTAGE_ADC_OFFSET)"/>
-
+<!-- Current Sensor
     <define name="ADC_CHANNEL_CURRENT" value="ADC_2" />
     <define name="CURRENT_ADC_SCALE" value="1"/> 
     <define name="CURRENT_ADC_OFFSET" value="0"/> 
     <define name="MilliAmpereOfAdc(adc)" value="0.2489*(80.55*(adc-185))-11232"/>
+-->
   </section>
 
   <section name="FAILSAFE" prefix="FAILSAFE_">
@@ -253,7 +252,7 @@
     <define name="POWER_CTL_BAT_NOMINAL" value="14.7" unit="V"/>
     <define name="THROTTLE_SLEW_LIMITER" value="1.5" unit="s"/>
 
-    <define name="ALTITUDE_MAX_CLIMB" value="2."/>
+    <define name="ALTITUDE_MAX_CLIMB" value="3."/>
     <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.50"/>
     <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.33"/>
     <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.85"/>
@@ -267,10 +266,12 @@
     <define name="ALTITUDE_PGAIN" value="0.06"/>
 
 <!-- comment the following lines do disable AUTO_PITCH -->
+<!--
     <define name="AUTO_PITCH_PGAIN" value="0.04"/>
     <define name="AUTO_PITCH_IGAIN" value="0.0"/>
     <define name="AUTO_PITCH_MAX_PITCH" value="RadOfDeg(25)"/>
     <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-25)"/>
+-->
 
   </section>
 
