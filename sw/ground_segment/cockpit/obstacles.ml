@@ -53,5 +53,12 @@ let update_obstacle = fun id wgs84 fillcolor radius time (geomap:MapCanvas.widge
     obstacle.last_update <- time
   with _ -> () 
 
+(*  let draw_obstacle = fun en radius ->
+    let create = fun () ->
+      desired_track <- DesiredCircle (en, radius, geomap#circle ~color:"#00ff00" en radius) in
+    create()
+*)
+
+
 let obstacle_exist = fun id ->
   Hashtbl.mem obstacles id
