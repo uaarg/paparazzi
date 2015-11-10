@@ -1494,12 +1494,12 @@ let get_obstacles = fun  a (geomap:G.widget)_sender vs ->
     Obstacles.new_obstacle id shape (f "radius") time geomap;
     Obstacles.update_obstacle id pos ((i "alt") /. 1000.) time;
   end;
-  if status==1 then
+  if (status == 1.0) then
   log ~say:true a "5" "Updating Moving Obstacle";
   Obstacles.update_obstacle id pos ((i "alt") /. 1000.) time;
-  if status==3 then
+  if (status == 3.0) then
   log ~say:true a "5" "Deleting Obstacle";
-  Obstacles.delete_obstacle id
+  Obstacles.remove_obstacle id
 
 
 let listen_obstacles = fun (geomap:G.widget) a ->
