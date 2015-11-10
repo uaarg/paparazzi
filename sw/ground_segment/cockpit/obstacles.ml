@@ -21,10 +21,27 @@
 
 (*open Latlong*)
 
+open Printf
+module G2d = Geometry_2d
+module LL = Latlong
+
+module G = MapCanvas
+
+module CL = ContrastLabel
+module ACI = AcIcon
+
+type desired =
+    NoDesired
+  | DesiredCircle of LL.geographic*float*GnoCanvas.ellipse
+  | DesiredSegment of LL.geographic*LL.geographic*GnoCanvas.line
+
+
+
 type obstacle = {
   obstacle_track : MapTrack.track;
   mutable last_update : float
 }
+
 
 (*let obstacles = (string, obstacle) Hashtbl.t*)
 let obstacles = Hashtbl.create 1
@@ -41,12 +58,20 @@ let remove_obstacle = fun id ->
     Hashtbl.remove obstacles id
   with _ -> () (* no obstacle *)
 
-let update_obstacle = fun id wgs84 alt time ->
+let update_obstacle = fun id wgs84 alt radius time (geomap:MapCanvas.widget) ->
   try
     let obstacle = Hashtbl.find obstacles id in
     obstacle.obstacle_track#move_icon wgs84 0.0 alt 0.0 0.0;
+    DesiredCircle (wgs84, radius, geomap#circle ~color:"#00ff00" wgs84 radius);
     obstacle.last_update <- time;
   with _ -> () (* no obstacle, add a new one ? *)
+
+(*  let draw_obstacle = fun en radius ->
+    let create = fun () ->
+      desired_track <- DesiredCircle (en, radius, geomap#circle ~color:"#00ff00" en radius) in
+    create()
+*)
+
 
 let obstacle_exist = fun id ->
   Hashtbl.mem obstacles id

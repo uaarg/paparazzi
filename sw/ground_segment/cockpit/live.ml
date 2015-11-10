@@ -1490,14 +1490,21 @@ let get_obstacles = fun  a (geomap:G.widget)_sender vs ->
   if not (Obstacles.obstacle_exist id) then begin
     log ~say:true a "5" "Generating New Obstacle";
     Obstacles.new_obstacle id shape (f "radius") time geomap;
-    Obstacles.update_obstacle id pos ((i "alt") /. 1000.) time;
+    Obstacles.update_obstacle id pos ((i "alt") /. 1000.) (f "radius") time geomap;
+    log ~say:true a "5" "Finished Generating New Obstacle";
   end;
-  if (status == 1.0) then
+  log ~say:true a "5" (Printf.sprintf "%.5f" status);
+  log ~say:true a "5" "going to enter stat = 1.0";
+  if (status = 1.) then begin
   log ~say:true a "5" "Updating Moving Obstacle";
-  Obstacles.update_obstacle id pos ((i "alt") /. 1000.) time;
-  if (status == 3.0) then
+  Obstacles.update_obstacle id pos ((i "alt") /. 1000.) (f "radius") time geomap;
+  end;
+  log ~say:true a "5" "going to enter stat =3.0";
+  if (status = 3.) then begin
   log ~say:true a "5" "Deleting Obstacle";
-  Obstacles.remove_obstacle id
+  Obstacles.remove_obstacle id;
+  end;
+  log ~say:true a "5" "Finished Obstacle"
 
 
 let listen_obstacles = fun (geomap:G.widget) a ->
