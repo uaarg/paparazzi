@@ -1476,8 +1476,9 @@ let get_intruders = fun (geomap:G.widget) _sender vs ->
   and lat = (i "lat") /. 1e7
   and lon = (i "lon") /. 1e7 in
   let pos = { posn_lat=(Deg>>Rad)lat; posn_long=(Deg>>Rad)lon } in
-  if not (Intruders.intruder_exist id) then
-    Intruders.new_intruder id name time geomap;
+  if not (Intruders.intruder_exist id) then begin
+    Intruders.new_intruder id name time geomap
+  end;
   Intruders.update_intruder id pos (f "course") ((i "alt") /. 1000.) (f "speed") (f "climb") time
 
 let listen_intruders = fun (geomap:G.widget) ->
