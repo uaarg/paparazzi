@@ -1483,30 +1483,19 @@ let get_obstacles = fun  a (geomap:G.widget)_sender vs ->
   let f = fun s -> Pprz.float_assoc s vs in
   let i = fun s -> float (Pprz.int_assoc s vs) in
   let id = Pprz.string_assoc "id" vs
-  and shape = Pprz.string_assoc "shape" vs
+  and color = Pprz.string_assoc "color" vs
   and status = i "status"
   and lat = (i "lat") /. 1e7
   and lon = (i "lon") /. 1e7
   and time = Unix.gettimeofday () in
   let pos = { posn_lat=(Deg>>Rad)lat; posn_long=(Deg>>Rad)lon } in
-  if not (Obstacles.obstacle_exist id) then begin
-    log ~say:true a "5" "Generating New Obstacle";
-    Obstacles.new_obstacle id shape (f "radius") time geomap;
-    Obstacles.update_obstacle id pos ((i "alt") /. 1000.) (f "radius") time geomap;
-    log ~say:true a "5" "Finished Generating New Obstacle";
-  end;
-  log ~say:true a "5" (Printf.sprintf "%.5f" status);
-  log ~say:true a "5" "going to enter stat = 1.0";
-  if (status = 1.) then begin
-  log ~say:true a "5" "Updating Moving Obstacle";
-  Obstacles.update_obstacle id pos ((i "alt") /. 1000.) (f "radius") time geomap;
-  end;
-  log ~say:true a "5" "going to enter stat =3.0";
-  if (status = 3.) then begin
-  log ~say:true a "5" "Deleting Obstacle";
-  Obstacles.remove_obstacle id;
-  end;
-  log ~say:true a "5" "Finished Obstacle"
+  if not (Obstacles.obstacle_exist id) then
+    Obstacles.new_obstacle id pos color (f "radius") time geomap;
+  if (status = 1.) then
+  Obstacles.update_obstacle id pos color (f "radius") time geomap;
+  if (status = 2.) then 
+  Obstacles.remove_obstacle id
+
 
 
 let listen_obstacles = fun (geomap:G.widget) a ->

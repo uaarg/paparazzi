@@ -29,10 +29,10 @@ class ObstacleAdder(object):
     def __del__(self):
         self.shutdown()
 
-    def add_obstacle(self, obstacle_id, shape, status, lat, lon, radius, alt):
+    def add_obstacle(self, obstacle_id, color, status, lat, lon, radius, alt):
         msg = PprzMessage("ground", "OBSTACLE")
         msg['id'] = obstacle_id
-        msg['shape'] = shape
+        msg['color'] = color
         msg['status'] = status
         msg['lat'] = lat
         msg['lon'] = lon
@@ -44,5 +44,5 @@ class ObstacleAdder(object):
 
 if __name__ == '__main__':
     ob = ObstacleAdder()
-    ob.add_obstacle(obstacle_id=1, shape=1, status=1, lat=434624607, lon=12723454, radius=100, alt=1720000)
+    ob.add_obstacle(obstacle_id=1, color="ff0000", status=1, lat=434624607, lon=12723454, radius=100, alt=1720000)
     ob.shutdown()
