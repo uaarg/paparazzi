@@ -1462,7 +1462,7 @@ let listen_tcas = fun a timestamp ->
   tele_bind "TCAS_TA" (get_alarm_tcas a "tcas TA") timestamp;
   tele_bind "TCAS_RA" (get_alarm_tcas a "TCAS RA") timestamp
 
-let get_intruders = fun  (geomap:G.widget)_sender vs ->
+let get_intruders = fun (geomap:G.widget) _sender vs ->
   let f = fun s -> Pprz.float_assoc s vs in
   let i = fun s -> float (Pprz.int_assoc s vs) in
   let name = Pprz.string_assoc "name" vs
@@ -1471,9 +1471,8 @@ let get_intruders = fun  (geomap:G.widget)_sender vs ->
   and lat = (i "lat") /. 1e7
   and lon = (i "lon") /. 1e7 in
   let pos = { posn_lat=(Deg>>Rad)lat; posn_long=(Deg>>Rad)lon } in
-  if not (Intruders.intruder_exist id) then begin
-    Intruders.new_intruder id name time geomap
-  end;
+  if not (Intruders.intruder_exist id) then
+    Intruders.new_intruder id name time geomap;
   Intruders.update_intruder id pos (f "course") ((i "alt") /. 1000.) (f "speed") (f "climb") time
 
 let listen_intruders = fun (geomap:G.widget) ->
