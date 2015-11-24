@@ -1476,6 +1476,30 @@ let get_intruders = fun (geomap:G.widget) _sender vs ->
 let listen_intruders = fun (geomap:G.widget) ->
   safe_bind "INTRUDER" (get_intruders geomap)
 
+let get_obstacles = fun  a (geomap:G.widget)_sender vs ->
+  let f = fun s -> Pprz.float_assoc s vs in
+  let i = fun s -> float (Pprz.int_assoc s vs) in
+  let id = Pprz.string_assoc "id" vs
+  and color = Pprz.string_assoc "color" vs
+  and status = i "status"
+  and lat = (i "lat") /. 1e7
+  and lon = (i "lon") /. 1e7
+  and time = Unix.gettimeofday () in
+  let pos = { posn_lat=(Deg>>Rad)lat; posn_long=(Deg>>Rad)lon } in
+  if not (Obstacles.obstacle_exist id) then
+    Obstacles.new_obstacle id pos color (f "radius") time geomap;
+  if (status = 1.) then
+  Obstacles.update_obstacle id pos color (f "radius") time geomap;
+  if (status = 2.) then 
+  Obstacles.remove_obstacle id
+
+
+
+let listen_obstacles = fun (geomap:G.widget) a ->
+  safe_bind "OBSTACLE" (get_obstacles a geomap)
+
+let print_rijesh = fun a astring ->
+  log ~say:true a "5" astring
 
 let listen_acs_and_msgs = fun geomap ac_notebook strips my_alert auto_center_new_ac alt_graph timestamp ->
   (** Probe live A/Cs *)
@@ -1502,6 +1526,8 @@ let listen_acs_and_msgs = fun geomap ac_notebook strips my_alert auto_center_new
   listen_tcas my_alert timestamp;
   listen_dcshot geomap timestamp;
   listen_intruders geomap;
+  listen_obstacles geomap my_alert;
+  print_rijesh my_alert "hi how ware you";
 
   (** Select the active aircraft on notebook page selection *)
   let callback = fun i ->

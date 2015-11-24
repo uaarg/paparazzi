@@ -34,7 +34,7 @@ enum BlueGigaStatus {
   BLUEGIGA_UNINIT,                /**< The com isn't initialized */
   BLUEGIGA_IDLE,                  /**< The com is in idle */
   BLUEGIGA_SENDING,               /**< The com is sending */
-  BLUEGIGA_SCANNING               /**< The com is switched from data link to rssi scanning */
+  BLUEGIGA_BROADCASTING           /**< The com is switched from data link to rssi scanning */
 };
 
 #ifndef BLUEGIGA_BUFFER_SIZE
@@ -59,6 +59,11 @@ struct bluegiga_periph {
   uint8_t work_rx[20];
   /** Generic device interface */
   struct link_device device;
+
+  /* some administrative variables */
+  uint32_t bytes_recvd_since_last;
+  uint8_t end_of_msg;
+
 };
 
 // DEVICE passed to all DOWNLINK_SEND functions
@@ -69,9 +74,8 @@ bool_t bluegiga_ch_available(struct bluegiga_periph *p);
 void bluegiga_increment_buf(uint8_t *buf_idx, uint8_t len);
 
 void bluegiga_init(struct bluegiga_periph *p);
-void bluegiga_send(struct bluegiga_periph *p);
-
-void bluegiga_scan(void);
+void bluegiga_scan(struct bluegiga_periph *p);
+void bluegiga_request_all_rssi(struct bluegiga_periph *p);
 
 // BLUEGIGA is using pprz_transport
 // FIXME it should not appear here, this will be fixed with the rx improvements some day...
@@ -100,11 +104,9 @@ static inline void bluegiga_read_buffer(struct bluegiga_periph *p, struct pprz_t
 }
 
 // transmit previous data in buffer and parse data received
-// TODO: (Kirk) Remove hard coded device perph here
 #define BlueGigaCheckAndParse(_dev,_trans) {     \
     if (bluegiga_ch_available(&(_dev)))          \
       bluegiga_read_buffer(&(_dev), &(_trans));  \
-    bluegiga_send((&_dev));                      \
   }
 
 #endif /* BLUEGIGA_DATA_LINK_H */
