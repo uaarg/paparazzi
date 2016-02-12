@@ -254,7 +254,7 @@
   />
   <aircraft
    name="setup_lisam2"
-   ac_id="16"
+   ac_id="17"
    airframe="airframes/examples/setup_lisam2.xml"
    radio="radios/cockpitSX.xml"
    telemetry="telemetry/dummy.xml"
