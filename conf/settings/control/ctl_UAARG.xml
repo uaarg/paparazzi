@@ -13,8 +13,8 @@
         <dl_setting MAX="50000" MIN="0" STEP="10" VAR="h_ctl_pitch_dgain" shortname="pitch_dgain" param="H_CTL_PITCH_DGAIN"/>
 
 
-        <dl_setting MAX="15000" MIN="0" STEP="250" VAR="h_ctl_roll_attitude_gain" shortname="roll_pgain" param="H_CTL_ROLL_ATTITUDE_GAIN" module="stabilization/stabilization_attitude"/>
-        <dl_setting MAX="15000" MIN="0" STEP="250" VAR="h_ctl_roll_rate_gain" shortname="roll_dgain" param="H_CTL_ROLL_RATE_GAIN" />
+        <dl_setting MAX="23000" MIN="0" STEP="200" VAR="h_ctl_roll_attitude_gain" shortname="roll_pgain" param="H_CTL_ROLL_ATTITUDE_GAIN" module="stabilization/stabilization_attitude"/>
+        <dl_setting MAX="23000" MIN="0" STEP="200" VAR="h_ctl_roll_rate_gain" shortname="roll_dgain" param="H_CTL_ROLL_RATE_GAIN" />
         <dl_setting MAX="60" MIN="0" STEP="1." VAR="h_ctl_roll_max_setpoint" shortname="max_roll" param="H_CTL_ROLL_MAX_SETPOINT" unit="rad" alt_unit="deg"/>
         <dl_setting MAX="7000" MIN="-1000" STEP="100" VAR="h_ctl_elevator_of_roll" shortname="elevator_of_roll" param="H_CTL_ELEVATOR_OF_ROLL"/>
 
@@ -29,7 +29,7 @@
         <dl_setting MAX="10" MIN="-10" STEP="0.1" VAR="v_ctl_auto_throttle_pitch_of_vz_dgain" shortname="pitch_of_vz (d)"/>
 
         <dl_setting MAX="0" MIN="-4000" STEP="100" VAR="v_ctl_auto_throttle_dash_trim" shortname="dash trim" param="V_CTL_AUTO_THROTTLE_DASH_TRIM" module="stabilization/stabilization_attitude"/>
-        <dl_setting MIN="0" MAX="3000" STEP="100" VAR="v_ctl_auto_throttle_loiter_trim" shortname="loiter trim" param="V_CTL_AUTO_THROTTLE_LOITER_TRIM"/>
+        <dl_setting MIN="0" MAX="4000" STEP="100" VAR="v_ctl_auto_throttle_loiter_trim" shortname="loiter trim" param="V_CTL_AUTO_THROTTLE_LOITER_TRIM"/>
         <dl_setting MAX="1" MIN="0.0" STEP="0.05" VAR="v_ctl_auto_throttle_cruise_throttle" shortname="cruise throttle" module="guidance/guidance_v" handler="SetCruiseThrottle" param="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE">
           <strip_button name="Loiter" value="0.1" group="dash_loiter"/>
           <strip_button name="Cruise" value="0" group="dash_loiter"/>
