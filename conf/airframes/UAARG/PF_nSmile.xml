@@ -1,0 +1,18 @@
+<procedure>
+
+  <section name="IMU" prefix="IMU_">
+<!--- NEED TO SET THEASE VALUES --->
+  <define name="ACCEL_X_NEUTRAL" value="19"/>
+  <define name="ACCEL_Y_NEUTRAL" value="-112"/>
+  <define name="ACCEL_Z_NEUTRAL" value="17"/>
+  <define name="ACCEL_X_SENS" value="4.88998029654" integer="16"/>
+  <define name="ACCEL_Y_SENS" value="4.83817030461" integer="16"/>
+  <define name="ACCEL_Z_SENS" value="4.88394458398" integer="16"/>
+
+    <!--See http://wiki.paparazziuav.org/wiki/ImuCalibration -->
+
+  <!-- Calibrate via sw/tools/calibration/calibrate.py-->
+</section>
+
+</procedure>
+

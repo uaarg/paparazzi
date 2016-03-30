@@ -2,6 +2,7 @@
 <!-- This is the UA_Mothra airframe file. The plane is equipped with a lisa MX, two spectrum satteilte receivers, ubox neo gps, xbee pro telemetry link, a current sensor(.6V at 0 A and 40mV/A scale, a vbat in with an external resistor of 2kohm. Firmware is flashed via black magic probe.-->
 
 <airframe name="Mothra">
+
   <firmware name="fixedwing">
     <target name="ap" board="lisa_mx_2.1">
       
@@ -11,7 +12,7 @@
 
       <define name="UAARG_MOTHRA"/>
       <define name="USE_ADC"/>
-      <define name="USE_I2C1" />
+      <define name="USE_I2C1"/>
 
     </target>
 
@@ -113,6 +114,7 @@
   
   <!--The following are sensor calibrations that need to be performed-->
   <!--Note some calibrations are location specific. These need to be modified when flying at different fields-->
+  <include href="conf/airframes/UAARG/PF_nSmile.xml"/>
 
   <section name="IMU" prefix="IMU_">
     <!--These values can be calibrated by perfectly leveling the plane.-->
@@ -122,27 +124,8 @@
     <define name="BODY_TO_IMU_PHI" value="0." unit="deg"/> 
     <define name="BODY_TO_IMU_THETA" value="0." unit="deg"/>
     <define name="BODY_TO_IMU_PSI" value="0." unit="deg"/>
-
-
-<define name="ACCEL_X_NEUTRAL" value="19"/>
-<define name="ACCEL_Y_NEUTRAL" value="-112"/>
-<define name="ACCEL_Z_NEUTRAL" value="17"/>
-<define name="ACCEL_X_SENS" value="4.88998029654" integer="16"/>
-<define name="ACCEL_Y_SENS" value="4.83817030461" integer="16"/>
-<define name="ACCEL_Z_SENS" value="4.88394458398" integer="16"/>
-
-    <!--See http://wiki.paparazziuav.org/wiki/ImuCalibration -->
-
-<define name="ACCEL_X_NEUTRAL" value="19"/>
-<define name="ACCEL_Y_NEUTRAL" value="-112"/>
-<define name="ACCEL_Z_NEUTRAL" value="17"/>
-<define name="ACCEL_X_SENS" value="4.88998029654" integer="16"/>
-<define name="ACCEL_Y_SENS" value="4.83817030461" integer="16"/>
-<define name="ACCEL_Z_SENS" value="4.88394458398" integer="16"/>
    
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
-
-
 
 <define name="MAG_X_NEUTRAL" value="-39"/>
 <define name="MAG_Y_NEUTRAL" value="-16"/>
@@ -150,10 +133,6 @@
 <define name="MAG_X_SENS" value="2.82827101293" integer="16"/>
 <define name="MAG_Y_SENS" value="2.81124063309" integer="16"/>
 <define name="MAG_Z_SENS" value="3.37696407143" integer="16"/>
-
-
-
-
 
     <define name="MAG_X_SIGN" value="1"/>
     <define name="MAG_Y_SIGN" value="1"/>
