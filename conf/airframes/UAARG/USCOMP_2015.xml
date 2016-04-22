@@ -1,0 +1,177 @@
+      <airframe NAME="Mothra">
+        <firmware NAME="fixedwing">
+          <target NAME="ap" BOARD="lisa_mx_2.1">
+            <subsystem TYPE="spektrum" NAME="radio_control">
+              <define VALUE="RADIO_AUX2" NAME="RADIO_MODE"/>
+              <configure VALUE="1" NAME="USE_SECONDARY_SPEKTRUM_RECEIVER"/>
+            </subsystem>
+            <subsystem TYPE="alt_float" NAME="ins">
+              <define VALUE="TRUE" NAME="USE_BAROMETER"/>
+            </subsystem>
+            <define NAME="USE_ADC"/>
+            <define NAME="USE_ADC_2"/>
+            <define NAME="USE_I2C2"/>
+            <define NAME="MEASURE_AIRSPEED"/>
+          </target>
+          <target NAME="sim" BOARD="pc">
+            <subsystem TYPE="ppm" NAME="radio_control"/>
+            <subsystem TYPE="alt_float" NAME="ins"/>
+          </target>
+          <subsystem TYPE="pwm" NAME="actuators">
+            <define NAME="USE_SERVOS_7AND8"/>
+          </subsystem>
+          <define VALUE="PPRZ_MODE_AUTO2" NAME="RC_LOST_MODE"/>
+          <subsystem TYPE="ublox" NAME="gps">
+            <configure VALUE="B57600" NAME="GPS_BAUD"/>
+          </subsystem>
+          <subsystem TYPE="transparent" NAME="telemetry">
+            <configure VALUE="B57600" NAME="MODEM_BAUD"/>
+          </subsystem>
+          <subsystem TYPE="lisa_mx_v2.1" NAME="imu"/>
+          <subsystem NAME="navigation"/>
+          <subsystem NAME="control"/>
+          <subsystem TYPE="float_cmpl_quat" NAME="ahrs">
+            <configure VALUE="TRUE" NAME="USE_MAGNETOMETER"/>
+            <define NAME="F_PROPAGATE_QUAT"/>
+          </subsystem>
+          <configure VALUE="1" NAME="NO_LUFTBOOT"/>
+          <configure VALUE="SWD" NAME="FLASH_MODE"/>
+        </firmware>
+        <commands>
+          <axis NAME="THROTTLE" FAILSAFE_VALUE="0"/>
+          <axis NAME="ROLL" FAILSAFE_VALUE="9600"/>
+          <axis NAME="PITCH" FAILSAFE_VALUE="-9600"/>
+          <axis NAME="BRAKE" FAILSAFE_VALUE="0"/>
+          <axis NAME="YAW" FAILSAFE_VALUE="0"/>
+          <axis NAME="GEAR" FAILSAFE_VALUE="0"/>
+        </commands>
+        <servos>
+          <servo NO="5" NEUTRAL="1000" NAME="THROTTLE" MIN="1000" MAX="2000"/>
+          <servo NO="0" NEUTRAL="1500" NAME="DROP" MIN="1000" MAX="2000"/>
+          <servo NO="3" NEUTRAL="1359" NAME="ELEVATOR" MIN="2000" MAX="1000"/>
+          <servo NO="2" NEUTRAL="1396" NAME="AILERON_RIGHT" MIN="1200" MAX="1800"/>
+          <servo NO="1" NEUTRAL="1400" NAME="AILERON_LEFT" MIN="1200" MAX="1800"/>
+          <servo NO="4" NEUTRAL="1444" NAME="RUDDER" MIN="1000" MAX="2000"/>
+        </servos>
+        <command_laws>
+          <set VALUE="@ROLL-.6*(@BRAKE)" SERVO="AILERON_LEFT"/>
+          <set VALUE="@ROLL+.6*(@BRAKE)" SERVO="AILERON_RIGHT"/>
+          <set VALUE="@THROTTLE" SERVO="THROTTLE"/>
+          <set VALUE="@PITCH" SERVO="ELEVATOR"/>
+          <set VALUE="@YAW" SERVO="RUDDER"/>
+          <set VALUE="@GEAR" SERVO="DROP"/>
+        </command_laws>
+        <rc_commands>
+          <set VALUE="@THROTTLE" COMMAND="THROTTLE"/>
+          <set VALUE="@ROLL" COMMAND="ROLL"/>
+          <set VALUE="@PITCH" COMMAND="PITCH"/>
+          <set VALUE="@YAW" COMMAND="YAW"/>
+          <set VALUE="@GEAR" COMMAND="GEAR"/>
+          <set VALUE="@AUX1" COMMAND="BRAKE"/>
+        </rc_commands>
+        <auto_rc_commands>
+          <set VALUE="@YAW" COMMAND="YAW"/>
+          <set VALUE="@GEAR" COMMAND="GEAR"/>
+          <set VALUE="@AUX1" COMMAND="BRAKE"/>
+        </auto_rc_commands>
+        <section PREFIX="IMU_" NAME="IMU">
+          <define VALUE="90." UNIT="deg" NAME="BODY_TO_IMU_PHI"/>
+          <define VALUE="-90." UNIT="deg" NAME="BODY_TO_IMU_THETA"/>
+          <define VALUE="180." UNIT="deg" NAME="BODY_TO_IMU_PSI"/>
+          <define VALUE="-415" NAME="MAG_X_NEUTRAL"/>
+          <define VALUE="814" NAME="MAG_Y_NEUTRAL"/>
+          <define VALUE="223" NAME="MAG_Z_NEUTRAL"/>
+          <define VALUE="2.76789774165" NAME="MAG_X_SENS" INTEGER="16"/>
+          <define VALUE="3.15959835097" NAME="MAG_Y_SENS" INTEGER="16"/>
+          <define VALUE="2.63119798642" NAME="MAG_Z_SENS" INTEGER="16"/>
+          <define VALUE="0.00320590964876" NAME="MAG_X_CURRENT_COEF"/>
+          <define VALUE="-0.00177605577317" NAME="MAG_Y_CURRENT_COEF"/>
+          <define VALUE="0.000959756979821" NAME="MAG_Z_CURRENT_COEF"/>
+        </section>
+        <section PREFIX="AHRS_" NAME="AHRS">
+          <define VALUE="0.244216" NAME="H_X"/>
+          <define VALUE="0.0640397" NAME="H_Y"/>
+          <define VALUE="0.967604" NAME="H_Z"/>
+        </section>
+        <section NAME="BAT">
+          <define VALUE="12.7" UNIT="V" NAME="CATASTROPHIC_BAT_LEVEL"/>
+          <define VALUE="14.7" UNIT="V" NAME="CRITIC_BAT_LEVEL"/>
+          <define VALUE="15.1" UNIT="V" NAME="LOW_BAT_LEVEL"/>
+          <define VALUE="16.8" UNIT="V" NAME="MAX_BAT_LEVEL"/>
+          <define VALUE="0.0052047" NAME="VOLTAGE_ADC_SCALE"/>
+          <define VALUE="-0.011815" NAME="VOLTAGE_ADC_OFFSET"/>
+          <define VALUE="(VOLTAGE_ADC_SCALE * adc + VOLTAGE_ADC_OFFSET)" NAME="VoltageOfAdc(adc)"/>
+          <define VALUE="ADC_2" NAME="ADC_CHANNEL_CURRENT"/>
+          <define VALUE="1" NAME="CURRENT_ADC_SCALE"/>
+          <define VALUE="0" NAME="CURRENT_ADC_OFFSET"/>
+          <define VALUE="0.2489*(80.55*(adc-185))-11232" NAME="MilliAmpereOfAdc(adc)"/>
+        </section>
+        <section PREFIX="FAILSAFE_" NAME="FAILSAFE">
+          <define VALUE="2" UNIT="s" NAME="DELAY_WITHOUT_GPS"/>
+          <define VALUE="0" UNIT="%" NAME="DEFAULT_THROTTLE"/>
+          <define VALUE="17.2" UNIT="deg" NAME="DEFAULT_ROLL"/>
+          <define VALUE="28.6" UNIT="deg" NAME="DEFAULT_PITCH"/>
+        </section>
+        <section NAME="MISC">
+          <define VALUE="15." UNIT="m/s" NAME="NOMINAL_AIRSPEED"/>
+          <define VALUE="4." UNIT="s" NAME="CARROT"/>
+          <define VALUE="(2.0*MAX_DIST_FROM_HOME)" NAME="KILL_MODE_DISTANCE"/>
+          <define VALUE="100." NAME="DEFAULT_CIRCLE_RADIUS"/>
+        </section>
+        <section PREFIX="INS_" NAME="INS">
+          <define VALUE="-2.6" UNIT="deg" NAME="ROLL_NEUTRAL"/>
+          <define VALUE="0" UNIT="deg" NAME="PITCH_NEUTRAL"/>
+        </section>
+        <section PREFIX="AUTO1_" NAME="AUTO1">
+          <define VALUE="40." UNIT="deg" NAME="MAX_ROLL"/>
+          <define VALUE="35." UNIT="deg" NAME="MAX_PITCH"/>
+        </section>
+        <section PREFIX="H_CTL_" NAME="HORIZONTAL CONTROL">
+          <define VALUE="1.37" NAME="COURSE_PGAIN"/>
+          <define VALUE="17.1" UNIT="deg" NAME="COURSE_DGAIN"/>
+          <define VALUE="34.4920593063" UNIT="deg" NAME="ROLL_MAX_SETPOINT"/>
+          <define VALUE="30" UNIT="deg" NAME="PITCH_MAX_SETPOINT"/>
+          <define VALUE="-10" UNIT="deg" NAME="PITCH_MIN_SETPOINT"/>
+          <define VALUE="18513" NAME="PITCH_PGAIN"/>
+          <define VALUE="1.5" NAME="PITCH_DGAIN"/>
+          <define VALUE="21698" NAME="ROLL_ATTITUDE_GAIN"/>
+          <define VALUE="1500" NAME="ROLL_RATE_GAIN"/>
+          <define VALUE="3409" NAME="ELEVATOR_OF_ROLL"/>
+          <define VALUE="0.1" NAME="ROLL_SLEW"/>
+        </section>
+        <section PREFIX="V_CTL_" NAME="VERTICAL CONTROL">
+          <define VALUE="14.9" UNIT="V" NAME="POWER_CTL_BAT_NOMINAL"/>
+          <define VALUE="1.5" UNIT="s" NAME="THROTTLE_SLEW_LIMITER"/>
+          <define VALUE="0.48" NAME="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE"/>
+          <define VALUE="0.33" NAME="AUTO_THROTTLE_MIN_CRUISE_THROTTLE"/>
+          <define VALUE="0.85" NAME="AUTO_THROTTLE_MAX_CRUISE_THROTTLE"/>
+          <define VALUE="3248" NAME="AUTO_THROTTLE_LOITER_TRIM"/>
+          <define VALUE="2492" NAME="AUTO_THROTTLE_DASH_TRIM"/>
+          <define VALUE="0.06" NAME="ALTITUDE_PGAIN"/>
+          <define VALUE="2." UNIT="m/s" NAME="ALTITUDE_MAX_CLIMB"/>
+          <define VALUE="0.10" UNIT="%/(m/s)" NAME="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT"/>
+          <define VALUE="0.01" NAME="AUTO_THROTTLE_PGAIN"/>
+          <define VALUE="0.10" NAME="AUTO_THROTTLE_IGAIN"/>
+          <define VALUE="0.09" NAME="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN"/>
+        </section>
+        <section NAME="NAV">
+          <define VALUE="60." NAME="DEFAULT_CIRCLE_RADIUS"/>
+        </section>
+        <section PREFIX="AGR_" NAME="AGGRESSIVE">
+          <define VALUE="75" NAME="BLEND_START"/>
+          <define VALUE="15" NAME="BLEND_END"/>
+          <define VALUE=".85" NAME="CLIMB_THROTTLE"/>
+          <define VALUE="0.6" NAME="CLIMB_PITCH"/>
+          <define VALUE="0.1" NAME="DESCENT_THROTTLE"/>
+          <define VALUE="-0.2" NAME="DESCENT_PITCH"/>
+          <define VALUE="0.8" NAME="CLIMB_NAV_RATIO"/>
+          <define VALUE="1.0" NAME="DESCENT_NAV_RATIO"/>
+        </section>
+        <modules>
+          <load NAME="geo_mag.xml"/>
+          <load NAME="airspeed_ets.xml">
+            <define NAME="AIRSPEED_ETS_SYNC_SEND"/>
+            <define VALUE="i2c2" NAME="AIRSPEED_ETS_I2C_DEV"/>
+          </load>
+        </modules>
+      </airframe>
