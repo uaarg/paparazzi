@@ -1,0 +1,91 @@
+<procedure>
+
+
+  <section name="FAILSAFE" prefix="FAILSAFE_">
+    <define name="DELAY_WITHOUT_GPS" value="2" unit="s"/>
+    <define name="DEFAULT_THROTTLE" value="0" unit="%"/>
+    <define name="DEFAULT_ROLL" value="17.2" unit="deg"/>
+    <define name="DEFAULT_PITCH" value="28.6" unit="deg"/>
+  </section>
+
+
+  <section name="MISC">
+    <!--define name="CLIMB_AIRSPEED" value="12." unit="m/s"/ notin us comp--> 
+    <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
+    <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
+    <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
+    <define name="DEFAULT_CIRCLE_RADIUS" value="60."/>
+  </section>
+
+
+  <section name="AUTO1" prefix="AUTO1_"><!-- roll and pitch in auto1-->
+    <define name="MAX_ROLL" value="40." unit="deg"/>
+    <define name="MAX_PITCH" value="35." unit="deg"/>
+  </section>
+
+  <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
+    <define name="ROLL_MAX_SETPOINT" value="35" unit="deg"/>
+    <define name="PITCH_MAX_SETPOINT" value="40" unit="deg"/>
+    <define name="PITCH_MIN_SETPOINT" value="-10" unit="deg"/>
+
+    <define name="PITCH_PGAIN" value="18513."/>
+    <define name="PITCH_DGAIN" value="1.5"/>
+
+    <define name="ELEVATOR_OF_ROLL" value="3409"/>
+    <define name="AILERON_OF_THROTTLE" value="0.0"/>
+
+    <define name="ROLL_ATTITUDE_GAIN" value="21698"/> <!--roll_pgain-->
+    <define name="ROLL_RATE_GAIN" value="1500"/><!-- roll_dgain-->
+
+    <define name="COURSE_PGAIN" value="1.37"/>
+    <define name="COURSE_DGAIN" value="0.298"/>
+    <!--define name="COURSE_PRE_BANK_CORRECTION" value="0.2"/ -->
+
+    <define name="ROLL_SLEW" value="0.1"/> <!-- not too sure trying playing around with it. -->
+
+  </section>
+
+  <section name="VERTICAL CONTROL" prefix="V_CTL_">
+
+    <define name="POWER_CTL_BAT_NOMINAL" value="14.7" unit="V"/>
+    <define name="THROTTLE_SLEW_LIMITER" value="1.5" unit="s"/>
+
+    <define name="ALTITUDE_MAX_CLIMB" value="5."/>
+    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.56"/>
+    <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.11"/>
+    <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.95"/>
+    <define name="AUTO_THROTTLE_LOITER_TRIM" value="3248"/>
+    <define name="AUTO_THROTTLE_DASH_TRIM" value="2492"/>
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.075" unit="%/(m/s)"/> <!--throttle_incr-->
+    <define name="AUTO_THROTTLE_PGAIN" value="0.01"/>
+    <define name="AUTO_THROTTLE_IGAIN" value="0.1"/>
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.09"/><!--pitch_of_vz-->
+
+    <define name="ALTITUDE_PGAIN" value="0.06"/>
+
+<!-- comment the following lines do disable AUTO_PITCH -->
+<!--
+    <define name="AUTO_PITCH_PGAIN" value="0.04"/>
+    <define name="AUTO_PITCH_IGAIN" value="0.0"/>
+    <define name="AUTO_PITCH_MAX_PITCH" value="RadOfDeg(25)"/>
+    <define name="AUTO_PITCH_MIN_PITCH" value="RadOfDeg(-25)"/>
+-->
+
+  </section>
+
+  <section name="NAV" />
+
+  <section name="AGGRESSIVE" prefix="AGR_">
+    <define name="BLEND_START" value="75"/><!-- Altitude Error to Initiate Aggressive Climb-->
+    <define name="BLEND_END" value="15"/><!-- Altitude Error to Blend Aggressive to Regular Climb Modes-->
+    <define name="CLIMB_THROTTLE" value="1.00"/><!-- Gaz for Aggressive Climb -->
+    <define name="CLIMB_PITCH" value="0.6"/><!-- Pitch for Aggressive Climb -->
+    <define name="DESCENT_THROTTLE" value="0.1"/><!-- Gaz for Aggressive Decent -->
+    <define name="DESCENT_PITCH" value="-0.25"/><!-- Pitch for Aggressive Decent -->
+    <define name="CLIMB_NAV_RATIO" value="0.8"/><!-- Percent Navigation for Altitude Error Equal to Start Altitude -->
+    <define name="DESCENT_NAV_RATIO" value="1.0"/>
+  </section>
+
+
+</procedure>
+
