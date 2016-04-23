@@ -12,9 +12,36 @@
     <waypoint name="CLIMB" x="-125.0" y="45.0"/>
     <waypoint name="MOB" x="-11.5" y="-21.2"/>
     
+    <waypoint name="_oparea1" lon="-113.293441" lat="53.63836"/>
+    <waypoint name="_oparea2" lon="-113.286206" lat="53.638365"/>
+    <waypoint name="_oparea3" lon="-113.2861876" lat="53.6377939"/>
+    <waypoint name="_oparea4" lon="-113.2825398" lat="53.6377812"/>
+    <waypoint name="_oparea5" lon="-113.2805228" lat="53.6418266"/>
+    <waypoint name="_oparea6" lon="-113.280481" lat="53.64273800"/>
+    <waypoint name="_oparea7" lon="-113.2871103" lat="53.6427425"/>
+    <waypoint name="_oparea8" lon="-113.2896423" lat="53.6409743"/>
+    <waypoint name="_oparea9" lon="-113.293346" lat="53.639791"/>
+    <waypoint name="_oparea10" lon="-113.293441" lat="53.63836"/>
   </waypoints>
+
+  <sectors>
+    <sector color="red" name="Operation_Area">
+      <corner name="_oparea1"/>
+      <corner name="_oparea2"/>
+      <corner name="_oparea3"/>
+      <corner name="_oparea4"/>
+      <corner name="_oparea5"/>
+      <corner name="_oparea6"/>
+      <corner name="_oparea7"/>
+      <corner name="_oparea8"/>
+      <corner name="_oparea9"/>
+      <corner name="_oparea10"/>
+    </sector>
+  </sectors>
+
+
   <includes>
-    <include name="Failsafe" procedure="failsafe.xml">
+    <include name="Failsafe" procedure="failsafe_comp.xml">
       <with from="Standby" to="Standby"/>
     </include>
     <include name="Tuning" procedure="tuning.xml"/>

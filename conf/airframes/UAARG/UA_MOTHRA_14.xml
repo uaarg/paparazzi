@@ -186,6 +186,14 @@
     <define name="VoltageOfAdc(adc)" value="(VOLTAGE_ADC_SCALE * adc + VOLTAGE_ADC_OFFSET)"/>
   </section>
 
+  <section name="MISC">
+    <!--define name="CLIMB_AIRSPEED" value="12." unit="m/s"/ notin us comp--> 
+    <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
+    <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
+    <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
+    <define name="DEFAULT_CIRCLE_RADIUS" value="60."/>
+  </section>
+
 
 <!--AUTOPILOT TUNING SECTION-->
   <include href="conf/airframes/UAARG/EPP_FPV_TUNING.xml"/>
