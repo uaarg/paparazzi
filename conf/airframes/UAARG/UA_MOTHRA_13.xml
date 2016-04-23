@@ -127,12 +127,12 @@
    
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
-<define name="MAG_X_NEUTRAL" value="-39"/>
-<define name="MAG_Y_NEUTRAL" value="-16"/>
-<define name="MAG_Z_NEUTRAL" value="352"/>
-<define name="MAG_X_SENS" value="2.82827101293" integer="16"/>
-<define name="MAG_Y_SENS" value="2.81124063309" integer="16"/>
-<define name="MAG_Z_SENS" value="3.37696407143" integer="16"/>
+	<define name="MAG_X_NEUTRAL" value="-39"/>
+	<define name="MAG_Y_NEUTRAL" value="-16"/>
+	<define name="MAG_Z_NEUTRAL" value="352"/>
+	<define name="MAG_X_SENS" value="2.82827101293" integer="16"/>
+	<define name="MAG_Y_SENS" value="2.81124063309" integer="16"/>
+	<define name="MAG_Z_SENS" value="3.37696407143" integer="16"/>
 
     <define name="MAG_X_SIGN" value="1"/>
     <define name="MAG_Y_SIGN" value="1"/>
@@ -142,11 +142,11 @@
 
     <!-- Current draw magnetic field calibration-->
     <!--Please note that if you dont have any experience in Paparazzi and are not looking online you can enable current calibration raw data from a module. look below at modules and uncomment the module.-->
-<!--
-<define name= "MAG_X_CURRENT_COEF" value="0.0001933874537"/>
-<define name= "MAG_Y_CURRENT_COEF" value="-0.000400915804419"/>
-<define name= "MAG_Z_CURRENT_COEF" value="2.10856499033e-05"/>
--->
+	<!--
+	<define name= "MAG_X_CURRENT_COEF" value="0.0001933874537"/>
+	<define name= "MAG_Y_CURRENT_COEF" value="-0.000400915804419"/>
+	<define name= "MAG_Z_CURRENT_COEF" value="2.10856499033e-05"/>
+	-->
   </section>
   
   <section name="AHRS" prefix="AHRS_"> <!--This is local magnetic field data. Needs to be changed for different fields-->
@@ -177,6 +177,15 @@
     <define name="VOLTAGE_ADC_SCALE" value="0.0052047"/> 
     <define name="VOLTAGE_ADC_OFFSET" value="-0.011815"/> 
     <define name="VoltageOfAdc(adc)" value="(VOLTAGE_ADC_SCALE * adc + VOLTAGE_ADC_OFFSET)"/>
+  </section>
+
+
+  <section name="MISC">
+    <!--define name="CLIMB_AIRSPEED" value="12." unit="m/s"/ notin us comp--> 
+    <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
+    <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
+    <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
+    <define name="DEFAULT_CIRCLE_RADIUS" value="60."/>
   </section>
 
 
