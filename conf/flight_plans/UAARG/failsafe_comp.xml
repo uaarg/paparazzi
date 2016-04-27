@@ -39,7 +39,7 @@
 
     <block name="Absolute_Termination"><!-- for GCS operator to kill the plane. Does not deroute-->
       <set value="1" var="kill_throttle"/>
-      <attitude climb="2000" height="0" roll="2000" throttle="0" vmode="throttle"/>
+      <attitude pitch="4000" height="0" roll="2000" throttle="0" vmode="throttle"/>
       
     </block>
 

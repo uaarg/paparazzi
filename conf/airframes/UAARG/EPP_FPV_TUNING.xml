@@ -15,9 +15,9 @@
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
-    <define name="ROLL_MAX_SETPOINT" value="35" unit="deg"/>
-    <define name="PITCH_MAX_SETPOINT" value="40" unit="deg"/>
-    <define name="PITCH_MIN_SETPOINT" value="-10" unit="deg"/>
+    <define name="ROLL_MAX_SETPOINT" value="40." unit="deg"/>
+    <define name="PITCH_MAX_SETPOINT" value="40." unit="deg"/>
+    <define name="PITCH_MIN_SETPOINT" value="-10." unit="deg"/>
 
     <define name="PITCH_PGAIN" value="18513."/>
     <define name="PITCH_DGAIN" value="1.5"/>
