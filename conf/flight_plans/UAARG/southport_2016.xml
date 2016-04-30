@@ -1,0 +1,161 @@
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+
+<flight_plan alt="354" ground_alt="269" lat0="49.9112722222" lon0="-98.2683916667" max_dist_from_home="2500" name="Southport_2016" security_height="25">
+  <header>
+
+</header>
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint name="STDBY" x="-295.6" y="-321.7"/>
+    <waypoint name="1" x="-1008.2" y="-143.8"/>
+    <waypoint name="2" x="-582.8" y="-98.1"/>
+    <waypoint name="MOB" x="-249.0" y="-262.7"/>
+    <waypoint lat="49.9115472222" lon="-98.2637138889" name="_oparea1"/>
+    <waypoint lat="49.9048305556" lon="-98.2671472222" name="_oparea2"/>
+    <waypoint lat="49.8972916667" lon="-98.2549138889" name="_oparea3"/>
+    <waypoint lat="49.8918000000" lon="-98.2624333333" name="_oparea4"/>
+    <waypoint lat="49.9079333333" lon="-98.2878416667" name="_oparea5"/>
+    <waypoint lat="49.9113333333" lon="-98.2827916667" name="_oparea6"/>
+    <waypoint name="_flarea1" x="-827.1" y="-53.0"/>
+    <waypoint name="_flarea2" x="-1189.3" y="-424.6"/>
+    <waypoint name="_flarea3" x="387.4" y="-1914.9"/>
+    <waypoint name="_flarea4" x="708.7" y="-1504.3"/>
+    <waypoint name="swp1" x="-841.3" y="-74.9"/>
+    <waypoint name="swp2" x="726.6" y="-1563.2"/>
+    <waypoint name="swp3" x="644.3" y="-1580.2"/>
+    <waypoint name="swp4" x="-927.7" y="-96.8"/>
+    <waypoint name="swp5" x="-947.1" y="-176.8"/>
+    <waypoint name="swp6" x="642.2" y="-1672.1"/>
+    <waypoint name="swp7" x="554.1" y="-1709.4"/>
+    <waypoint name="swp8" x="-1041.7" y="-195.1"/>
+    <waypoint name="swp9" x="-1039.8" y="-282.3"/>
+    <waypoint name="swp10" x="541.9" y="-1787.7"/>
+    <waypoint name="swp11" x="458.8" y="-1826.2"/>
+    <waypoint name="swp12" x="-1150.1" y="-297.7"/>
+    <waypoint name="swp13" x="-1146.7" y="-389.3"/>
+    <waypoint name="swp14" x="439.8" y="-1891.7"/>
+  </waypoints>
+  <sectors>
+    <sector color="yellow" name="Operation_Area">
+      <corner name="_oparea1"/>
+      <corner name="_oparea2"/>
+      <corner name="_oparea3"/>
+      <corner name="_oparea4"/>
+      <corner name="_oparea5"/>
+      <corner name="_oparea6"/>
+    </sector>
+    <sector color="blue" name="Search_Area">
+      <corner name="_flarea1"/>
+      <corner name="_flarea2"/>
+      <corner name="_flarea3"/>
+      <corner name="_flarea4"/>
+    </sector>
+  </sectors>
+  <includes>
+    <include name="Failsafe" procedure="failsafe_comp.xml">
+      <with from="Standby" to="Standby"/>
+    </include>
+  </includes>
+  <blocks>
+    <block name="Wait GPS">
+      <while cond="!GpsFixValid()"/>
+      <set value="1" var="kill_throttle"/>
+    </block>
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <!--call fun="NavSetGroundReferenceHere()"/-->
+    </block>
+    <block name="Holding point">
+      <set value="1" var="kill_throttle"/>
+      <attitude roll="0" throttle="0" vmode="throttle"/>
+    </block>
+    <block name="Standby" strip_button="Standby" strip_icon="home.png">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+    <block name="MOB" strip_button="Circle around here" strip_icon="mob.png">
+      <call fun="NavSetWaypointHere(WP_MOB)"/>
+      <circle radius="100" wp="MOB"/>
+    </block>
+    <block name="Figure 8 around here" strip_button="Figure 8 Here" strip_icon="eight.png">
+      <call fun="NavSetWaypointHere(WP_MOB)"/>
+      <eight center="MOB" radius="nav_radius" turn_around="2"/>
+    </block>
+    <block name="WP1">
+      <circle radius="nav_radius" wp="1"/>
+    </block>
+    <block name="Search_Sweep">
+      <go wp="swp5"/>
+      <go wp="swp1"/>
+      <path approaching_time="2" wpts=" swp1, swp2"/>
+      <path approaching_time="2" wpts=" swp2 , swp3"/>
+      <path approaching_time="2" wpts=" swp3, swp4"/>
+      <path approaching_time="3" wpts=" swp4, swp5"/>
+      <path approaching_time="2" wpts=" swp5, swp6"/>
+      <path approaching_time="3" wpts=" swp6, swp7"/>
+      <path approaching_time="2" wpts=" swp7, swp8"/>
+      <path approaching_time="3" wpts=" swp8, swp9"/>
+      <path approaching_time="2" wpts=" swp9, swp10"/>
+      <path approaching_time="3" wpts=" swp10, swp11"/>
+      <path approaching_time="2" wpts=" swp11, swp12"/>
+      <path approaching_time="3" wpts=" swp12, swp13"/>
+      <path approaching_time="3" wpts=" swp13, swp14"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go swp1">
+      <go wp="swp1"/>
+      <deroute block="Go swp2"/>
+    </block>
+    <block name="Go swp2">
+      <go wp="swp2"/>
+      <deroute block="Go swp3"/>
+    </block>
+    <block name="Go swp3">
+      <go wp="swp3"/>
+      <deroute block="Go swp4"/>
+    </block>
+    <block name="Go swp4">
+      <go wp="swp4"/>
+      <deroute block="Go swp5"/>
+    </block>
+    <block name="Go swp5">
+      <go wp="swp5"/>
+      <deroute block="Go swp6"/>
+    </block>
+    <block name="Go swp6">
+      <go wp="swp6"/>
+      <deroute block="Go swp7"/>
+    </block>
+    <block name="Go swp7">
+      <go wp="swp7"/>
+      <deroute block="Go swp8"/>
+    </block>
+    <block name="Go swp8">
+      <go wp="swp8"/>
+      <deroute block="Go swp9"/>
+    </block>
+    <block name="Go swp9">
+      <go wp="swp9"/>
+      <deroute block="Go swp10"/>
+    </block>
+    <block name="Go swp10">
+      <go wp="swp10"/>
+      <deroute block="Go swp11"/>
+    </block>
+    <block name="Go swp11">
+      <go wp="swp11"/>
+      <deroute block="Go swp12"/>
+    </block>
+    <block name="Go swp12">
+      <go wp="swp12"/>
+      <deroute block="Go swp13"/>
+    </block>
+    <block name="Go swp13">
+      <go wp="swp13"/>
+      <deroute block="Go swp14"/>
+    </block>
+    <block name="Go swp14">
+      <go wp="swp14"/>
+      <deroute block="Standby"/>
+    </block>
+  </blocks>
+</flight_plan>
