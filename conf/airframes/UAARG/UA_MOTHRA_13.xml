@@ -78,10 +78,10 @@
   <servos><!--the servos the outpilot autoputs commands output to-->
     <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="5"/>
     <servo name="DROP" max="2000" neutral="1500" min="1000" no="0"/>
-    <servo name="ELEVATOR" max="1000" neutral="1500" min="2000" no="3"/> 
+    <servo name="ELEVATOR" max="1000" neutral="1577" min="2000" no="3"/> 
     <servo name="AILERON_RIGHT" max="1800" neutral="1500" min="1000" no="2"/>
     <servo name="AILERON_LEFT" max="2000" neutral="1500" min="1200" no="1"/>
-    <servo name="RUDDER" max="2000" neutral="1478" min="1000" no="4"/>
+    <servo name="RUDDER" max="2000" neutral="1395" min="1000" no="4"/>
   </servos>
   
   
@@ -127,12 +127,13 @@
    
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
-	<define name="MAG_X_NEUTRAL" value="-39"/>
-	<define name="MAG_Y_NEUTRAL" value="-16"/>
-	<define name="MAG_Z_NEUTRAL" value="352"/>
-	<define name="MAG_X_SENS" value="2.82827101293" integer="16"/>
-	<define name="MAG_Y_SENS" value="2.81124063309" integer="16"/>
-	<define name="MAG_Z_SENS" value="3.37696407143" integer="16"/>
+<define name="MAG_X_NEUTRAL" value="-46"/>
+<define name="MAG_Y_NEUTRAL" value="-4"/>
+<define name="MAG_Z_NEUTRAL" value="289"/>
+<define name="MAG_X_SENS" value="3.00962506336" integer="16"/>
+<define name="MAG_Y_SENS" value="2.96508188226" integer="16"/>
+<define name="MAG_Z_SENS" value="3.61746210549" integer="16"/>
+
 
     <define name="MAG_X_SIGN" value="1"/>
     <define name="MAG_Y_SIGN" value="1"/>
@@ -155,16 +156,22 @@
     <!--Note a module that automatically updates this value has been added, see below. (geo_mag.xml)-->
 
 <!-- Local magnetic field vector Bremner Field-->
-
+<!--
     <define name="H_X" value="0.259"/>
     <define name="H_Y" value="0.045"/>
     <define name="H_Z" value="0.927124"/>
-
+-->
 <!-- club room
     <define name="H_X" value=".523"/>
     <define name="H_Y" value=".256"/>
     <define name="H_Z" value="0.953"/>
 -->
+<!-- Southport-->
+
+    <define name="H_X" value=".262"/>
+    <define name="H_Y" value=".018686"/>
+    <define name="H_Z" value="0.964887"/>
+
   </section>
 
 

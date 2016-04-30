@@ -1,9 +1,13 @@
 <procedure>
 
   <section name="IMU" prefix="IMU_">
-
+<!--
   <define name="ACCEL_X_NEUTRAL" value="-54"/>
   <define name="ACCEL_Y_NEUTRAL" value="-33"/>
+-->
+  <define name="ACCEL_X_NEUTRAL" value="-18"/>
+  <define name="ACCEL_Y_NEUTRAL" value="-82"/>
+
   <define name="ACCEL_Z_NEUTRAL" value="15"/>
   <define name="ACCEL_X_SENS" value="4.88998029654" integer="16"/>
   <define name="ACCEL_Y_SENS" value="4.83817030461" integer="16"/>
