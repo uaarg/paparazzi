@@ -321,7 +321,7 @@ let mark = fun (geomap:G.widget) ac_id track plugin_frame ->
             incr i;
 
       (* Computing the footprint: front_left and back_right *)
-            let cam_aperture = 2.4/.1.9 in (* width over distance FIXME *)
+            let cam_aperture = 1.232 in (* width over distance FIXME *)
             let alt = track#last_altitude -. float (Srtm.of_wgs84 geo) in
             let width = cam_aperture *. alt in
             let height = width *. 3. /. 4. in
