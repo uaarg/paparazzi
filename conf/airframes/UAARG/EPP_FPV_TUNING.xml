@@ -23,7 +23,7 @@
     <define name="PITCH_DGAIN" value="1.5"/>
 
     <define name="ELEVATOR_OF_ROLL" value="3409"/>
-    <define name="AILERON_OF_THROTTLE" value="0.0"/>
+    <define name="AILERON_OF_THROTTLE" value="0"/>
 
     <define name="ROLL_ATTITUDE_GAIN" value="21698"/> <!--roll_pgain-->
     <define name="ROLL_RATE_GAIN" value="1500"/><!-- roll_dgain-->

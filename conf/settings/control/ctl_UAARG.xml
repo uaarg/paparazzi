@@ -8,7 +8,7 @@
 
       <dl_settings NAME="attitude">
 
-        <dl_setting MAX="7000" MIN="-1000" STEP="100" VAR="h_ctl_aileron_of_throttle" shortname="aileron_of_throttle"/>
+        <dl_setting MAX="1" MIN="-1" STEP=".001" VAR="h_ctl_aileron_of_throttle" shortname="aileron_of_throttle"/>
         <dl_setting MAX="25000" MIN="0" STEP="250" VAR="h_ctl_pitch_pgain" shortname="pitch_pgain" param="H_CTL_PITCH_PGAIN"/>
         <dl_setting MAX="50000" MIN="0" STEP="10" VAR="h_ctl_pitch_dgain" shortname="pitch_dgain" param="H_CTL_PITCH_DGAIN"/>
 

@@ -97,9 +97,9 @@
 
   <rc_commands> <!--controls available to pilot in full RC-->
     <set value="@THROTTLE" command="THROTTLE"/>
-    <set value="@ROLL-224" command="ROLL"/>
+    <set value="@ROLL-252" command="ROLL"/>
     <set value="@PITCH" command="PITCH"/>
-    <set value="@YAW" command="YAW"/>
+    <set value="@YAW+196" command="YAW"/>
     <set value="@GEAR" command="GEAR"/>
     <set value="@AUX1+476" command="BRAKE"/>
   </rc_commands>
@@ -156,22 +156,22 @@
     <!--Note a module that automatically updates this value has been added, see below. (geo_mag.xml)-->
 
 <!-- Local magnetic field vector Bremner Field-->
-<!--
+
     <define name="H_X" value="0.259"/>
     <define name="H_Y" value="0.045"/>
     <define name="H_Z" value="0.927124"/>
--->
+
 <!-- club room
     <define name="H_X" value=".523"/>
     <define name="H_Y" value=".256"/>
     <define name="H_Z" value="0.953"/>
 -->
 <!-- Southport-->
-
+<!--
     <define name="H_X" value=".262"/>
     <define name="H_Y" value=".018686"/>
     <define name="H_Z" value="0.964887"/>
-
+-->
   </section>
 
 
@@ -202,8 +202,8 @@
 
 
   <section name="INS" prefix="INS_">
-    <define name="ROLL_NEUTRAL_DEFAULT" value="0" unit="deg"/>
-    <define name="PITCH_NEUTRAL_DEFAULT" value="0" unit="deg"/>
+    <define name="ROLL_NEUTRAL_DEFAULT" value="-5.5" unit="deg"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="-4.8" unit="deg"/>
   </section>
 
 
