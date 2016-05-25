@@ -28,8 +28,8 @@
         <dl_setting MAX="1" MIN="0" STEP="0.01" VAR="v_ctl_auto_throttle_pitch_of_vz_pgain" shortname="pitch_of_vz" param="V_CTL_AUTO_THROTTLE_PITCH_OF_VZ_PGAIN"/>
         <dl_setting MAX="10" MIN="-10" STEP="0.1" VAR="v_ctl_auto_throttle_pitch_of_vz_dgain" shortname="pitch_of_vz (d)"/>
 
-        <dl_setting MAX="0" MIN="-4000" STEP="100" VAR="v_ctl_auto_throttle_dash_trim" shortname="dash trim" param="V_CTL_AUTO_THROTTLE_DASH_TRIM" module="stabilization/stabilization_attitude"/>
-        <dl_setting MIN="0" MAX="4000" STEP="100" VAR="v_ctl_auto_throttle_loiter_trim" shortname="loiter trim" param="V_CTL_AUTO_THROTTLE_LOITER_TRIM"/>
+        <!--dl_setting MAX="0" MIN="-4000" STEP="100" VAR="v_ctl_auto_throttle_dash_trim" shortname="dash trim" param="V_CTL_AUTO_THROTTLE_DASH_TRIM" module="stabilization/stabilization_attitude"/>
+        <dl_setting MIN="0" MAX="4000" STEP="100" VAR="v_ctl_auto_throttle_loiter_trim" shortname="loiter trim" param="V_CTL_AUTO_THROTTLE_LOITER_TRIM"/-->
         <dl_setting MAX="1" MIN="0.0" STEP="0.05" VAR="v_ctl_auto_throttle_cruise_throttle" shortname="cruise throttle" module="guidance/guidance_v" handler="SetCruiseThrottle" param="V_CTL_AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE">
           <strip_button name="Loiter" value="0.1" group="dash_loiter"/>
           <strip_button name="Cruise" value="0" group="dash_loiter"/>
