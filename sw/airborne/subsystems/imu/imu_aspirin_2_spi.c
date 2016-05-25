@@ -195,10 +195,26 @@ void imu_aspirin2_event(void)
 #endif
 #else
 
-    /* Handle axis assignement for Lisa/M or Lisa/MX V2.1 integrated Aspirin like
+         /* Handle axis assignement for Lisa/Falcon integrated Aspirin like
+          * IMU.
+          */
+#ifdef LISA_FALCON
+   RATES_ASSIGN(imu.gyro_unscaled,
+                -imu_aspirin2.mpu.data_rates.rates.p,
+                 imu_aspirin2.mpu.data_rates.rates.r,
+                 imu_aspirin2.mpu.data_rates.rates.q);
+   VECT3_ASSIGN(imu.accel_unscaled,
+                -imu_aspirin2.mpu.data_accel.vect.x,
+                imu_aspirin2.mpu.data_accel.vect.z,
+                imu_aspirin2.mpu.data_accel.vect.y);
+#if !ASPIRIN_2_DISABLE_MAG
+   VECT3_ASSIGN(imu.mag_unscaled, -mag.x, mag.z, mag.y);
+#endif
+#else
+
+    /* Handle axis assignement for UAARG Mothra integrated Aspirin like
      * IMU.
      */
-
 #ifdef UAARG_MOTHRA
     RATES_ASSIGN(imu.gyro_unscaled,
                  imu_aspirin2.mpu.data_rates.rates.p,
@@ -213,7 +229,9 @@ void imu_aspirin2_event(void)
 #endif
 #else
 
-
+    /* Handle axis assignement for Lisa/M or Lisa/MX V2.1 integrated Aspirin like
+     * IMU.
+     */
 #ifdef LISA_M_OR_MX_21
     RATES_ASSIGN(imu.gyro_unscaled,
                  -imu_aspirin2.mpu.data_rates.rates.q,
@@ -227,6 +245,7 @@ void imu_aspirin2_event(void)
     VECT3_ASSIGN(imu.mag_unscaled, -mag.y, mag.x, mag.z);
 #endif
 #else
+
 
     /* Handle real Aspirin IMU axis assignement. */
 #ifdef LISA_M_LONGITUDINAL_X
@@ -246,6 +265,7 @@ void imu_aspirin2_event(void)
     VECT3_COPY(imu.accel_unscaled, imu_aspirin2.mpu.data_accel.vect);
 #if !ASPIRIN_2_DISABLE_MAG
     VECT3_ASSIGN(imu.mag_unscaled, mag.y, -mag.x, mag.z)
+#endif
 #endif
 #endif
 #endif
