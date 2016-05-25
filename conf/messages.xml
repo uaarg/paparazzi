@@ -490,11 +490,13 @@
     <field name="roll_sp" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.3"/>
     <field name="roll_ref" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.3"/>
     <field name="phi" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.3"/>
+    <field name="roll_rate" type="float" unit="rad" alt_unit="deg/s" alt_unit_coef="57.3"/>
     <field name="aileron_sp"  type="int16" unit="pprz"/>
     <field name="pitch_sum_err" type="float"/>
     <field name="pitch_sp" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.3"/>
     <field name="pitch_ref" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.3"/>
     <field name="theta" type="float" unit="rad" alt_unit="deg" alt_unit_coef="57.3"/>
+    <field name="pitch_rate" type="float" unit="rad" alt_unit="deg/s" alt_unit_coef="57.3"/>
     <field name="elevator_sp"  type="int16" unit="pprz"/>
   </message>
 
