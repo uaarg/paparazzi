@@ -232,7 +232,6 @@ void imu_aspirin2_event(void)
     /* Handle axis assignement for Lisa/M or Lisa/MX V2.1 integrated Aspirin like
      * IMU.
      */
-
 #ifdef UAARG_MOTHRA
     RATES_ASSIGN(imu.gyro_unscaled,
                  imu_aspirin2.mpu.data_rates.rates.p,
@@ -247,7 +246,9 @@ void imu_aspirin2_event(void)
 #endif
 #else
 
-
+    /* Handle axis assignement for Lisa/M or Lisa/MX V2.1 integrated Aspirin like
+     * IMU.
+     */
 #ifdef LISA_M_OR_MX_21
     RATES_ASSIGN(imu.gyro_unscaled,
                  -imu_aspirin2.mpu.data_rates.rates.q,
