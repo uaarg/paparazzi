@@ -3,23 +3,22 @@
 
 <airframe name="Mothra">
 
-
   <firmware name="fixedwing">
     <target name="ap" board="lisa_mx_2.1">
-
+      
      <subsystem name="ins" type="alt_float">
        <define name="USE_BAROMETER" value="TRUE"/>
      </subsystem>
 
       <define name="UAARG_MOTHRA"/>
       <define name="USE_ADC"/>
-      <define name="USE_I2C1" />
+      <define name="USE_I2C1"/>
 
     </target>
 
     <target name="sim" board="pc">
       <subsystem name="ins" type="alt_float"/>
-
+    
     </target>
 
     <subsystem name="radio_control" type="spektrum">
@@ -28,10 +27,10 @@
     </subsystem>
 
     <subsystem name="actuators"     type="pwm">
-
+      
       <!-- define name="USE_SERVOS_7AND8"/-->
     </subsystem>
-
+    
     <define name="RC_LOST_MODE" value="PPRZ_MODE_AUTO2"/>
     <define name="AGR_CLIMB"/>
     <define name="LOITER_TRIM"/>
@@ -47,23 +46,22 @@
     </subsystem>
     <subsystem name="imu" type="lisa_mx_v2.1"/>
     <subsystem name="navigation" />
-    <subsystem name="control" />
-    <subsystem name="ahrs" type="float_cmpl_quat">
+    <subsystem name="control" type="adaptive"/>
+    <subsystem name="ahrs" type="int_cmpl_quat">
       <define name="ASPIRIN_2_DISABLE_MAG" value="TRUE" />
       <define name="USE_MAGNETOMETER" value="TRUE"/>
-       <define name="AHRS_FC_MAG_ID" value="MAG_HMC58XX_SENDER_ID"/>
-      <define name="AHRS_ACCEL_OMEGA" value=".9"/>
-      <define name="AHRS_MAG_OMEGA" value=".9"/> <!---Adjust this for mag/gyro heading mixing--->
+      <define name="AHRS_FC_MAG_ID" value="MAG_HMC58XX_SENDER_ID"/>
+      <!--define name="AHRS_ACCEL_OMEGA" value=".9"/>
+      <define name="AHRS_MAG_OMEGA" value=".9"/--> <!---Adjust this for mag/gyro heading mixing--->
     </subsystem>
+    
 
-
-
+  
     <configure name="NO_LUFTBOOT" value="1"/>
     <configure name="FLASH_MODE" value="SWD"/>
     <!---<configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
 
   </firmware>
-
 
 <!--The following is the commands sections. This deals with how the control surface relate to movement and rc inpu-->
   <commands> <!--The commands the autopilot board outputs-->
@@ -74,69 +72,73 @@
     <axis name="YAW" failsafe_value="0"/>
     <axis name="GEAR" failsafe_value="0"/>
   </commands>
-
+  
 <!-- Actuators Neutral: 1010,1003,1384,1775,1212,1467--->
-
+  
   <servos><!--the servos the outpilot autoputs commands output to-->
     <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="5"/>
     <servo name="DROP" max="2000" neutral="1500" min="1000" no="0"/>
-    <servo name="ELEVATOR" max="950" neutral="1350" min="2000" no="3"/>
-    <servo name="AILERON_RIGHT" max="1800" neutral="1413" min="1000" no="2"/>
-    <servo name="AILERON_LEFT" max="1800" neutral="1413" min="1000" no="1"/>
-    <servo name="RUDDER" max="2000" neutral="1478" min="1000" no="4"/>
+    <servo name="ELEVATOR" max="1000" neutral="1500" min="2000" no="3"/>
+    <servo name="AILERON_RIGHT" max="1800" neutral="1500" min="1200" no="2"/>
+    <servo name="AILERON_LEFT" max="1800" neutral="1500" min="1200" no="1"/>
+    <servo name="RUDDER" max="2000" neutral="1500" min="1000" no="4"/>
   </servos>
-
-
+  
+  
   <command_laws> <!--How the commands relate to servo movement-->
-    <set value="@ROLL-.9*(@BRAKE)" servo="AILERON_LEFT"/>
-    <set value="@ROLL+.9*(@BRAKE)" servo="AILERON_RIGHT"/>
+    <set value="@ROLL+.9*(@BRAKE)" servo="AILERON_LEFT"/>
+    <set value="@ROLL-.9*(@BRAKE)" servo="AILERON_RIGHT"/>
     <set value="@THROTTLE" servo="THROTTLE"/>
     <set value="@PITCH" servo="ELEVATOR"/>
     <set value="@YAW" servo="RUDDER"/>
     <set value="@GEAR" servo="DROP"/>
   </command_laws>
 
+  <section name="TRIM" prefix="COMMAND_">
+    <define name="ROLL_TRIM" value="0"/>
+    <define name="PITCH_TRIM" value="0."/>
+  </section>
 
   <rc_commands> <!--controls available to pilot in full RC-->
     <set value="@THROTTLE" command="THROTTLE"/>
-    <set value="@ROLL-231" command="ROLL"/>
+    <set value="@ROLL-224" command="ROLL"/>
     <set value="@PITCH" command="PITCH"/>
-    <set value="@YAW" command="YAW"/>
+    <set value="@YAW+280" command="YAW"/>
     <set value="@GEAR" command="GEAR"/>
-    <set value="@AUX1" command="BRAKE"/>
+    <set value="@AUX1+476" command="BRAKE"/>
   </rc_commands>
 
 
   <auto_rc_commands> <!--controls available to pilot in AUTO2-->
-    <set value="@YAW" command="YAW"/>
+    <set value="@YAW+280" command="YAW"/>
     <set command="GEAR" value="@GEAR"/>
-    <set value="@AUX1-52" command="BRAKE"/>
+    <set value="@AUX1+476" command="BRAKE"/>
   </auto_rc_commands>
-
-
+    
+  
   <!--The following are sensor calibrations that need to be performed-->
   <!--Note some calibrations are location specific. These need to be modified when flying at different fields-->
 
-    <include href="conf/airframes/UAARG/PF_Smile.xml"/>
+    <include href="conf/airframes/UAARG/PF_nSmile.xml"/>
 
   <section name="IMU" prefix="IMU_">
     <!--These values can be calibrated by perfectly leveling the plane.-->
     <!--Then open the messages windows and look at the attitude data-->
     <!--Attitude should be completely 0. -->
     <!--If not take the value given, convert to degrees and subtract from current values-->
-    <define name="BODY_TO_IMU_PHI" value="0." unit="deg"/>
+    <define name="BODY_TO_IMU_PHI" value="0." unit="deg"/> 
     <define name="BODY_TO_IMU_THETA" value="0." unit="deg"/>
     <define name="BODY_TO_IMU_PSI" value="0." unit="deg"/>
+   
+<!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
 
-
-<define name="MAG_X_NEUTRAL" value="-39"/>
-<define name="MAG_Y_NEUTRAL" value="-16"/>
-<define name="MAG_Z_NEUTRAL" value="352"/>
-<define name="MAG_X_SENS" value="2.82827101293" integer="16"/>
-<define name="MAG_Y_SENS" value="2.81124063309" integer="16"/>
-<define name="MAG_Z_SENS" value="3.37696407143" integer="16"/>
-
+<define name="MAG_X_NEUTRAL" value="-82"/>
+<define name="MAG_Y_NEUTRAL" value="-12"/>
+<define name="MAG_Z_NEUTRAL" value="18"/>
+<define name="MAG_X_SENS" value="2.8870139674" integer="16"/>
+<define name="MAG_Y_SENS" value="2.86927129735" integer="16"/>
+<define name="MAG_Z_SENS" value="3.51898695561" integer="16"/>
 
 
 
@@ -153,13 +155,13 @@
 
     <!-- Current draw magnetic field calibration-->
     <!--Please note that if you dont have any experience in Paparazzi and are not looking online you can enable current calibration raw data from a module. look below at modules and uncomment the module.-->
-<!--
-<define name= "MAG_X_CURRENT_COEF" value="0.0001933874537"/>
-<define name= "MAG_Y_CURRENT_COEF" value="-0.000400915804419"/>
-<define name= "MAG_Z_CURRENT_COEF" value="2.10856499033e-05"/>
--->
+	<!--
+	<define name= "MAG_X_CURRENT_COEF" value="0.0001933874537"/>
+	<define name= "MAG_Y_CURRENT_COEF" value="-0.000400915804419"/>
+	<define name= "MAG_Z_CURRENT_COEF" value="2.10856499033e-05"/>
+	-->
   </section>
-
+  
   <section name="AHRS" prefix="AHRS_"> <!--This is local magnetic field data. Needs to be changed for different fields-->
     <!--CHANGE THIS FOR DIFFERENT LOCATIONS!!-->
     <!--See http://wiki.paparazziuav.org/wiki/Subsystem/ahrs#Local_Magnetic_Field For more details-->
@@ -185,36 +187,40 @@
     <define name="CRITIC_BAT_LEVEL" value="14.7" unit="V"/>
     <define name="LOW_BAT_LEVEL" value="15.1" unit="V"/>
     <define name="MAX_BAT_LEVEL" value="16.8" unit="V"/>
-    <define name="VOLTAGE_ADC_SCALE" value="0.0052047"/>
-    <define name="VOLTAGE_ADC_OFFSET" value="-0.011815"/>
+    <define name="VOLTAGE_ADC_SCALE" value="0.0052047"/> 
+    <define name="VOLTAGE_ADC_OFFSET" value="-0.011815"/> 
     <define name="VoltageOfAdc(adc)" value="(VOLTAGE_ADC_SCALE * adc + VOLTAGE_ADC_OFFSET)"/>
   </section>
+
 
   <section name="MISC">
     <!--define name="CLIMB_AIRSPEED" value="12." unit="m/s"/ notin us comp--> 
     <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
-    <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
+    <define name="CARROT" value="3." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
     <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="60."/>
   </section>
 
 
 <!--AUTOPILOT TUNING SECTION-->
+
   <include href="conf/airframes/UAARG/EPP_FPV_TUNING.xml"/>
+
 
   <section name="INS" prefix="INS_">
     <define name="ROLL_NEUTRAL_DEFAULT" value="0" unit="deg"/>
     <define name="PITCH_NEUTRAL_DEFAULT" value="0" unit="deg"/>
   </section>
 
+
 <!-- End Autopilot Tuning Sections -->
 
   <modules>
-    <!--load name="geo_mag.xml"/-->
+    <load name="geo_mag.xml"/>
 
     <load name="airspeed_ets.xml">
       <define name="AIRSPEED_ETS_SYNC_SEND"/>
-      <define name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/>
+      <define name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/> 
     </load>
 
     <load name="mag_hmc58xx.xml">
@@ -224,7 +230,7 @@
       <define name="HMC58XX_CHAN_Y" value="0"/>
       <define name="HMC58XX_CHAN_Z" value="2"/>
     </load>
-    <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration-->
+    <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
  </modules>
-
+  
 </airframe>
