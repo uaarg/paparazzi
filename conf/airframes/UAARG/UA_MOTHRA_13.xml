@@ -47,7 +47,7 @@
     <subsystem name="imu" type="lisa_mx_v2.1"/>
     <subsystem name="navigation" />
     <subsystem name="control" type="adaptive"/>
-    <subsystem name="ahrs" type="float_cmpl_quat">
+    <subsystem name="ahrs" type="int_cmpl_quat">
       <define name="ASPIRIN_2_DISABLE_MAG" value="TRUE" />
       <define name="USE_MAGNETOMETER" value="TRUE"/>
       <define name="AHRS_FC_MAG_ID" value="MAG_HMC58XX_SENDER_ID"/>
