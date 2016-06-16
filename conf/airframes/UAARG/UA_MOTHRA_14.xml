@@ -69,7 +69,7 @@
     <axis name="ROLL" failsafe_value="9600"/>
     <axis name="PITCH" failsafe_value="-9600"/>
     <axis name="BRAKE" failsafe_value="0"/>
-    <axis name="YAW" failsafe_value="0"/>
+    <axis name="YAW" failsafe_value="-9600"/>
     <axis name="GEAR" failsafe_value="0"/>
   </commands>
   
@@ -79,8 +79,8 @@
     <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="5"/>
     <servo name="DROP" max="2000" neutral="1500" min="1000" no="0"/>
     <servo name="ELEVATOR" max="1000" neutral="1500" min="2000" no="3"/>
-    <servo name="AILERON_RIGHT" max="1800" neutral="1500" min="1200" no="2"/>
-    <servo name="AILERON_LEFT" max="1800" neutral="1500" min="1200" no="1"/>
+    <servo name="AILERON_RIGHT" max="2000" neutral="1500" min="1000" no="2"/>
+    <servo name="AILERON_LEFT" max="2000" neutral="1500" min="1000" no="1"/>
     <servo name="RUDDER" max="2000" neutral="1500" min="1000" no="4"/>
   </servos>
   
@@ -110,7 +110,7 @@
 
 
   <auto_rc_commands> <!--controls available to pilot in AUTO2-->
-    <set value="@YAW+280" command="YAW"/>
+    <!--set value="@YAW+280" command="YAW"/-->
     <set command="GEAR" value="@GEAR"/>
     <set value="@AUX1+476" command="BRAKE"/>
   </auto_rc_commands>

@@ -39,13 +39,13 @@
 
     <block name="Absolute_Termination"><!-- for GCS operator to kill the plane. Does not deroute-->
       <set value="1" var="kill_throttle"/>
-      <attitude pitch="4000" height="0" roll="2000" throttle="0" vmode="throttle"/>
+      <attitude pitch="4000" height="0" roll="2000" yaw="4000" throttle="0" vmode="throttle"/>
       
     </block>
 
     <block name="Termination"><!-- block designed to automatically terminate the plane unless conditions are met-->
       <set value="1" var="kill_throttle"/>
-      <attitude climb="2000" height="0" roll="2000" throttle="0" vmode="throttle"/>
+      <attitude pitch="4000" height="0" roll="4000" throttle="0" vmode="throttle" yaw="4000"/>
       <exception cond="2 > datalink_time" deroute="Termination_Recovery"/>
       
     </block>

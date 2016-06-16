@@ -26,12 +26,12 @@
       <message name="IR_SENSORS"          period="1.2"/>
       <message name="SURVEY"              period="2.1"/>
       <message name="GPS_SOL"             period="2.0"/>
-      <message name="IMU_ACCEL"           period=".8"/>
-      <message name="IMU_GYRO"            period=".6"/>
-      <message name="IMU_MAG"             period=".5"/>
-      <message name="IMU_ACCEL_RAW"       period=".5"/>
-      <message name="IMU_GYRO_RAW"        period=".5"/>
-      <message name="IMU_MAG_RAW"         period=".5"/>
+      <message name="IMU_ACCEL"           period="10"/>
+      <message name="IMU_GYRO"            period="10"/>
+      <message name="IMU_MAG"             period="10"/>
+      <message name="IMU_ACCEL_RAW"       period="10"/>
+      <message name="IMU_GYRO_RAW"        period="10"/>
+      <message name="IMU_MAG_RAW"         period="10"/>
       <message name="CAM"                 period="0.5"/>
       <message name="CAM_POINT"           period="1.0"/>
       <message name="COMMANDS"            period="5"/>
