@@ -11,11 +11,11 @@
 
   <section name="AUTO1" prefix="AUTO1_"><!-- roll and pitch in auto1-->
     <define name="MAX_ROLL" value="40." unit="deg"/>
-    <define name="MAX_PITCH" value="42." unit="deg"/>
+    <define name="MAX_PITCH" value="40." unit="deg"/>
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
-    <define name="ROLL_MAX_SETPOINT" value="40." unit="deg"/>
+    <define name="ROLL_MAX_SETPOINT" value="35." unit="deg"/>
     <define name="PITCH_MAX_SETPOINT" value="40." unit="deg"/>
     <define name="PITCH_MIN_SETPOINT" value="-10." unit="deg"/>
 
@@ -23,13 +23,13 @@
     <define name="PITCH_DGAIN" value="1.5"/>
 
     <define name="ELEVATOR_OF_ROLL" value="4018"/>
-    <define name="AILERON_OF_THROTTLE" value="-.203"/>
+    <!--define name="AILERON_OF_THROTTLE" value="-.203"/-->
 
     <define name="ROLL_ATTITUDE_GAIN" value="21698"/> <!--roll_pgain-->
-    <define name="ROLL_RATE_GAIN" value="0"/><!-- roll_dgain-->
+    <define name="ROLL_RATE_GAIN" value="1500"/><!-- roll_dgain-->
 
     <define name="COURSE_PGAIN" value="1.37"/>
-    <define name="COURSE_DGAIN" value="0.3"/> <!-- .3 -->
+    <define name="COURSE_DGAIN" value="17.1" UNIT="deg"/> <!-- .3 -->
     <!--define name="COURSE_PRE_BANK_CORRECTION" value="1.47"/--> <!-- usually 1 -->
 
     <define name="ROLL_SLEW" value="0.1"/> <!-- not too sure trying playing around with it. -->
@@ -41,14 +41,14 @@
     <define name="POWER_CTL_BAT_NOMINAL" value="14.7" unit="V"/>
     <define name="THROTTLE_SLEW_LIMITER" value="1.5" unit="s"/>
 
-    <define name="ALTITUDE_MAX_CLIMB" value="5."/>
-    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.56"/>
-    <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.11"/>
-    <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.95"/>
+    <define name="ALTITUDE_MAX_CLIMB" value="3."/>
+    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.54"/>
+    <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.30"/>
+    <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="1"/>
     <define name="AUTO_THROTTLE_LOITER_TRIM" value="3248"/>
     <define name="AUTO_THROTTLE_DASH_TRIM" value="2492"/>
-    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.075" unit="%/(m/s)"/> <!--throttle_incr-->
-    <define name="AUTO_THROTTLE_PGAIN" value="0.01"/>
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.10" unit="%/(m/s)"/> <!--throttle_incr-->
+    <define name="AUTO_THROTTLE_PGAIN" value="0.02"/>
     <define name="AUTO_THROTTLE_IGAIN" value="0.1"/>
     <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.09"/><!--pitch_of_vz-->
 
@@ -64,13 +64,15 @@
 
   </section>
 
-  <section name="NAV" />
+  <section NAME="NAV">
+    <define VALUE="60." NAME="DEFAULT_CIRCLE_RADIUS"/>
+  </section>
 
   <section name="AGGRESSIVE" prefix="AGR_">
-    <define name="BLEND_START" value="75"/><!-- Altitude Error to Initiate Aggressive Climb-->
+    <define name="BLEND_START" value="60"/><!-- Altitude Error to Initiate Aggressive Climb-->
     <define name="BLEND_END" value="15"/><!-- Altitude Error to Blend Aggressive to Regular Climb Modes-->
     <define name="CLIMB_THROTTLE" value="1.00"/><!-- Gaz for Aggressive Climb -->
-    <define name="CLIMB_PITCH" value="0.6"/><!-- Pitch for Aggressive Climb -->
+    <define name="CLIMB_PITCH" value="0.67"/><!-- Pitch for Aggressive Climb -->
     <define name="DESCENT_THROTTLE" value="0.1"/><!-- Gaz for Aggressive Decent -->
     <define name="DESCENT_PITCH" value="-0.25"/><!-- Pitch for Aggressive Decent -->
     <define name="CLIMB_NAV_RATIO" value="0.8"/><!-- Percent Navigation for Altitude Error Equal to Start Altitude -->

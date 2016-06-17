@@ -51,6 +51,7 @@
       <define name="ASPIRIN_2_DISABLE_MAG" value="TRUE" />
       <define name="USE_MAGNETOMETER" value="TRUE"/>
       <define name="AHRS_FC_MAG_ID" value="MAG_HMC58XX_SENDER_ID"/>
+      <define name="AHRS_GRAVITY_HEURISTIC_FACTOR" value="5"/>
       <!--define name="AHRS_ACCEL_OMEGA" value=".9"/>
       <define name="AHRS_MAG_OMEGA" value=".9"/--> <!---Adjust this for mag/gyro heading mixing--->
     </subsystem>
@@ -69,7 +70,7 @@
     <axis name="ROLL" failsafe_value="9600"/>
     <axis name="PITCH" failsafe_value="-9600"/>
     <axis name="BRAKE" failsafe_value="0"/>
-    <axis name="YAW" failsafe_value="0"/>
+    <axis name="YAW" failsafe_value="-9600"/>
     <axis name="GEAR" failsafe_value="0"/>
   </commands>
   
@@ -79,8 +80,8 @@
     <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="5"/>
     <servo name="DROP" max="2000" neutral="1500" min="1000" no="0"/>
     <servo name="ELEVATOR" max="1000" neutral="1500" min="2000" no="3"/>
-    <servo name="AILERON_RIGHT" max="1800" neutral="1500" min="1200" no="2"/>
-    <servo name="AILERON_LEFT" max="1800" neutral="1500" min="1200" no="1"/>
+    <servo name="AILERON_RIGHT" max="2000" neutral="1500" min="1000" no="2"/>
+    <servo name="AILERON_LEFT" max="2000" neutral="1500" min="1000" no="1"/>
     <servo name="RUDDER" max="2000" neutral="1500" min="1000" no="4"/>
   </servos>
   
@@ -110,7 +111,7 @@
 
 
   <auto_rc_commands> <!--controls available to pilot in AUTO2-->
-    <set value="@YAW+280" command="YAW"/>
+    <!--set value="@YAW+280" command="YAW"/-->
     <set command="GEAR" value="@GEAR"/>
     <set value="@AUX1+476" command="BRAKE"/>
   </auto_rc_commands>
@@ -192,7 +193,7 @@
   <section name="MISC">
     <!--define name="CLIMB_AIRSPEED" value="12." unit="m/s"/ notin us comp--> 
     <define name="NOMINAL_AIRSPEED" value="15." unit="m/s"/>
-    <define name="CARROT" value="3." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
+    <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
     <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="60."/>
   </section>
