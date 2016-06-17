@@ -26,7 +26,7 @@
     <!--define name="AILERON_OF_THROTTLE" value="-.203"/-->
 
     <define name="ROLL_ATTITUDE_GAIN" value="21698"/> <!--roll_pgain-->
-    <define name="ROLL_RATE_GAIN" value="0"/><!-- roll_dgain-->
+    <define name="ROLL_RATE_GAIN" value="1500"/><!-- roll_dgain-->
 
     <define name="COURSE_PGAIN" value="1.37"/>
     <define name="COURSE_DGAIN" value="17.1" UNIT="deg"/> <!-- .3 -->
