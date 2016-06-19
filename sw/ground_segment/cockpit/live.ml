@@ -1468,10 +1468,10 @@ let listen_tcas = fun a timestamp ->
   tele_bind "TCAS_RA" (get_alarm_tcas a "TCAS RA") timestamp
 
 let get_intruders = fun (geomap:G.widget) _sender vs ->
-  let f = fun s -> Pprz.float_assoc s vs in
-  let i = fun s -> float (Pprz.int_assoc s vs) in
-  let name = Pprz.string_assoc "name" vs
-  and id = Pprz.string_assoc "id" vs
+  let f = fun s -> PprzLink.float_assoc s vs in
+  let i = fun s -> float (PprzLink.int_assoc s vs) in
+  let name = PprzLink.string_assoc "name" vs
+  and id = PprzLink.string_assoc "id" vs
   and time = Unix.gettimeofday ()
   and lat = (i "lat") /. 1e7
   and lon = (i "lon") /. 1e7 in

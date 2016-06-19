@@ -286,13 +286,11 @@ static void send_ctl_a(struct transport_tx *trans, struct link_device *dev)
                         &h_ctl_roll_setpoint,
                         &h_ctl_ref.roll_angle,
                         &(stateGetNedToBodyEulers_f()->phi),
-                        &(stateGetBodyRates_f()->p),
                         &h_ctl_aileron_setpoint,
                         &h_ctl_pitch_sum_err,
                         &h_ctl_pitch_loop_setpoint,
                         &h_ctl_ref.pitch_angle,
                         &(stateGetNedToBodyEulers_f()->theta),
-                        &stateGetBodyRates_f()->q,
                         &h_ctl_elevator_setpoint);
 }
 #endif

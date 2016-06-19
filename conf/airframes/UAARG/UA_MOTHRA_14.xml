@@ -5,32 +5,46 @@
 
   <firmware name="fixedwing">
     <target name="ap" board="lisa_mx_2.1">
-      
-     <subsystem name="ins" type="alt_float">
+  
+     <module name="ins" type="alt_float">
        <define name="USE_BAROMETER" value="TRUE"/>
-     </subsystem>
+     </module>
 
       <define name="UAARG_MOTHRA"/>
       <define name="USE_ADC"/>
-      <define name="USE_I2C1"/>
-
+      
     </target>
+
 
     <target name="sim" board="pc">
-      <subsystem name="ins" type="alt_float"/>
     
+      <module name="ins" type="alt_float"/>
+      
     </target>
 
-    <subsystem name="radio_control" type="spektrum">
+
+
+    <module name="radio_control" type="spektrum">
         <define name="RADIO_MODE" value="RADIO_AUX2"/>
         <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
-    </subsystem>
-
-    <subsystem name="actuators"     type="pwm">
-      
-      <!-- define name="USE_SERVOS_7AND8"/-->
-    </subsystem>
+    </module>
     
+    <module name="telemetry" type="transparent">
+      <configure name="MODEM_BAUD" value="B57600"/>
+    </module>
+    
+    <module name="ahrs" type="int_cmpl_quat">
+      <define name="ASPIRIN_2_DISABLE_MAG" value="TRUE" />
+      <define name="USE_MAGNETOMETER" value="TRUE"/>
+      <define name="AHRS_FC_MAG_ID" value="MAG_HMC58XX_SENDER_ID"/>
+      <define name="AHRS_GRAVITY_HEURISTIC_FACTOR" value="5"/>
+    </module>
+
+    <module name="imu" type="lisa_mx_v2.1"/>
+    <module name="navigation" />
+    <module name="control" type="adaptive"/>
+    <module name="actuators"     type="pwm"/>
+  
     <define name="RC_LOST_MODE" value="PPRZ_MODE_AUTO2"/>
     <define name="AGR_CLIMB"/>
     <define name="LOITER_TRIM"/>
@@ -38,31 +52,33 @@
 
 
 
-    <subsystem name="gps" type="ublox">
-      <configure name="GPS_BAUD" value="B57600"/>
-    </subsystem>
-    <subsystem name="telemetry" type="transparent">
-      <configure name="MODEM_BAUD" value="B57600"/>
-    </subsystem>
-    <subsystem name="imu" type="lisa_mx_v2.1"/>
-    <subsystem name="navigation" />
-    <subsystem name="control" type="adaptive"/>
-    <subsystem name="ahrs" type="int_cmpl_quat">
-      <define name="ASPIRIN_2_DISABLE_MAG" value="TRUE" />
-      <define name="USE_MAGNETOMETER" value="TRUE"/>
-      <define name="AHRS_FC_MAG_ID" value="MAG_HMC58XX_SENDER_ID"/>
-      <define name="AHRS_GRAVITY_HEURISTIC_FACTOR" value="5"/>
-      <!--define name="AHRS_ACCEL_OMEGA" value=".9"/>
-      <define name="AHRS_MAG_OMEGA" value=".9"/--> <!---Adjust this for mag/gyro heading mixing--->
-    </subsystem>
-    
-
+ <module name="gps" type="ublox"/>
   
     <configure name="NO_LUFTBOOT" value="1"/>
     <configure name="FLASH_MODE" value="SWD"/>
-    <!---<configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
 
   </firmware>
+
+
+  <modules>
+    <load name="geo_mag.xml"/>
+
+    <load name="airspeed_ets.xml">
+      <define name="AIRSPEED_ETS_SYNC_SEND"/>
+      <configure name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/> 
+    </load>
+
+    <load name="mag_hmc58xx.xml">
+      <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
+      <configure name="MAG_HMC58XX_I2C_DEV" value="i2c2"/>
+      <define name="HMC58XX_CHAN_X" value="1"/>
+      <define name="HMC58XX_CHAN_Y" value="0"/>
+      <define name="HMC58XX_CHAN_Z" value="2"/>
+    </load>
+    <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
+ </modules>
+
+
 
 <!--The following is the commands sections. This deals with how the control surface relate to movement and rc inpu-->
   <commands> <!--The commands the autopilot board outputs-->
@@ -134,12 +150,12 @@
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
 
-<define name="MAG_X_NEUTRAL" value="-82"/>
-<define name="MAG_Y_NEUTRAL" value="-12"/>
-<define name="MAG_Z_NEUTRAL" value="18"/>
-<define name="MAG_X_SENS" value="2.8870139674" integer="16"/>
-<define name="MAG_Y_SENS" value="2.86927129735" integer="16"/>
-<define name="MAG_Z_SENS" value="3.51898695561" integer="16"/>
+    <define name="MAG_X_NEUTRAL" value="-82"/>
+    <define name="MAG_Y_NEUTRAL" value="-12"/>
+    <define name="MAG_Z_NEUTRAL" value="18"/>
+    <define name="MAG_X_SENS" value="2.8870139674" integer="16"/>
+    <define name="MAG_Y_SENS" value="2.86927129735" integer="16"/>
+    <define name="MAG_Z_SENS" value="3.51898695561" integer="16"/>
 
 
 
@@ -214,24 +230,5 @@
   </section>
 
 
-<!-- End Autopilot Tuning Sections -->
-
-  <modules>
-    <load name="geo_mag.xml"/>
-
-    <load name="airspeed_ets.xml">
-      <define name="AIRSPEED_ETS_SYNC_SEND"/>
-      <define name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/> 
-    </load>
-
-    <load name="mag_hmc58xx.xml">
-      <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
-      <configure name="MAG_HMC58XX_I2C_DEV" value="i2c2"/>
-      <define name="HMC58XX_CHAN_X" value="1"/>
-      <define name="HMC58XX_CHAN_Y" value="0"/>
-      <define name="HMC58XX_CHAN_Z" value="2"/>
-    </load>
-    <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration--> 
- </modules>
-  
+<!-- End Autopilot Tuning Sections -->  
 </airframe>
