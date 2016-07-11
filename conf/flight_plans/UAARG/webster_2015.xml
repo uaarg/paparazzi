@@ -113,6 +113,12 @@
     <block group="home" key="Ctrl+a" name="Standby" strip_button="Standby" strip_icon="home.png">
       <circle height="100" radius="nav_radius" wp="STDBY"/>
     </block>
+    <block name="LKN Flyover">
+      <while cond="TRUE">
+        <circle radius="nav_radius " until="stage_time > 43" wp="LKN"/>
+      </while>
+      <deroute block="OAT Rising Circle"/>
+    </block>
     <block name="WP_HOME">
       <circle radius="nav_radius" wp="HOME"/>
     </block>
@@ -148,15 +154,6 @@
       <circle radius="nav_radius" until="stage_time > 17" wp="b"/>
       <go approaching_time="3" wp="_4sa"/>
       <deroute block="LKN Flyover"/>
-    </block>
-    <block name="LKN Flyover">
-      <go approaching_time="0" wp="bLKN"/>
-      <path approaching_time="2" wpts="bLKN, LKN"/>
-      <while cond="TRUE">
-        <circle radius="nav_radius " until="stage_time > 43" wp="LKN"/>
-        <circle radius="nav_radius + 30" until="stage_time > 43+31.4193*5/13" wp="LKN"/>
-      </while>
-      <deroute block="OAT Rising Circle"/>
     </block>
     <block name="Go aLKN">
       <go wp="aLKN"/>
