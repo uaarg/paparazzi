@@ -75,6 +75,11 @@
       <define name="HMC58XX_CHAN_Y" value="0"/>
       <define name="HMC58XX_CHAN_Z" value="2"/>
     </load>
+
+    <load name="waldo_msg.xml">
+      <define name="WALDO_MSG_FREQ" value="2"/>
+      <define name="WALDO_DEBUG_MSG"/>
+    </load>
     <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration-->
  </modules>
 
