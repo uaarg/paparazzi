@@ -28,7 +28,7 @@
 #include "subsystems/datalink/downlink.h"
 #include "subsystems/imu.h"
 #include "state.h" //for estimator and attitude
-#include "gps.h"
+#include "subsystems/gps.h"
 #include "generated/flight_plan.h"
 
 int countup = 0;
