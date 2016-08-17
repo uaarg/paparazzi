@@ -56,6 +56,7 @@ struct RadioControl {
   uint8_t frame_rate;
   uint8_t frame_cpt;
   pprz_t  values[RADIO_CONTROL_NB_CHANNEL];
+  pprz_t  neutrals[RADIO_CONTROL_NB_CHANNEL];
 };
 
 extern struct RadioControl radio_control;
