@@ -36,11 +36,30 @@
       <define name="AHRS_USE_GPS_HEADING" value="FALSE"/>
     </module>
 
-    <module name="gps" type="ublox"/>
+    <module name="mag_hmc58xx.xml">
+      <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
+      <configure name="MAG_HMC58XX_I2C_DEV" value="i2c2"/>
+      <define name="HMC58XX_CHAN_X" value="1"/>
+      <define name="HMC58XX_CHAN_Y" value="0"/>
+      <define name="HMC58XX_CHAN_Z" value="2"/>
+    </module>
+
+
+
+    <module name="gps" type="ublox">
+        <configure name="GPS_BAUD" value="B57600"/>
+    </module>
+    <module name="gps_ubx_ucenter.xml"/>
     <module name="imu" type="lisa_mx_v2.1"/>
     <module name="navigation" />
     <module name="control"/>
     <module name="actuators"     type="pwm"/>
+
+ <!-- Other Modules -->
+    <module name="geo_mag.xml"/>
+    <module name="flight_trim"/>
+
+
 
     <define name="RC_LOST_MODE" value="PPRZ_MODE_AUTO2"/>
     <define name="AGR_CLIMB"/>
@@ -52,19 +71,6 @@
     <!---<configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
 
   </firmware>
-
-  <modules>
-    <load name="geo_mag.xml"/>
-    <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration-->
-    <load name="mag_hmc58xx.xml">
-      <define name="MODULE_HMC58XX_UPDATE_AHRS"/>
-      <configure name="MAG_HMC58XX_I2C_DEV" value="i2c2"/>
-      <define name="HMC58XX_CHAN_X" value="1"/>
-      <define name="HMC58XX_CHAN_Y" value="0"/>
-      <define name="HMC58XX_CHAN_Z" value="2"/>
-    </load>
-  </modules>
-
 
 
 <!--The following is the commands sections. This deals with how the control surface relate to movement and rc inpu-->
@@ -121,12 +127,13 @@
 
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
-    <define name="MAG_X_NEUTRAL" value="-46"/>
-    <define name="MAG_Y_NEUTRAL" value="-4"/>
-    <define name="MAG_Z_NEUTRAL" value="289"/>
-    <define name="MAG_X_SENS" value="3.00962506336" integer="16"/>
-    <define name="MAG_Y_SENS" value="2.96508188226" integer="16"/>
-    <define name="MAG_Z_SENS" value="3.61746210549" integer="16"/>
+    <define name="MAG_X_NEUTRAL" value="-75"/>
+    <define name="MAG_Y_NEUTRAL" value="-8"/>
+    <define name="MAG_Z_NEUTRAL" value="398"/>
+    <define name="MAG_X_SENS" value="3.14325039566" integer="16"/>
+    <define name="MAG_Y_SENS" value="2.94342783443" integer="16"/>
+    <define name="MAG_Z_SENS" value="3.67790088228" integer="16"/>
+
 
     <define name="MAG_X_SIGN" value="1"/>
     <define name="MAG_Y_SIGN" value="1"/>
@@ -169,9 +176,10 @@
     <define name="CARROT" value="4." unit="s"/> <!-- hen carrot time away from waypoint in go and path, Paparazzi determines it has reached the waypoint-->
     <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="60."/>
-    
-    <define name="COMMAND_ROLL_TRIM" value="0"/>
-    <define name="COMMAND_PITCH_TRIM" value="-194."/>
+
+    <define name="COMMAND_ROLL_TRIM" value="0."/>
+    <define name="COMMAND_PITCH_TRIM" value="0."/>
+    <define name="COMMAND_YAW_TRIM" value="0."/>
 
   </section>
 
