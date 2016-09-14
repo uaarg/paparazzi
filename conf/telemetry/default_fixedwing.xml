@@ -76,6 +76,16 @@
       <message name="IMU_MAG_RAW"       period="0.1"/>
       <message name="IMU_ACCEL_RAW"     period="0.1"/>
     </mode>
+    <mode name="scaled_sensors">
+      <message name="DL_VALUE"          period="0.5"/>
+      <message name="ALIVE"             period="2.1"/>
+      <message name="IMU_GYRO"      period="0.1"/>
+      <message name="IMU_MAG"       period="0.1"/>
+      <message name="IMU_ACCEL"     period="0.1"/>
+    </mode>
+    <mode name="magnetic">
+      <message name="IMU_MAG_RAW"       period="0.05"/>
+    </mode>
   </process>
   <process name="Fbw">
     <mode name="default">
