@@ -27,4 +27,4 @@
 	url = https://github.com/tudelft/opencv_bebop.git
 [submodule "sw/ext/missioncommander"]
 	path = sw/ext/missioncommander
-	url = git@github.com:uaarg/missioncommander.git
+	url = https://github.com/uaarg/missioncommander.git
