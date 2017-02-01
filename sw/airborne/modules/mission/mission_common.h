@@ -48,7 +48,8 @@ enum MissionInsertMode {
   Append,         ///< add at the last position
   Prepend,        ///< add before the current element
   ReplaceCurrent, ///< replace current element
-  ReplaceAll      ///< remove all elements and add the new one
+  ReplaceAll,     ///< remove all elements and add the new one
+  ReplaceIndex    ///< replace an element in an index
 };
 
 struct _mission_wp {
@@ -127,7 +128,7 @@ extern void mission_init(void);
  * @param element mission element structure
  * @return return TRUE if insertion is succesful, FALSE otherwise
  */
-extern bool mission_insert(enum MissionInsertMode insert, struct _mission_element *element);
+extern bool mission_insert(enum MissionInsertMode insert, struct _mission_element *element, int insert_ind);
 
 /** Convert mission element's points format if needed
  * @param el pointer to the mission element

@@ -690,7 +690,8 @@
 
   <message name="MISSION_STATUS" id="79">
     <field name="remaining_time" type="float"/>
-    <field name="task_list" type="uint8[]"/>
+    <field name="task_list"  type="uint8[]"/>
+    <field name="task_array" type="uint8[]"/>
   </message>
 
   <message name="CROSS_TRACK_ERROR" id="80">
@@ -2399,6 +2400,7 @@
   <message name="MISSION_GOTO_WP" id="20" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="wp_east" type="float" unit="m"/>
     <field name="wp_north" type="float" unit="m"/>
     <field name="wp_alt" type="float" unit="m">altitude above geoid (MSL)</field>
@@ -2408,6 +2410,7 @@
   <message name="MISSION_GOTO_WP_LLA" id="21" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="wp_lat" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="wp_lon" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="wp_alt" type="int32" unit="mm" alt_unit="m">altitude above geoid (MSL)</field>
@@ -2417,6 +2420,7 @@
   <message name="MISSION_CIRCLE" id="22" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="center_east" type="float" unit="m"/>
     <field name="center_north" type="float" unit="m"/>
     <field name="center_alt" type="float" unit="m">altitude above geoid (MSL)</field>
@@ -2427,6 +2431,7 @@
   <message name="MISSION_CIRCLE_LLA" id="23" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="center_lat" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="center_lon" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="center_alt" type="int32" unit="mm" alt_unit="m">altitude above geoid (MSL)</field>
@@ -2437,6 +2442,7 @@
   <message name="MISSION_SEGMENT" id="24" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="segment_east_1" type="float" unit="m"/>
     <field name="segment_north_1" type="float" unit="m"/>
     <field name="segment_east_2" type="float" unit="m"/>
@@ -2448,6 +2454,7 @@
   <message name="MISSION_SEGMENT_LLA" id="25" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="segment_lat_1" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="segment_lon_1" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="segment_lat_2" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
@@ -2459,6 +2466,7 @@
   <message name="MISSION_PATH" id="26" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="point_east_1" type="float" unit="m"/>
     <field name="point_north_1" type="float" unit="m"/>
     <field name="point_east_2" type="float" unit="m"/>
@@ -2477,6 +2485,7 @@
   <message name="MISSION_PATH_LLA" id="27" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="point_lat_1" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="point_lon_1" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="point_lat_2" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
@@ -2495,6 +2504,7 @@
   <message name="MISSION_SURVEY" id="28" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="survey_east_1" type="float" unit="m"/>
     <field name="survey_north_1" type="float" unit="m"/>
     <field name="survey_east_2" type="float" unit="m"/>
@@ -2506,6 +2516,7 @@
   <message name="MISSION_SURVEY_LLA" id="29" link="forwarded">
     <field name="ac_id" type="uint8"/>
     <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
+    <field name="insert_index" type="uint8"/>
     <field name="survey_lat_1" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="survey_lon_1" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
     <field name="survey_lat_2" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>

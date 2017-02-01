@@ -44,7 +44,7 @@ void mission_init(void)
 
 
 // Insert element
-bool mission_insert(enum MissionInsertMode insert, struct _mission_element *element)
+bool mission_insert(enum MissionInsertMode insert, struct _mission_element *element, int insert_ind)
 {
   uint8_t tmp;
   // convert element if needed, return FALSE if failed
@@ -74,6 +74,10 @@ bool mission_insert(enum MissionInsertMode insert, struct _mission_element *elem
       mission.current_idx = 0;
       mission.insert_idx = 1;
       break;
+    case ReplaceIndex:
+      // reset specific Element and index
+      mission.elements[insert_ind] = *element;
+      break;
     default:
       // unknown insertion mode
       return false;
@@ -102,12 +106,14 @@ void mission_status_report(void)
 {
   // build task list
   uint8_t task_list[MISSION_ELEMENT_NB];
+  uint8_t task_array[MISSION_ELEMENT_NB];
   uint8_t i = mission.current_idx, j = 0;
   while (i != mission.insert_idx) {
+    task_array[j] = (uint8_t)mission.elements[i].task;
     task_list[j++] = (uint8_t)mission.elements[i].type;
     i = (i + 1) % MISSION_ELEMENT_NB;
   }
-  if (j == 0) { task_list[j++] = 0; } // Dummy value if task list is empty
+  if (j == 0) { task_array[j] = 0; task_list[j++] = 0; } // Dummy value if task list is empty
   //compute remaining time (or -1. if no time limit)
   float remaining_time = -1.;
   if (mission.elements[mission.current_idx].duration > 0.) {
@@ -115,7 +121,7 @@ void mission_status_report(void)
   }
 
   // send status
-  DOWNLINK_SEND_MISSION_STATUS(DefaultChannel, DefaultDevice, &remaining_time, j, task_list);
+  DOWNLINK_SEND_MISSION_STATUS(DefaultChannel, DefaultDevice, &remaining_time, j, task_list, task_array);
 }
 
 
@@ -136,7 +142,7 @@ int mission_parse_GOTO_WP(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_GOTO_WP_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
 }
 
 int mission_parse_GOTO_WP_LLA(void)
@@ -156,7 +162,7 @@ int mission_parse_GOTO_WP_LLA(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_GOTO_WP_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
 }
 
 int mission_parse_CIRCLE(void)
@@ -173,7 +179,7 @@ int mission_parse_CIRCLE(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_CIRCLE_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
 }
 
 int mission_parse_CIRCLE_LLA(void)
@@ -194,7 +200,7 @@ int mission_parse_CIRCLE_LLA(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_CIRCLE_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
 }
 
 int mission_parse_SEGMENT(void)
@@ -213,7 +219,7 @@ int mission_parse_SEGMENT(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_SEGMENT_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
 }
 
 int mission_parse_SEGMENT_LLA(void)
@@ -237,7 +243,7 @@ int mission_parse_SEGMENT_LLA(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_SEGMENT_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
 }
 
 int mission_parse_PATH(void)
@@ -268,7 +274,7 @@ int mission_parse_PATH(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_PATH_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
 }
 
 int mission_parse_PATH_LLA(void)
@@ -306,7 +312,7 @@ int mission_parse_PATH_LLA(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_PATH_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
 }
 
 int mission_parse_GOTO_MISSION(void)
