@@ -100,6 +100,7 @@ struct _mission_element {
     struct _mission_path mission_path;
   } element;
 
+  int task;
   float duration; ///< time to spend in the element (<= 0 to disable)
 };
 

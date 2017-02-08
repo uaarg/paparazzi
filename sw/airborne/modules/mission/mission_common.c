@@ -121,7 +121,7 @@ void mission_status_report(void)
   }
 
   // send status
-  DOWNLINK_SEND_MISSION_STATUS(DefaultChannel, DefaultDevice, &remaining_time, j, task_list, task_array);
+  DOWNLINK_SEND_MISSION_STATUS(DefaultChannel, DefaultDevice, &remaining_time, j, task_list, j, task_array);
 }
 
 
@@ -142,7 +142,7 @@ int mission_parse_GOTO_WP(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_GOTO_WP_insert(dl_buffer));
 
-  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_index(dl_buffer));
 }
 
 int mission_parse_GOTO_WP_LLA(void)
@@ -162,7 +162,7 @@ int mission_parse_GOTO_WP_LLA(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_GOTO_WP_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_LLA_insert_index(dl_buffer));
 }
 
 int mission_parse_CIRCLE(void)
@@ -179,7 +179,7 @@ int mission_parse_CIRCLE(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_CIRCLE_insert(dl_buffer));
 
-  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
+  return mission_insert(insert, &me, DL_MISSION_CIRCLE_insert_index(dl_buffer));
 }
 
 int mission_parse_CIRCLE_LLA(void)
@@ -200,7 +200,7 @@ int mission_parse_CIRCLE_LLA(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_CIRCLE_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
+  return mission_insert(insert, &me, DL_MISSION_CIRCLE_LLA_insert_index(dl_buffer));
 }
 
 int mission_parse_SEGMENT(void)
@@ -219,7 +219,7 @@ int mission_parse_SEGMENT(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_SEGMENT_insert(dl_buffer));
 
-  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
+  return mission_insert(insert, &me, DL_MISSION_SEGMENT_insert_index(dl_buffer));
 }
 
 int mission_parse_SEGMENT_LLA(void)
@@ -243,7 +243,7 @@ int mission_parse_SEGMENT_LLA(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_SEGMENT_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
+  return mission_insert(insert, &me, DL_MISSION_SEGMENT_LLA_insert_index(dl_buffer));
 }
 
 int mission_parse_PATH(void)
@@ -274,7 +274,7 @@ int mission_parse_PATH(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_PATH_insert(dl_buffer));
 
-  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
+  return mission_insert(insert, &me, DL_MISSION_PATH_insert_index(dl_buffer));
 }
 
 int mission_parse_PATH_LLA(void)
@@ -312,7 +312,7 @@ int mission_parse_PATH_LLA(void)
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_PATH_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_idx(dl_buffer));
+  return mission_insert(insert, &me, DL_MISSION_PATH_LLA_insert_index(dl_buffer));
 }
 
 int mission_parse_GOTO_MISSION(void)
