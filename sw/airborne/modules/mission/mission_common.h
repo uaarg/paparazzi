@@ -100,8 +100,9 @@ struct _mission_element {
     struct _mission_path mission_path;
   } element;
 
-  int task;
+  uint8_t task;
   float duration; ///< time to spend in the element (<= 0 to disable)
+  uint8_t index;      ///< index of mission element
 };
 
 /** Max number of elements in the tasks' list

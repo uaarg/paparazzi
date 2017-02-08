@@ -151,6 +151,10 @@
       <go wp="swp18"/>
       <deroute block="Standby"/>
     </block>
+    <block name="Mission" strip_button="Mission">
+      <call fun="mission_run()"/>
+      <deroute block="Standby"/>
+    </block>
     <block name="LKN Flyover">
       <go approaching_time="0" wp="bLKN"/>
       <path approaching_time="2" wpts="bLKN, LKN"/>
