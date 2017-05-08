@@ -9,24 +9,19 @@
      <module name="ins" type="alt_float">
        <define name="USE_BAROMETER" value="TRUE"/>
      </module>
-
       <define name="UAARG_MOTHRA"/>
       <define name="USE_ADC"/>
-
     </target>
 
 
     <target name="sim" board="pc">
-
       <module name="ins" type="alt_float"/>
-
     </target>
-
-
 
     <module name="radio_control" type="spektrum">
         <define name="RADIO_MODE" value="RADIO_AUX2"/>
         <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
+        <define name="RADIO_CONTROL_SPEKTRUM_OLD_SIGNS"/>
     </module>
 
     <module name="telemetry" type="transparent">
@@ -64,6 +59,7 @@
     <load name="geo_mag.xml"/>
 
     <load name="airspeed_ets.xml">
+        <define name="USE_AIRSPEED_ETS"/>
       <define name="AIRSPEED_ETS_SYNC_SEND"/>
       <configure name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/>
     </load>
@@ -76,6 +72,8 @@
       <define name="HMC58XX_CHAN_Z" value="2"/>
     </load>
 
+    <load name="mission_fw.xml">
+    </load>
     <load name="waldo_msg.xml">
       <define name="WALDO_MSG_FREQ" value="2"/>
       <define name="WALDO_DEBUG_MSG"/>
@@ -108,10 +106,10 @@
 
 
   <command_laws> <!--How the commands relate to servo movement-->
-    <set value="@ROLL+.9*(@BRAKE)" servo="AILERON_LEFT"/>
-    <set value="@ROLL-.9*(@BRAKE)" servo="AILERON_RIGHT"/>
+    <set value="@ROLL*1.5" servo="AILERON_LEFT"/>
+    <set value="@ROLL*1.5" servo="AILERON_RIGHT"/>
     <set value="@THROTTLE" servo="THROTTLE"/>
-    <set value="@PITCH" servo="ELEVATOR"/>
+    <set value="@PITCH*2" servo="ELEVATOR"/>
     <set value="@YAW" servo="RUDDER"/>
     <set value="@GEAR" servo="DROP"/>
   </command_laws>
@@ -226,7 +224,7 @@
 
 <!--AUTOPILOT TUNING SECTION-->
 
-  <include href="conf/airframes/UAARG/EPP_FPV_TUNING.xml"/>
+  <include href="conf/airframes/UAARG/EPP_FPV_TUNING_DEFAULT.xml"/>
 
 <!-- End Autopilot Tuning Sections -->
 </airframe>

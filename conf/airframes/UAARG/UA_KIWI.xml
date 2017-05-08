@@ -1,46 +1,53 @@
-<!DOCTYPE airframe SYSTEM "airframe.dtd">
+<!DOCTYPE airframe SYSTEM "../airframe.dtd">
 <!-- This is the UA_Mothra airframe file. The plane is equipped with a lisa MX, two spectrum satteilte receivers, ubox neo gps, xbee pro telemetry link, a current sensor(.6V at 0 A and 40mV/A scale, a vbat in with an external resistor of 2kohm. Firmware is flashed via black magic probe.-->
 
-<airframe name="Mothra">
+<airframe name="KIWI">
   <firmware name="fixedwing">
     <target name="ap" board="lisa_mx_2.1">
-     <subsystem name="ins" type="alt_float">
+     <module name="ins" type="alt_float">
        <define name="USE_BAROMETER" value="TRUE"/>
-     </subsystem>
+     </module>
     </target>
 
     <target name="sim" board="pc">
-      <subsystem name="ins" type="alt_float"/>
+      <module name="ins" type="alt_float"/>
     </target>
 
-    <subsystem name="radio_control" type="spektrum">
+    <module name="radio_control" type="spektrum">
         <define name="RADIO_MODE" value="RADIO_AUX2"/>
         <configure name="USE_SECONDARY_SPEKTRUM_RECEIVER" value="1"/>
-    </subsystem>
+    </module>
 
-    <subsystem name="actuators"     type="pwm"/>
+    <module name="actuators"     type="pwm"/>
 
     <define name="RC_LOST_MODE" value="PPRZ_MODE_AUTO2"/>
     <define name="AGR_CLIMB"/>
     <define name="LOITER_TRIM"/>
     <define name="MEASURE_AIRSPEED"/>
 
-    <subsystem name="gps" type="ublox">
+    <module name="gps" type="ublox">
       <configure name="GPS_BAUD" value="B57600"/>
-    </subsystem>
-    <subsystem name="telemetry" type="transparent">
+    </module>
+    <module name="telemetry" type="transparent">
       <configure name="MODEM_BAUD" value="B57600"/>
-    </subsystem>
-    <subsystem name="imu" type="lisa_mx_v2.1"/>
-    <subsystem name="navigation" />
-    <subsystem name="control" />
-    <subsystem name="ahrs" type="float_cmpl_quat">
+    </module>
+    <module name="imu" type="lisa_mx_v2.1"/>
+    <module name="navigation" />
+    <module name="control" />
+    <module name="ahrs" type="float_cmpl_quat">
       <define name="USE_MAGNETOMETER" value="TRUE"/>
-    </subsystem>
+    </module>
 
     <configure name="NO_LUFTBOOT" value="1"/>
     <configure name="FLASH_MODE" value="SWD"/>
     <!---<configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
+
+ <!-- Other Modules -->
+    <module name="geo_mag.xml"/>
+    <module name="flight_trim"/>
+    <module name="waldo_msg">
+        <define name="WALDO_MSG_FREQ" value="10"/>
+    </module>
 
   </firmware>
 
@@ -56,9 +63,8 @@
 
   <servos><!--the servos the outpilot autoputs commands output to-->
     <servo name="THROTTLE" max="2000" neutral="1000" min="1000" no="0"/>
-    <servo name="ELEVON_RIGHT" max="1800" neutral="1500" min="1200" no="2"/>
-    <servo name="ELEVON_LEFT" max="1800" neutral="1500" min="1200" no="1"/>
-
+    <servo name="ELEVON_RIGHT" max="1000" neutral="1500" min="2000" no="2"/>
+    <servo name="ELEVON_LEFT" max="1000" neutral="1500" min="2000" no="1"/>
   </servos>
 
 
@@ -86,6 +92,14 @@
     <set command="GEAR" value="@GEAR"/>
 
   </auto_rc_commands>
+
+
+  <section name="GCS">
+    <define name="ICONS_THEME"         value="flat_theme"/>
+    <define name="SPEECH_NAME"         value="SKYWALKER"/>
+    <define name="AC_ICON"             value="flyingwing"/>
+  </section>
+
 
 
   <!--The following are sensor calibrations that need to be performed-->
@@ -247,11 +261,5 @@
 
 <!-- End Autopilot Tuning Sections -->
 
-  <modules>
-    <!--load name="geo_mag.xml"/-->
-    <load name="morsegen.xml"/>
-
-    <!--load name="send_imu_mag_current.xml"/--> <!-- uncomment this line to measure IMU current Calibration-->
- </modules>
 
 </airframe>

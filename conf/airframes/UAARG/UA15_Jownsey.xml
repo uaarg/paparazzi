@@ -1,7 +1,7 @@
 <!DOCTYPE airframe SYSTEM "../airframe.dtd">
 <!-- This is the UA_Mothra airframe file. The plane is equipped with a lisa MX, two spectrum satteilte receivers, ubox neo gps, xbee pro telemetry link, a current sensor(.6V at 0 A and 40mV/A scale, a vbat in with an external resistor of 2kohm. Firmware is flashed via black magic probe.-->
 
-<airframe name="Falcon1">
+<airframe name="Jownsey1">
 
   <firmware name="fixedwing">
 
@@ -11,6 +11,7 @@
      </module>
       <define name="LISA_FALCON"/>
       <define name="USE_ADC"/>
+      <define name="USE_I2C2"/>
     </target>
 
     <target name="sim" board="pc">
@@ -44,6 +45,13 @@
       <define name="HMC58XX_CHAN_Z" value="2"/>
     </module>
 
+   <module name="airspeed_ets.xml">
+      <define name="USE_AIRSPEED_ETS"/>
+      <define name="AIRSPEED_ETS_SYNC_SEND"/>
+      <configure name="AIRSPEED_ETS_I2C_DEV" value="i2c2"/>
+      <define name="USE_AIRSPEED"/>
+    </module>
+ 
 
 
     <module name="gps" type="ublox">
@@ -52,7 +60,7 @@
     <module name="gps_ubx_ucenter.xml"/>
     <module name="imu" type="lisa_mx_v2.1"/>
     <module name="navigation" />
-    <module name="control"/>
+    <module name="control" type="new" />
     <module name="actuators"     type="pwm"/>
 
  <!-- Other Modules -->
@@ -67,7 +75,6 @@
     <define name="RC_LOST_MODE" value="PPRZ_MODE_AUTO2"/>
     <define name="AGR_CLIMB"/>
     <define name="LOITER_TRIM"/>
-    <define name="MEASURE_AIRSPEED"/>
 
     <configure name="NO_LUFTBOOT" value="1"/>
     <configure name="FLASH_MODE" value="SWD"/>
@@ -198,6 +205,6 @@
 
 <!--AUTOPILOT TUNING SECTION-->
 
-  <include href="conf/airframes/UAARG/EPP_FPV_TUNING_DEFAULT.xml"/>
+  <include href="conf/airframes/UAARG/EPP_FPV_TUNING_AIRSPEED.xml"/>
 <!-- End Autopilot Tuning Sections -->
 </airframe>
