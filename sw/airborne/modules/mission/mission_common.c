@@ -27,6 +27,7 @@
 #include "modules/mission/mission_common.h"
 
 #include <string.h>
+#include "subsystems/navigation/common_nav.h"
 #include "generated/flight_plan.h"
 #include "generated/airframe.h"
 #include "subsystems/datalink/datalink.h"
@@ -43,7 +44,7 @@ void mission_init(void)
 
 
 // Insert element
-bool mission_insert(enum MissionInsertMode insert, struct _mission_element *element)
+bool mission_insert(enum MissionInsertMode insert, struct _mission_element *element, int insert_ind)
 {
   uint8_t tmp;
   // convert element if needed, return FALSE if failed
@@ -73,10 +74,10 @@ bool mission_insert(enum MissionInsertMode insert, struct _mission_element *elem
       mission.current_idx = 0;
       mission.insert_idx = 1;
       break;
-    case ReplaceNexts:
-      tmp = (mission.current_idx + 1) % MISSION_ELEMENT_NB;
-      mission.elements[tmp] = *element;
-      mission.insert_idx = (mission.current_idx + 2) % MISSION_ELEMENT_NB;
+    case ReplaceIndex:
+      // reset specific Element and index
+      mission.elements[insert_ind] = *element;
+      break;
     default:
       // unknown insertion mode
       return false;
@@ -103,14 +104,16 @@ struct _mission_element *mission_get(void)
 // Report function
 void mission_status_report(void)
 {
-  // build index list
+  // build task list
   uint8_t index_list[MISSION_ELEMENT_NB];
+  uint8_t task_array[MISSION_ELEMENT_NB];
   uint8_t i = mission.current_idx, j = 0;
   while (i != mission.insert_idx) {
-    index_list[j++] = mission.elements[i].index;
+    task_array[j] = (uint8_t)mission.elements[i].task;
+    index_list[j++] = (uint8_t)mission.elements[i].index;
     i = (i + 1) % MISSION_ELEMENT_NB;
   }
-  if (j == 0) { index_list[j++] = 0; } // Dummy value if index list is empty
+  if (j == 0) { task_array[j] = 0; index_list[j++] = 0; } // Dummy value if task list is empty
   //compute remaining time (or -1. if no time limit)
   float remaining_time = -1.;
   if (mission.elements[mission.current_idx].duration > 0.) {
@@ -118,7 +121,7 @@ void mission_status_report(void)
   }
 
   // send status
-  DOWNLINK_SEND_MISSION_STATUS(DefaultChannel, DefaultDevice, &remaining_time, j, index_list);
+  DOWNLINK_SEND_MISSION_STATUS(DefaultChannel, DefaultDevice, &remaining_time, j, index_list, j, task_array);
 }
 
 
@@ -137,10 +140,11 @@ int mission_parse_GOTO_WP(void)
   me.element.mission_wp.wp.wp_f.z = DL_MISSION_GOTO_WP_wp_alt(dl_buffer);
   me.duration = DL_MISSION_GOTO_WP_duration(dl_buffer);
   me.index = DL_MISSION_GOTO_WP_index(dl_buffer);
+  me.task = DL_MISSION_GOTO_WP_task(dl_buffer);
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_GOTO_WP_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_insert_index(dl_buffer));
 }
 
 int mission_parse_GOTO_WP_LLA(void)
@@ -158,10 +162,11 @@ int mission_parse_GOTO_WP_LLA(void)
   if (!mission_point_of_lla(&me.element.mission_wp.wp.wp_f, &lla)) { return false; }
   me.duration = DL_MISSION_GOTO_WP_LLA_duration(dl_buffer);
   me.index = DL_MISSION_GOTO_WP_LLA_index(dl_buffer);
+  me.task = DL_MISSION_GOTO_WP_LLA_task(dl_buffer);
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_GOTO_WP_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_GOTO_WP_LLA_insert_index(dl_buffer));
 }
 
 int mission_parse_CIRCLE(void)
@@ -176,10 +181,12 @@ int mission_parse_CIRCLE(void)
   me.element.mission_circle.radius = DL_MISSION_CIRCLE_radius(dl_buffer);
   me.duration = DL_MISSION_CIRCLE_duration(dl_buffer);
   me.index = DL_MISSION_CIRCLE_index(dl_buffer);
+  me.task = DL_MISSION_CIRCLE_task(dl_buffer);
+
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_CIRCLE_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_CIRCLE_insert_index(dl_buffer));
 }
 
 int mission_parse_CIRCLE_LLA(void)
@@ -198,10 +205,12 @@ int mission_parse_CIRCLE_LLA(void)
   me.element.mission_circle.radius = DL_MISSION_CIRCLE_LLA_radius(dl_buffer);
   me.duration = DL_MISSION_CIRCLE_LLA_duration(dl_buffer);
   me.index = DL_MISSION_CIRCLE_LLA_index(dl_buffer);
+  me.task = DL_MISSION_CIRCLE_LLA_task(dl_buffer);
+
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_CIRCLE_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_CIRCLE_LLA_insert_index(dl_buffer));
 }
 
 int mission_parse_SEGMENT(void)
@@ -218,10 +227,12 @@ int mission_parse_SEGMENT(void)
   me.element.mission_segment.to.to_f.z = DL_MISSION_SEGMENT_segment_alt(dl_buffer);
   me.duration = DL_MISSION_SEGMENT_duration(dl_buffer);
   me.index = DL_MISSION_SEGMENT_index(dl_buffer);
+  me.task = DL_MISSION_SEGMENT_task(dl_buffer);
+
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_SEGMENT_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_SEGMENT_insert_index(dl_buffer));
 }
 
 int mission_parse_SEGMENT_LLA(void)
@@ -243,10 +254,11 @@ int mission_parse_SEGMENT_LLA(void)
   if (!mission_point_of_lla(&me.element.mission_segment.to.to_f, &to_lla)) { return false; }
   me.duration = DL_MISSION_SEGMENT_LLA_duration(dl_buffer);
   me.index = DL_MISSION_SEGMENT_LLA_index(dl_buffer);
-
+  me.task = DL_MISSION_SEGMENT_LLA_task(dl_buffer);
+  
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_SEGMENT_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_SEGMENT_LLA_insert_index(dl_buffer));
 }
 
 int mission_parse_PATH(void)
@@ -275,10 +287,12 @@ int mission_parse_PATH(void)
   me.element.mission_path.path_idx = 0;
   me.duration = DL_MISSION_PATH_duration(dl_buffer);
   me.index = DL_MISSION_PATH_index(dl_buffer);
+  me.task = DL_MISSION_PATH_task(dl_buffer);
+
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_PATH_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_PATH_insert_index(dl_buffer));
 }
 
 int mission_parse_PATH_LLA(void)
@@ -314,10 +328,12 @@ int mission_parse_PATH_LLA(void)
   me.element.mission_path.path_idx = 0;
   me.duration = DL_MISSION_PATH_LLA_duration(dl_buffer);
   me.index = DL_MISSION_PATH_LLA_index(dl_buffer);
+  me.task = DL_MISSION_PATH_LLA_task(dl_buffer);
+
 
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_PATH_LLA_insert(dl_buffer));
 
-  return mission_insert(insert, &me);
+  return mission_insert(insert, &me, DL_MISSION_PATH_LLA_insert_index(dl_buffer));
 }
 
 int mission_parse_GOTO_MISSION(void)
@@ -351,3 +367,4 @@ int mission_parse_END_MISSION(void)
   mission.current_idx = mission.insert_idx;
   return true;
 }
+
