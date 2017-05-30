@@ -27,7 +27,6 @@
 #include "modules/mission/mission_common.h"
 
 #include <string.h>
-#include "subsystems/navigation/common_nav.h"
 #include "generated/flight_plan.h"
 #include "generated/airframe.h"
 #include "subsystems/datalink/datalink.h"
@@ -255,7 +254,7 @@ int mission_parse_SEGMENT_LLA(void)
   me.duration = DL_MISSION_SEGMENT_LLA_duration(dl_buffer);
   me.index = DL_MISSION_SEGMENT_LLA_index(dl_buffer);
   me.task = DL_MISSION_SEGMENT_LLA_task(dl_buffer);
-  
+
   enum MissionInsertMode insert = (enum MissionInsertMode)(DL_MISSION_SEGMENT_LLA_insert(dl_buffer));
 
   return mission_insert(insert, &me, DL_MISSION_SEGMENT_LLA_insert_index(dl_buffer));
@@ -367,4 +366,3 @@ int mission_parse_END_MISSION(void)
   mission.current_idx = mission.insert_idx;
   return true;
 }
-
