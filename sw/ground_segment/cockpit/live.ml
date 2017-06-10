@@ -627,6 +627,12 @@ let create_ac = fun ?(confirm_kill=true) alert (geomap:G.widget) (acs_notebook:G
 
 
   (** Insert the flight plan tab *)
+  let pfd_label = GMisc.label ~text: "PFD" () in
+  let pfd_frame = GBin.frame ~shadow_type: `NONE () in
+  ignore (ac_notebook#append_page ~tab_label: pfd_label#coerce pfd_frame#coerce);
+  let pfd_page = new Horizon.pfd pfd_frame
+  and _pfd_page_num = ac_notebook#page_num pfd_frame#coerce in
+
   let fp_label = GMisc.label ~text: "Flight Plan" () in
   ignore ((ac_notebook:GPack.notebook)#append_page ~tab_label:fp_label#coerce fp#window#coerce);
 
@@ -639,12 +645,6 @@ let create_ac = fun ?(confirm_kill=true) alert (geomap:G.widget) (acs_notebook:G
   let gps_frame = GBin.frame ~shadow_type: `NONE () in
   ignore (ac_notebook#append_page ~tab_label: gps_label#coerce gps_frame#coerce);
   let gps_page = new Pages.gps ~visible gps_frame in
-
-  let pfd_label = GMisc.label ~text: "PFD" () in
-  let pfd_frame = GBin.frame ~shadow_type: `NONE () in
-  ignore (ac_notebook#append_page ~tab_label: pfd_label#coerce pfd_frame#coerce);
-  let pfd_page = new Horizon.pfd pfd_frame
-  and _pfd_page_num = ac_notebook#page_num pfd_frame#coerce in
 
   let link_label = GMisc.label ~text: "Link" () in
   let link_frame = GBin.frame ~shadow_type: `NONE () in
