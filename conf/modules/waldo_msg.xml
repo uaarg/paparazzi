@@ -1,0 +1,15 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="waldo_msg">
+  <doc>
+    <description>This module is to rpovde a single msg for the waldo imaging software to subscribe to.</description>
+    <define name="WALDO_MSG_FREQ" value="1" description="if defined, this will change the frequency that telemetry message is sent. Max freq is 10 Hz"/>
+  </doc>
+  <header>
+    <file name="waldo_msg.h"/>
+  </header>
+  <periodic fun="waldo_runner()" freq="10" autorun="TRUE"/>
+  <makefile>
+    <file name="waldo_msg.c"/>
+  </makefile>
+</module>
