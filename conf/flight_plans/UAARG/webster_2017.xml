@@ -26,6 +26,11 @@
     <waypoint lat="38.1412611111" lon="-76.4263055556" name="_searchArea3"/>
     <waypoint lat="38.143925" lon="-76.4220416667" name="_searchArea4"/>
     <waypoint lat="38.1465944444" lon="-76.4235916667" name="_searchArea5"/>
+    <waypoint lat="38.1465944444" lon="-76.4235916667" name="_searchArea6"/>
+    <waypoint lat="38.1465944444" lon="-76.4235916667" name="_searchArea7"/>
+    <waypoint lat="38.1465944444" lon="-76.4235916667" name="_searchArea8"/>
+    <waypoint lat="38.1465944444" lon="-76.4235916667" name="_searchArea9"/>
+    <waypoint lat="38.1465944444" lon="-76.4235916667" name="_searchArea10"/>
     <waypoint alt="60.96" lat="38.145314" lon="-76.429119" name="wp1"/>
     <waypoint alt="91.44" lat="38.149222" lon="-76.429483" name="wp2"/>
     <waypoint alt="91.44" lat="38.150133" lon="-76.430856" name="wp3"/>
@@ -72,7 +77,7 @@
     <waypoint height="50" name="aOAX" x="748.0" y="-18.1"/>
   </waypoints>
   <sectors>
-    <sector color="red" name="Operation_Area" type="dynamic">
+    <sector color="red" name="Operation_Area">
       <corner name="_oparea1"/>
       <corner name="_oparea2"/>
       <corner name="_oparea3"/>
@@ -86,12 +91,17 @@
       <corner name="_oparea11"/>
       <corner name="_oparea12"/>
     </sector>
-    <sector color="yellow" name="Search_Area">
+    <sector color="yellow" name="Search_Area" type="dynamic">
       <corner name="_searchArea1"/>
       <corner name="_searchArea2"/>
       <corner name="_searchArea3"/>
       <corner name="_searchArea4"/>
       <corner name="_searchArea5"/>
+      <corner name="_searchArea6"/>
+      <corner name="_searchArea7"/>
+      <corner name="_searchArea8"/>
+      <corner name="_searchArea9"/>
+      <corner name="_searchArea10"/>
     </sector>
   </sectors>
   <includes>

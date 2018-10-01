@@ -21,15 +21,16 @@
       <papget type="message_field" display="text" x="0" y="780">
         <property name="field" value="ESTIMATOR:z"/>
         <property name="scale" value="3.28084"/>
-        <property name="format" value="AGL:%.1fft"/>
+        <property name="format" value="ASL:%.1fft"/>
         <property name="size" value="20."/>
         <property name="color" value="yellow"/>
       </papget>
 
       <papget type="message_field" display="text" x="450" y="780">
         <property name="field" value="NAVIGATION.dist_home"/>
+	<property name="scale" value="3.28084"/>
         <property name="size" value="20."/>
-        <property name="format" value="HOME dist: %.1fm"/>
+        <property name="format" value="HOME dist: %.1fft"/>
         <property name="color" value="yellow"/>
       </papget>
 

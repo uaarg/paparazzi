@@ -1,0 +1,351 @@
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+
+<flight_plan alt="87" ground_alt="4" lat0="38.1449296" lon0="-76.4278886" max_dist_from_home="950" name="Webster_2016" qfu="270" security_height="25">
+  <header>
+#include "subsystems/datalink/datalink.h"
+</header>
+  <waypoints>
+    <waypoint lat="38.1448481" lon="-76.4278874" name="HOME"/>
+    <waypoint name="STDBY" x="41.9" y="-177.2"/>
+    <waypoint name="CLIMB" x="-21.8" y="-100.9"/>
+    <waypoint lat="38.146269444444" lon="-76.428683333333" name="_oparea1"/>
+    <waypoint lat="38.151625" lon="-76.428683333333" name="_oparea2"/>
+    <waypoint lat="38.151888888889" lon="-76.431466666667" name="_oparea3"/>
+    <waypoint lat="38.150594444444" lon="-76.435361111111" name="_oparea4"/>
+    <waypoint lat="38.147566666667" lon="-76.432341666667" name="_oparea5"/>
+    <waypoint lat="38.1446666667" lon="-76.4329472222" name="_oparea6"/>
+    <waypoint lat="38.1432555556" lon="-76.4347666667" name="_oparea7"/>
+    <waypoint lat="38.1404638889" lon="-76.4326361111" name="_oparea8"/>
+    <waypoint lat="38.1407194444" lon="-76.4260138889" name="_oparea9"/>
+    <waypoint lat="38.1437611111" lon="-76.4212055556" name="_oparea10"/>
+    <waypoint lat="38.1473472222" lon="-76.4232111111" name="_oparea11"/>
+    <waypoint lat="38.1461305556" lon="-76.4266527778" name="_oparea12"/>
+    <waypoint lat="38.143155555556" lon="-76.433880555556" name="_searchArea1"/>
+    <waypoint lat="38.141038888889" lon="-76.432230555556" name="_searchArea2"/>
+    <waypoint lat="38.141261111111" lon="-76.426305555556" name="_searchArea3"/>
+    <waypoint lat="38.143925" lon="-76.422041666667" name="_searchArea4"/>
+    <waypoint lat="38.146594444444" lon="-76.423591666667" name="_searchArea5"/>
+    <waypoint alt="60.96" lat="38.145313888889" lon="-76.429119444444" name="wp1"/>
+    <waypoint alt="91.44" lat="38.149222222222" lon="-76.429483333333" name="wp2"/>
+    <waypoint alt="91.44" lat="38.150133333333" lon="-76.430855555556" name="wp3"/>
+    <waypoint alt="91.44" lat="38.14895" lon="-76.432286111111" name="wp4"/>
+    <waypoint alt="121.92" lat="38.147011111111" lon="-76.430641666667" name="wp5"/>
+    <waypoint alt="60.96" lat="38.143783333333" lon="-76.431994444444" name="wp6"/>
+    <waypoint alt="91.44" lat="38.148778" lon="-76.429073" name="bwp2"/>
+    <waypoint alt="91.44" lat="38.149878" lon="-76.430176" name="bwp3"/>
+    <waypoint alt="91.4" lat="38.150690" lon="-76.431497" name="awp3"/>
+    <waypoint alt="91.4" lat="38.149779" lon="-76.432825" name="bwp4"/>
+    <waypoint alt="121.9" lat="38.148110" lon="-76.431594" name="awp4"/>
+    <waypoint alt="121.9" lat="38.146267" lon="-76.429966" name="awp5"/>
+    <waypoint alt="121.9" lat="38.144696" lon="-76.430349" name="bwp6"/>
+    <waypoint height="25" name="preLanding" x="-284.6" y="150.5"/>
+    <waypoint height="25.0" name="preLanding1" x="-148.8" y="78.5"/>
+    <waypoint height="15" name="preLanding2" x="-111.5" y="23.8"/>
+    <waypoint height="6" name="preLanding3" x="-76.7" y="-19.2"/>
+    <waypoint height="3" name="preLanding4" x="-45.5" y="-62.4"/>
+    <waypoint height="0" name="Landing" x="-29.2" y="-94.2"/>
+    <waypoint height="50.0" name="bswp1" x="-424.0" y="-131.2"/>
+    <waypoint height="50" name="swp1" x="-501.1" y="-239.0"/>
+    <waypoint height="50" name="swp2" x="-354.3" y="-422.0"/>
+    <waypoint height="50" name="swp3" x="112.5" y="-368.1"/>
+    <waypoint height="50" name="swp4" x="258.4" y="-296.4"/>
+    <waypoint height="50" name="swp5" x="425.3" y="-196.1"/>
+    <waypoint height="50" name="swp6" x="332.2" y="-189.6"/>
+    <waypoint height="50" name="swp7" x="98.2" y="-301.1"/>
+    <waypoint name="swp8" x="-259.9" y="-349.9"/>
+    <waypoint height="50" name="swp9" x="63.8" y="-234.6"/>
+    <waypoint height="50" name="swp10" x="427.7" y="-62.7"/>
+    <waypoint height="50" name="swp11" x="329.7" y="-34.1"/>
+    <waypoint height="50" name="swp12" x="-280.8" y="-285.0"/>
+    <waypoint height="50" name="swp13" x="-206.3" y="-206.6"/>
+    <waypoint height="50" name="swp14" x="393.1" y="36.0"/>
+    <waypoint height="50" name="swp15" x="275.2" y="57.3"/>
+    <waypoint height="50" name="swp16" x="-341.2" y="-188.2"/>
+    <waypoint height="50" name="swp17" x="-245.8" y="-96.4"/>
+    <waypoint height="50" name="swp18" x="344.4" y="142.2"/>
+    <waypoint name="north" x="-415.2" y="979.3"/>
+    <waypoint name="east" x="1168.4" y="352.0"/>
+    <waypoint name="south" x="364.7" y="-1098.6"/>
+    <waypoint name="west" x="-1129.5" y="-539.9"/>
+    <waypoint name="avoid1" x="-630.5" y="-297.5"/>
+    <waypoint name="avoid2" x="-593.4" y="-383.1"/>
+    <waypoint name="avoid3" x="-551.0" y="-454.0"/>
+    <waypoint height="50" name="bLKN" x="570.9" y="99.1"/>
+    <waypoint height="50" name="LKN" x="590.9" y="50.1"/>
+    <waypoint height="50" name="aLKN" x="608.4" y="-27.0"/>
+    <waypoint height="50" name="SRIC" x="531.0" y="219.4"/>
+    <waypoint height="50" name="bOAX" x="713.0" y="118.3"/>
+    <waypoint height="50" name="OAX" x="726.1" y="58.6"/>
+    <waypoint height="50" name="aOAX" x="748.0" y="-18.1"/>
+  </waypoints>
+  <sectors>
+    <sector color="red" name="Operation_Area">
+      <corner name="_oparea1"/>
+      <corner name="_oparea2"/>
+      <corner name="_oparea3"/>
+      <corner name="_oparea4"/>
+      <corner name="_oparea5"/>
+      <corner name="_oparea6"/>
+      <corner name="_oparea7"/>
+      <corner name="_oparea8"/>
+      <corner name="_oparea9"/>
+      <corner name="_oparea10"/>
+      <corner name="_oparea11"/>
+      <corner name="_oparea12"/>
+    </sector>
+    <sector color="yellow" name="Search_Area">
+      <corner name="_searchArea1"/>
+      <corner name="_searchArea2"/>
+      <corner name="_searchArea3"/>
+      <corner name="_searchArea4"/>
+      <corner name="_searchArea5"/>
+    </sector>
+  </sectors>
+  <includes>
+    <include name="Failsafe" procedure="failsafe_comp.xml">
+      <with from="Standby" to="Standby"/>
+    </include>
+  </includes>
+  <blocks>
+    <block name="Wait GPS">
+      <while cond="!GpsFixValid()"/>
+      <set value="1" var="autopilot.kill_throttle"/>
+    </block>
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+    </block>
+    <block name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png">
+      <exception cond="GetPosAlt() > GetAltRef()+50" deroute="Standby"/>
+      <set value="0" var="autopilot.kill_throttle"/>
+      <attitude pitch="25" roll="0" throttle="1.00" vmode="throttle"/>
+    </block>
+    <block group="home" key="Ctrl+a" name="Standby" strip_button="Standby" strip_icon="home.png">
+      <circle height="100" radius="60" wp="STDBY"/>
+    </block>
+    <block name="WP_HOME">
+      <circle radius="nav_radius" wp="HOME"/>
+    </block>
+    <block name="Primary Waypoint Flight">
+      <path approaching_time="3" wpts=" wp1, bwp2"/>
+      <path approaching_time="3" wpts=" bwp2, wp2"/>
+      <path approaching_time="2.5" wpts=" wp2 , bwp3"/>
+      <path approaching_time="2.5" wpts=" bwp3 , wp3"/>
+      <path approaching_time="5" wpts=" wp3 , awp3"/>
+      <path approaching_time="5" wpts=" awp3, bwp4"/>
+      <path approaching_time="3" wpts=" bwp4, wp4"/>
+      <path approaching_time="2" wpts=" wp4, wp5"/>
+      <path approaching_time="5" wpts=" wp5, awp5"/>
+      <path approaching_time="5" wpts=" awp5, bwp6"/>
+      <path approaching_time="2" wpts=" bwp6, wp6"/>
+      <deroute block="Go bswp1"/>
+    </block>
+    <block name="Search_Sweep">
+      <path approaching_time="3" wpts=" wp6, swp1"/>
+      <path approaching_time="3" wpts=" swp1, swp2"/>
+      <path approaching_time="3" wpts=" swp2, swp3"/>
+      <go wp="swp4"/>
+      <go wp="swp5"/>
+      <go wp="swp6"/>
+      <go wp="swp7"/>
+      <go wp="swp8"/>
+      <go wp="swp9"/>
+      <go wp="swp10"/>
+      <go wp="swp11"/>
+      <path wpts="swp11, swp12"/>
+      <go wp="swp13"/>
+      <go wp="swp14"/>
+      <go wp="swp15"/>
+      <path wpts="swp15, swp16"/>
+      <go wp="swp17"/>
+      <go wp="swp18"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Mission" strip_button="Mission">
+      <call fun="mission_run()"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="LKN Flyover">
+      <go approaching_time="0" wp="bLKN"/>
+      <path approaching_time="2" wpts="bLKN, LKN"/>
+      <while cond="TRUE">
+        <circle radius="nav_radius " until="stage_time > 43" wp="LKN"/>
+        <circle radius="nav_radius + 30" until="stage_time > 43+31.4193*5/13" wp="LKN"/>
+      </while>
+      <deroute block="Go aLKN"/>
+    </block>
+    <block name="Go aLKN">
+      <go wp="aLKN"/>
+      <deroute block="OAX Rising Circle"/>
+    </block>
+    <block name="OAX Rising Circle">
+      <go wp="bOAX"/>
+      <while cond="TRUE">
+        <circle height="60+ 00" radius="nav_radius" until="stage_time > 43" wp="OAX"/>
+        <circle height="60+ 60" radius="nav_radius" until="stage_time > 2*43" wp="OAX"/>
+      </while>
+      <deroute block="Go aOAX"/>
+    </block>
+    <block name="Go aOAX">
+      <go wp="aOAX"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="InitAutoLanding">
+      <exception cond="GetAltRef()+25 > GetPosAlt()" deroute="preLanding1"/>
+      <circle radius="nav_radius" wp="preLanding"/>
+    </block>
+    <block name="preLanding1">
+      <go wp="preLanding1"/>
+      <deroute block="preLanding2"/>
+    </block>
+    <block name="preLanding2">
+      <go wp="preLanding2"/>
+      <deroute block="preLanding3"/>
+    </block>
+    <block name="preLanding3">
+      <go wp="preLanding3"/>
+      <deroute block="preLanding4"/>
+    </block>
+    <block name="preLanding4">
+      <go wp="preLanding4"/>
+      <deroute block="finalApproach"/>
+    </block>
+    <block name="finalApproach">
+      <attitude pitch="4" roll="0" throttle="0.10" vmode="throttle"/>
+      <deroute block="Stopped"/>
+    </block>
+    <block name="Aggresive finalApproach">
+      <attitude pitch="-2" roll="0" throttle="0.0" vmode="throttle"/>
+      <deroute block="Stopped"/>
+    </block>
+    <block name="Stopped">
+      <set value="1" var="autopilot.kill_throttle"/>
+      <attitude pitch="0" roll="0" throttle="0.00" vmode="throttle"/>
+    </block>
+    <block name="SRIC">
+      <go wp="SRIC"/>
+      <circle radius="nav_radius" wp="SRIC"/>
+    </block>
+    <block name="Gowp2">
+      <go wp="wp2"/>
+      <deroute block="Gowp3"/>
+    </block>
+    <block name="Gowp3">
+      <go wp="wp3"/>
+      <deroute block="Gowp4"/>
+    </block>
+    <block name="Gowp4">
+      <go wp="wp4"/>
+      <deroute block="Gowp5"/>
+    </block>
+    <block name="Gowp5">
+      <go wp="wp5"/>
+      <deroute block="Gowp6"/>
+    </block>
+    <block name="Gowp6">
+      <go wp="wp6"/>
+      <deroute block="Go bswp1"/>
+    </block>
+    <block name="Go bswp1">
+      <go approaching_time="4" wp="bswp1"/>
+      <deroute block="Go swp1"/>
+    </block>
+    <block name="Go swp1">
+      <go approaching_time="6" wp="swp1"/>
+      <deroute block="Go swp2"/>
+    </block>
+    <block name="Go swp2">
+      <go approaching_time="5" wp="swp2"/>
+      <deroute block="Go swp3"/>
+    </block>
+    <block name="Go swp3">
+      <go approaching_time="3" wp="swp3"/>
+      <deroute block="Go swp4"/>
+    </block>
+    <block name="Go swp4">
+      <go approaching_time="3" wp="swp4"/>
+      <deroute block="Go swp5"/>
+    </block>
+    <block name="Go swp5">
+      <go approaching_time="3" wp="swp5"/>
+      <deroute block="Go swp6"/>
+    </block>
+    <block name="Go swp6">
+      <go approaching_time="3" wp="swp6"/>
+      <deroute block="Go swp7"/>
+    </block>
+    <block name="Go swp7">
+      <go approaching_time="3" wp="swp7"/>
+      <deroute block="Go swp8"/>
+    </block>
+    <block name="Go swp8">
+      <go approaching_time="3" wp="swp8"/>
+      <deroute block="Go swp9"/>
+    </block>
+    <block name="Go swp9">
+      <go approaching_time="3" wp="swp9"/>
+      <deroute block="Go swp10"/>
+    </block>
+    <block name="Go swp10">
+      <go approaching_time="3" wp="swp10"/>
+      <deroute block="Go swp11"/>
+    </block>
+    <block name="Go swp11">
+      <go approaching_time="3" wp="swp11"/>
+      <deroute block="Go swp12"/>
+    </block>
+    <block name="Go swp12">
+      <go approaching_time="3" wp="swp12"/>
+      <deroute block="Go swp13"/>
+    </block>
+    <block name="Go swp13">
+      <go approaching_time="3" wp="swp13"/>
+      <deroute block="Go swp14"/>
+    </block>
+    <block name="Go swp14">
+      <go approaching_time="3" wp="swp14"/>
+      <deroute block="Go swp15"/>
+    </block>
+    <block name="Go swp15">
+      <go approaching_time="3" wp="swp15"/>
+      <deroute block="Go swp16"/>
+    </block>
+    <block name="Go swp16">
+      <go approaching_time="3" wp="swp16"/>
+      <deroute block="Go swp17"/>
+    </block>
+    <block name="Go swp17">
+      <go approaching_time="3" wp="swp17"/>
+      <deroute block="Go swp18"/>
+    </block>
+    <block name="Go swp18">
+      <go approaching_time="3" wp="swp18"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go north">
+      <go wp="north"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go east">
+      <go wp="east"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go south">
+      <go wp="south"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Go west">
+      <go wp="west"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Avoidance Path">
+      <go wp="avoid1"/>
+      <go wp="avoid2"/>
+      <go wp="avoid3"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Check Failsafe">
+      <set value="0" var="autopilot.kill_throttle"/>
+      <attitude pitch="0" roll="0" throttle="0.10" vmode="throttle"/>
+    </block>
+  </blocks>
+</flight_plan>

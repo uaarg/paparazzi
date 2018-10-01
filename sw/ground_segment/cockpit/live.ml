@@ -497,7 +497,7 @@ let create_ac = fun ?(confirm_kill=true) alert (geomap:G.widget) (acs_notebook:G
   ignore (fp_show#connect#toggled (fun () -> show_mission ac_id fp_show#active));
 
   let (icon, size) = get_icon_and_track_size af_xml in
-  let track = new MapTrack.track ~size ~icon ~name ~color:color ac_id geomap in
+  let track = new MapTrack.track ~size ~icon ~name ~color:"orange" ac_id geomap in
   track#set_event_cb (select_ac acs_notebook);
   geomap#register_to_fit (track:>MapCanvas.geographic);
 

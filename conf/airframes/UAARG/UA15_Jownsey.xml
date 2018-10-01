@@ -79,7 +79,7 @@
 
     <configure name="NO_LUFTBOOT" value="1"/>
     <configure name="FLASH_MODE" value="SWD"/>
-    <!---<configure name="BMP_PORT" value="/dev/ttyACM0"/> -->
+    <configure name="BMP_PORT" value="/dev/ttyACM0"/>
 
   </firmware>
 
@@ -138,12 +138,14 @@
 
 <!-- Calibrate via sw/tools/calibration/calibrate.py-->
 
-    <define name="MAG_X_NEUTRAL" value="-75"/>
-    <define name="MAG_Y_NEUTRAL" value="-8"/>
-    <define name="MAG_Z_NEUTRAL" value="398"/>
-    <define name="MAG_X_SENS" value="3.14325039566" integer="16"/>
-    <define name="MAG_Y_SENS" value="2.94342783443" integer="16"/>
-    <define name="MAG_Z_SENS" value="3.67790088228" integer="16"/>
+
+<define name="MAG_X_NEUTRAL" value="-168"/>
+<define name="MAG_Y_NEUTRAL" value="115"/>
+<define name="MAG_Z_NEUTRAL" value="-133"/>
+<define name="MAG_X_SENS" value="2.94334042232" integer="16"/>
+<define name="MAG_Y_SENS" value="2.80410583274" integer="16"/>
+<define name="MAG_Z_SENS" value="3.57210563186" integer="16"/>
+
 
 
     <define name="MAG_X_SIGN" value="1"/>
@@ -198,9 +200,10 @@
     <define name="KILL_MODE_DISTANCE" value="(2.0*MAX_DIST_FROM_HOME)"/>
     <define name="DEFAULT_CIRCLE_RADIUS" value="60."/>
 
-    <define name="COMMAND_ROLL_TRIM" value="960."/>
-    <define name="COMMAND_PITCH_TRIM" value="0."/>
+    <define name="COMMAND_ROLL_TRIM" value="421."/>
+    <define name="COMMAND_PITCH_TRIM" value="659."/>
     <define name="COMMAND_YAW_TRIM" value="0."/>
+    <define name="RC_LOST_MODE" value="AP_MODE_AUTO2"/>
 
   </section>
 

@@ -68,7 +68,7 @@
     </block>
     <block name="Geo init">
       <while cond="LessThan(NavBlockTime(), 10)"/>
-      <call fun="NavSetGroundReferenceHere()"/>
+      <!--call fun="NavSetGroundReferenceHere()"/-->
     </block>
     <block name="Holding point">
       <set value="1" var="autopilot.kill_throttle"/>
@@ -77,7 +77,15 @@
     <block name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png">
       <exception cond="GetPosAlt() > GetAltRef()+50" deroute="preStandby"/>
       <set value="0" var="autopilot.kill_throttle"/>
-      <attitude pitch="25" roll="0" throttle="1.00" vmode="throttle"/>
+      <attitude pitch="25" roll="5" throttle="1.00" vmode="throttle"/>
+    </block>
+    <block name="Takeoff EAST" >
+      <heading course="90" pitch="25" throttle="1.00" vmode="throttle" until="GetPosAlt() > GetAltRef()+50" />
+      <deroute block="Standby"/>
+    </block>
+    <block name="Takeoff SOUTH" >
+      <heading course="180" pitch="25" throttle="1.00" vmode="throttle" until="GetPosAlt() > GetAltRef()+50" />
+      <deroute block="Standby"/>
     </block>
     <block name="preStandby">
       <exception cond="GetPosAlt() > GetAltRef()+100" deroute="Standby"/>
@@ -150,6 +158,14 @@
         <path approaching_time="3" wpts="r2, r3"/>
         <path approaching_time="3" wpts="r3, r4"/>
      </while>
+    </block>
+    <block name="2 wp survey test">
+      <survey_rectangle wp1="one" wp2="two" grid="200" orientation="NS"/>
+      <deroute block="Standby"/>
+    </block>
+    
+    <block name="2 wp survey test no deroute">
+      <survey_rectangle wp1="one" wp2="two" grid="200" orientation="NS"/>
     </block>
   </blocks>
 </flight_plan>
