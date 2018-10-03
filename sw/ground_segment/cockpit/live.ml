@@ -100,7 +100,7 @@ type aircraft = {
   pages : GObj.widget;
   notebook_label : GMisc.label;
   strip : Strip.t;
-  rc_max_rate: float;
+  rc_max_rate : float;
   mutable first_pos : bool;
   mutable last_block_name : string;
   mutable in_kill_mode : bool;
@@ -743,6 +743,7 @@ let create_ac = fun ?(confirm_kill=true) alert (geomap:G.widget) (acs_notebook:G
                dl_settings_page = dl_settings_page;
                rc_settings_page = rc_settings_page;
                strip = strip; first_pos = true;
+               rc_max_rate = rc_max_rate;
                last_block_name = ""; alt = 0.; target_alt = 0.;
                agl = 0.; lat = 0.; long = 0.;
                pitch = 0.; roll = 0.; heading = 0.;
@@ -1599,7 +1600,7 @@ let get_cam_status = fun (geomap:MapCanvas.widget) _sender vs ->
 let listen_cam = fun (geomap:G.widget) ->
   safe_bind "CAM_STATUS" (get_cam_status geomap)
 
-let listen_acs_and_msgs = fun geomap ac_notebook strips confirm_kill my_alert auto_center_new_ac alt_graph timestamp ->
+let listen_acs_and_msgs = fun geomap ac_notebook strips confirm_kill my_alert auto_center_new_ac auto_center_ac alt_graph timestamp ->
   (** Probe live A/Cs *)
   let probe = fun () ->
     ignore(message_request "gcs" "AIRCRAFTS" [] (fun _sender vs -> _req_aircrafts := false; aircrafts_msg confirm_kill my_alert geomap ac_notebook strips vs)) in
